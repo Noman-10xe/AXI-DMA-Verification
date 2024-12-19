@@ -1,0 +1,6 @@
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:575}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}

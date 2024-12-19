@@ -1,0 +1,5 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/params_pkg.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/interfaces/clk_rst_io.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/interfaces/s_axi_lite_io.sv" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/axi_dma_10xe_tb_top.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module axi_dma_10xe_tb_top

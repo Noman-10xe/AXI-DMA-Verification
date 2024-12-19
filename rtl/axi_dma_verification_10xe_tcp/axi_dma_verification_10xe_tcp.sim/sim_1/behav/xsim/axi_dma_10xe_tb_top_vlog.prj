@@ -1,0 +1,12 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  \
+"../../../../../../verif/params_pkg.sv" \
+"../../../../../../verif/interfaces/clk_rst_io.sv" \
+"../../../../../../verif/interfaces/s_axi_lite_io.sv" \
+"../../../../../../verif/top/axi_dma_10xe_tb_top.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

@@ -1,0 +1,630 @@
+Time resolution is 1 ps
+UVM_INFO /home/xe-user106/vivado/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(18601) @ 0: reporter [UVM/RELNOTES] 
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+  with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+
+  You are using a version of the UVM library that has been compiled
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+----------------------------------------------------------------
+(C) 2013-2014 NVIDIA Corporation
+(C) 2011-2013 Cypress Semiconductor Corp.
+(C) 2006-2014 Synopsys, Inc.
+(C) 2007-2014 Cadence Design Systems, Inc.
+(C) 2007-2014 Mentor Graphics Corporation
+
+
+----------------------------------------------------------------
+
+UVM_INFO @ 0: reporter [RNTST] Running test base_test...
+UVM_INFO /home/xe-user106/vivado/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(18752) @ 0: reporter [UVMTOP] UVM testbench topology:
+--------------------------------------------------------------
+Name                       Type                    Size  Value
+--------------------------------------------------------------
+uvm_test_top               base_test               -     @335 
+  env                      environment             -     @353 
+    axi_lite_agt           axi_lite_agent          -     @368 
+      driver               axi_lite_driver         -     @378 
+        rsp_port           uvm_analysis_port       -     @397 
+        seq_item_port      uvm_seq_item_pull_port  -     @387 
+      monitor              axi_lite_monitor        -     @407 
+      sequencer            axi_lite_sequencer      -     @416 
+        rsp_export         uvm_analysis_export     -     @425 
+        seq_item_export    uvm_seq_item_pull_imp   -     @543 
+        arbitration_queue  array                   0     -    
+        lock_queue         array                   0     -    
+        num_last_reqs      integral                32    'd1  
+        num_last_rsps      integral                32    'd1  
+--------------------------------------------------------------
+
+UVM_INFO /home/xe-user106/vivado/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(20867) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../tests/base_test.sv(46) @ 0: uvm_test_top [base_test] Raised objection
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(46) @ 0: uvm_test_top.env.axi_lite_agt.monitor [uvm_test_top.env.axi_lite_agt.monitor] Monitor Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 0: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/reg_sequence.sv(68) @ 0: uvm_test_top.env.axi_lite_agt.sequencer@@seq [read_sequence] Executing Read Sequence
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. axi_dma_10xe_tb_top.DUT.U0.I_PRMRY_DATAMOVER.gen_s2mm_full.I_S2MM_FULL_WRAPPER.gen_enable_indet_btt_sf.I_INDET_BTT.I_XD_FIFO.non_blk_mem.I_SYNC_FIFOGEN_FIFO.xpm_fifo_instance.xpm_fifo_sync_inst.xpm_fifo_base_inst.\gen_sdpram.xpm_memory_base_inst .config_drc
+Time: 1 ps  Iteration: 0  Process: /axi_dma_10xe_tb_top/DUT/U0/I_PRMRY_DATAMOVER/gen_s2mm_full/I_S2MM_FULL_WRAPPER/gen_enable_indet_btt_sf/I_INDET_BTT/I_XD_FIFO/non_blk_mem/I_SYNC_FIFOGEN_FIFO/xpm_fifo_instance/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial299_456  Scope: axi_dma_10xe_tb_top.DUT.U0.I_PRMRY_DATAMOVER.gen_s2mm_full.I_S2MM_FULL_WRAPPER.gen_enable_indet_btt_sf.I_INDET_BTT.I_XD_FIFO.non_blk_mem.I_SYNC_FIFOGEN_FIFO.xpm_fifo_instance.xpm_fifo_sync_inst.xpm_fifo_base_inst.\gen_sdpram.xpm_memory_base_inst .config_drc  File: /home/xe-user106/vivado/Vivado/2022.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv Line: 493
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 30000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h0  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 70000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h0  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 110000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 150000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 190000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 230000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 270000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 310000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 350000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 390000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 430000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 470000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 510000: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 510000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h1  
+  s_axi_lite_araddr   integral         10    'h0  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h0  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 550000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+----------------------------------------------------
+Name                  Type             Size  Value  
+----------------------------------------------------
+item                  reg_transaction  -     @582   
+  s_axi_lite_awvalid  integral         1     'h0    
+  s_axi_lite_awready  integral         1     'h0    
+  s_axi_lite_awaddr   integral         10    'h0    
+  s_axi_lite_wvalid   integral         1     'h0    
+  s_axi_lite_wready   integral         1     'h0    
+  s_axi_lite_wdata    integral         32    'h0    
+  s_axi_lite_bresp    integral         2     'h0    
+  s_axi_lite_bvalid   integral         1     'h0    
+  s_axi_lite_bready   integral         1     'h0    
+  s_axi_lite_arvalid  integral         1     'h1    
+  s_axi_lite_arready  integral         1     'h0    
+  s_axi_lite_araddr   integral         10    'h0    
+  s_axi_lite_rvalid   integral         1     'h1    
+  s_axi_lite_rready   integral         1     'h0    
+  s_axi_lite_rdata    integral         32    'h10002
+  s_axi_lite_rresp    integral         2     'h0    
+----------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 590000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+----------------------------------------------------
+Name                  Type             Size  Value  
+----------------------------------------------------
+item                  reg_transaction  -     @582   
+  s_axi_lite_awvalid  integral         1     'h0    
+  s_axi_lite_awready  integral         1     'h0    
+  s_axi_lite_awaddr   integral         10    'h0    
+  s_axi_lite_wvalid   integral         1     'h0    
+  s_axi_lite_wready   integral         1     'h0    
+  s_axi_lite_wdata    integral         32    'h0    
+  s_axi_lite_bresp    integral         2     'h0    
+  s_axi_lite_bvalid   integral         1     'h0    
+  s_axi_lite_bready   integral         1     'h0    
+  s_axi_lite_arvalid  integral         1     'h1    
+  s_axi_lite_arready  integral         1     'h0    
+  s_axi_lite_araddr   integral         10    'h0    
+  s_axi_lite_rvalid   integral         1     'h1    
+  s_axi_lite_rready   integral         1     'h1    
+  s_axi_lite_rdata    integral         32    'h10002
+  s_axi_lite_rresp    integral         2     'h0    
+----------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 630000: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 630000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h1  
+  s_axi_lite_araddr   integral         10    'h4  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 670000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+----------------------------------------------------
+Name                  Type             Size  Value  
+----------------------------------------------------
+item                  reg_transaction  -     @582   
+  s_axi_lite_awvalid  integral         1     'h0    
+  s_axi_lite_awready  integral         1     'h0    
+  s_axi_lite_awaddr   integral         10    'h0    
+  s_axi_lite_wvalid   integral         1     'h0    
+  s_axi_lite_wready   integral         1     'h0    
+  s_axi_lite_wdata    integral         32    'h0    
+  s_axi_lite_bresp    integral         2     'h0    
+  s_axi_lite_bvalid   integral         1     'h0    
+  s_axi_lite_bready   integral         1     'h0    
+  s_axi_lite_arvalid  integral         1     'h1    
+  s_axi_lite_arready  integral         1     'h0    
+  s_axi_lite_araddr   integral         10    'h4    
+  s_axi_lite_rvalid   integral         1     'h1    
+  s_axi_lite_rready   integral         1     'h1    
+  s_axi_lite_rdata    integral         32    'h10002
+  s_axi_lite_rresp    integral         2     'h0    
+----------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 710000: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 710000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h1  
+  s_axi_lite_araddr   integral         10    'h4  
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 750000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h18 
+  s_axi_lite_rvalid   integral         1     'h1  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h1  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 790000: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 790000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h1  
+  s_axi_lite_araddr   integral         10    'h18 
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 830000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h1c 
+  s_axi_lite_rvalid   integral         1     'h1  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 870000: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 870000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h1  
+  s_axi_lite_araddr   integral         10    'h1c 
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 910000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h28 
+  s_axi_lite_rvalid   integral         1     'h1  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_driver.sv(38) @ 950000: uvm_test_top.env.axi_lite_agt.driver [uvm_test_top.env.axi_lite_agt.driver] Driver Started
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 950000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h1  
+  s_axi_lite_araddr   integral         10    'h28 
+  s_axi_lite_rvalid   integral         1     'h0  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
+UVM_INFO /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/axi_lite_monitor.sv(75) @ 990000: uvm_test_top.env.axi_lite_agt.monitor [axi_lite_monitor] Transaction Collected :
+--------------------------------------------------
+Name                  Type             Size  Value
+--------------------------------------------------
+item                  reg_transaction  -     @582 
+  s_axi_lite_awvalid  integral         1     'h0  
+  s_axi_lite_awready  integral         1     'h0  
+  s_axi_lite_awaddr   integral         10    'h0  
+  s_axi_lite_wvalid   integral         1     'h0  
+  s_axi_lite_wready   integral         1     'h0  
+  s_axi_lite_wdata    integral         32    'h0  
+  s_axi_lite_bresp    integral         2     'h0  
+  s_axi_lite_bvalid   integral         1     'h0  
+  s_axi_lite_bready   integral         1     'h0  
+  s_axi_lite_arvalid  integral         1     'h1  
+  s_axi_lite_arready  integral         1     'h0  
+  s_axi_lite_araddr   integral         10    'h30 
+  s_axi_lite_rvalid   integral         1     'h1  
+  s_axi_lite_rready   integral         1     'h1  
+  s_axi_lite_rdata    integral         32    'h0  
+  s_axi_lite_rresp    integral         2     'h0  
+--------------------------------------------------
+
