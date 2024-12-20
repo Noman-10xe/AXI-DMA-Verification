@@ -40,7 +40,7 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
   ////////////////////////////////////////////////////////////////////////////////////////
   
   //    Master Clocking Block
-  clocking ioMaster @(posedge axi_aclk);
+  clocking ioReadDriver @(posedge axi_aclk);
     default input #0ns output #2;
     
     input       m_axis_mm2s_tdata;
@@ -49,11 +49,22 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     output      m_axis_mm2s_tready;
     input       m_axis_mm2s_tlast;
 
-  endclocking : ioMaster
+  endclocking : ioReadDriver
+
+  clocking ioReadMonitor @(posedge axi_aclk);
+    default input #0ns output #2;
+    
+    input       m_axis_mm2s_tdata;
+    input       m_axis_mm2s_tkeep;
+    input       m_axis_mm2s_tvalid;
+    input       m_axis_mm2s_tready;
+    input       m_axis_mm2s_tlast;
+
+  endclocking : ioReadMonitor
 
 
   //    Slave Clocking Block
-  clocking ioSlave @(posedge axi_aclk);
+  clocking ioWriteDriver @(posedge axi_aclk);
     default input #0ns output #2;
     
     output      s_axis_s2mm_tdata;
@@ -62,7 +73,26 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     input       s_axis_s2mm_tready;
     output      s_axis_s2mm_tlast;
 
-  endclocking : ioSlave
+  endclocking : ioWriteDriver
+
+  clocking ioWriteMonitor @(posedge axi_aclk);
+    default input #0ns output #2;
+    
+    input       s_axis_s2mm_tdata;
+    input       s_axis_s2mm_tkeep;
+    input       s_axis_s2mm_tvalid;
+    input       s_axis_s2mm_tready;
+    input       s_axis_s2mm_tlast;
+
+  endclocking : ioWriteMonitor
+
+  task reset ();
+    wait(!axi_resetn);
+    @(posedge axi_aclk);
+    ioWriteDriver.s_axis_s2mm_tvalid <= 1'b0;
+    wait(axi_resetn);
+  endtask : reset
+
 
 //   /* write_reg()
 //    * Writes a Specified Value to a Register
@@ -88,23 +118,23 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
 //     ioDriv.s_axi_lite_bready <= 1'b0;     // Deassert ready
 //   endtask : write_reg
   
-//   /* read_reg()
-//    * Reads the Value from a Register
-//    * Inputs: Data and Addr
-//    */
-//   task read_reg(input logic [9:0] addr);
-//     // Address Phase
-//     ioDriv.s_axi_lite_arvalid <= 1'b1;
-//     ioDriv.s_axi_lite_araddr  <= addr;
-//     wait (ioDriv.s_axi_lite_arready);     // Wait for handshake
-//     ioDriv.s_axi_lite_arvalid <= 1'b0;    // Deassert valid
+  /* read_stream()
+   * Reads the Value from Memory and streams it
+   * Inputs: Data and Addr
+   */
+  // task read_stream(axis_transaction item);
+  //   // Address Phase
+  //   ioDriv.s_axi_lite_arvalid <= 1'b1;
+  //   ioDriv.s_axi_lite_araddr  <= addr;
+  //   wait (ioDriv.s_axi_lite_arready);     // Wait for handshake
+  //   ioDriv.s_axi_lite_arvalid <= 1'b0;    // Deassert valid
   
-//     // Data Phase
-//     wait (ioMon.s_axi_lite_rvalid);       // Wait for valid read data
-//     ioDriv.s_axi_lite_rready <= 1'b1;     // Assert ready for response
-//     wait (!ioMon.s_axi_lite_rvalid);      // Wait for transaction to complete
-//     ioDriv.s_axi_lite_rready <= 1'b0;     // Deassert ready
-//   endtask : read_reg
+  //   // Data Phase
+  //   wait (ioMon.s_axi_lite_rvalid);       // Wait for valid read data
+  //   ioDriv.s_axi_lite_rready <= 1'b1;     // Assert ready for response
+  //   wait (!ioMon.s_axi_lite_rvalid);      // Wait for transaction to complete
+  //   ioDriv.s_axi_lite_rready <= 1'b0;     // Deassert ready
+  // endtask : read_stream
 
   ///////////////////////////////////////////////////////////////
   //

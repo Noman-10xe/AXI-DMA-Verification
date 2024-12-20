@@ -25,12 +25,21 @@ import params_pkg::*;
 `include "../interfaces/clk_rst_io.sv"
 `include "../interfaces/s_axi_lite_io.sv"
 `include "../interfaces/axis_io.sv"
+////////////////////////////////////////////
 `include "../register_uvc/reg_transaction.sv"
 `include "../register_uvc/reg_sequence.sv"
 `include "../register_uvc/axi_lite_driver.sv"
 `include "../register_uvc/axi_lite_sequencer.sv"
 `include "../register_uvc/axi_lite_monitor.sv"
 `include "../register_uvc/axi_lite_agent.sv"
+////////////////////////////////////////////
+`include "../stream_uvc/axis_transaction.sv"
+`include "../stream_uvc/axis_transaction.sv"
+`include "../stream_uvc/axis_sequence.sv"
+`include "../stream_uvc/axis_read_driver.sv"
+`include "../stream_uvc/axis_read_monitor.sv"
+`include "../stream_uvc/axis_read_agent.sv"
+///////////////////////////////////////////
 `include "../environment/environment.sv"
 `include "../tests/base_test.sv"
 // `include "../interfaces/axi_io.sv"
@@ -67,12 +76,11 @@ module axi_dma_10xe_tb_top;
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join
-    // #1700;
-    // $finish;
   end
 
   initial begin
     uvm_config_db #(virtual s_axi_lite_io)::set(null, "*", "axi_lite_intf", axi_lite_intf);
+    uvm_config_db #(virtual axis_io)::set(null, "*", "axis_intf", axis_intf);
   end
 
   // DUT instantiation

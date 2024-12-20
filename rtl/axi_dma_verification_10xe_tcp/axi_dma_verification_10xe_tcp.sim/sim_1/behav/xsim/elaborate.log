@@ -4,9 +4,11 @@ Running: /home/xe-user106/vivado/Vivado/2022.1/bin/unwrapped/lnx64.o/xelab --inc
 Using 8 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-9380] size mismatch in mixed-language port association of VHDL port 'm_axi_mm2s_araddr' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/axi_dma_10xe_tb_top.sv:79]
+WARNING: [VRFC 10-9380] size mismatch in mixed-language port association of VHDL port 'm_axi_mm2s_araddr' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/axi_dma_10xe_tb_top.sv:87]
 Completed static elaboration
 Starting simulation data flow analysis
+WARNING: [XSIM 43-4468] File : /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/reg_transaction.sv, Line : 27, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
+WARNING: [XSIM 43-4468] File : /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/reg_transaction.sv, Line : 18, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
 WARNING: [XSIM 43-4099] "/proj/xbuilds/SWIP/9999.0_1117_2127/installs/lin64/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 4356. Module uvm_pkg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/proj/xbuilds/SWIP/9999.0_1117_2127/installs/lin64/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 4356. Module uvm_pkg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4468] File : /proj/xbuilds/SWIP/9999.0_1117_2127/installs/lin64/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv, Line : 25994, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
@@ -39,6 +41,9 @@ Compiling module xil_defaultlib.clk_rst_io
 Compiling module xil_defaultlib.ioDriv
 Compiling module xil_defaultlib.ioMon
 Compiling module xil_defaultlib.s_axi_lite_io_default
+Compiling module xil_defaultlib.ioReadDriver
+Compiling module xil_defaultlib.ioReadMonitor
+Compiling module xil_defaultlib.ioWriteDriver
 Compiling module xil_defaultlib.axis_io_default
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_smple_sm [\axi_dma_smple_sm(c_extra=1)\]
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_mm2s_cmdsts_if [\axi_dma_mm2s_cmdsts_if(c_extra=...]

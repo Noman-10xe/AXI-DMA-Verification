@@ -19,17 +19,17 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,000.001 ns"></ZoomEndTime>
-      <Cursor1Time time="40.486 ns"></Cursor1Time>
+      <ZoomEndTime time="5,000.001 ns"></ZoomEndTime>
+      <Cursor1Time time="5,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="112"></ValueColumnWidth>
+      <ValueColumnWidth column_width="92"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="62" />
-   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_aclk">
-      <obj_property name="ElementShortName">s_axi_lite_aclk</obj_property>
-      <obj_property name="ObjectShortName">s_axi_lite_aclk</obj_property>
+   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/clk_rst_if/axi_aclk">
+      <obj_property name="ElementShortName">axi_aclk</obj_property>
+      <obj_property name="ObjectShortName">axi_aclk</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/axi_resetn">
       <obj_property name="ElementShortName">axi_resetn</obj_property>
@@ -38,38 +38,56 @@
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_awvalid">
       <obj_property name="ElementShortName">s_axi_lite_awvalid</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_awvalid</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_awready">
       <obj_property name="ElementShortName">s_axi_lite_awready</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_awready</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_awaddr">
       <obj_property name="ElementShortName">s_axi_lite_awaddr[9:0]</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_awaddr[9:0]</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_wvalid">
       <obj_property name="ElementShortName">s_axi_lite_wvalid</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_wvalid</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_wready">
       <obj_property name="ElementShortName">s_axi_lite_wready</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_wready</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_wdata">
       <obj_property name="ElementShortName">s_axi_lite_wdata[31:0]</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_wdata[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_bresp">
       <obj_property name="ElementShortName">s_axi_lite_bresp[1:0]</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_bresp[1:0]</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_bvalid">
       <obj_property name="ElementShortName">s_axi_lite_bvalid</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_bvalid</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_bready">
       <obj_property name="ElementShortName">s_axi_lite_bready</obj_property>
       <obj_property name="ObjectShortName">s_axi_lite_bready</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axi_lite_arvalid">
       <obj_property name="ElementShortName">s_axi_lite_arvalid</obj_property>
@@ -173,22 +191,62 @@
    <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/m_axis_mm2s_tdata">
       <obj_property name="ElementShortName">m_axis_mm2s_tdata[31:0]</obj_property>
       <obj_property name="ObjectShortName">m_axis_mm2s_tdata[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/m_axis_mm2s_tkeep">
       <obj_property name="ElementShortName">m_axis_mm2s_tkeep[3:0]</obj_property>
       <obj_property name="ObjectShortName">m_axis_mm2s_tkeep[3:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/m_axis_mm2s_tvalid">
       <obj_property name="ElementShortName">m_axis_mm2s_tvalid</obj_property>
       <obj_property name="ObjectShortName">m_axis_mm2s_tvalid</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/m_axis_mm2s_tready">
       <obj_property name="ElementShortName">m_axis_mm2s_tready</obj_property>
       <obj_property name="ObjectShortName">m_axis_mm2s_tready</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/m_axis_mm2s_tlast">
       <obj_property name="ElementShortName">m_axis_mm2s_tlast</obj_property>
       <obj_property name="ObjectShortName">m_axis_mm2s_tlast</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tdata">
+      <obj_property name="ElementShortName">s_axis_s2mm_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_s2mm_tdata[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tkeep">
+      <obj_property name="ElementShortName">s_axis_s2mm_tkeep[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_s2mm_tkeep[3:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tvalid">
+      <obj_property name="ElementShortName">s_axis_s2mm_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_s2mm_tvalid</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tready">
+      <obj_property name="ElementShortName">s_axis_s2mm_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_s2mm_tready</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tlast">
+      <obj_property name="ElementShortName">s_axis_s2mm_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_s2mm_tlast</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/m_axi_s2mm_awaddr">
       <obj_property name="ElementShortName">m_axi_s2mm_awaddr[31:0]</obj_property>
@@ -257,26 +315,6 @@
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s2mm_prmry_reset_out_n">
       <obj_property name="ElementShortName">s2mm_prmry_reset_out_n</obj_property>
       <obj_property name="ObjectShortName">s2mm_prmry_reset_out_n</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tdata">
-      <obj_property name="ElementShortName">s_axis_s2mm_tdata[31:0]</obj_property>
-      <obj_property name="ObjectShortName">s_axis_s2mm_tdata[31:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tkeep">
-      <obj_property name="ElementShortName">s_axis_s2mm_tkeep[3:0]</obj_property>
-      <obj_property name="ObjectShortName">s_axis_s2mm_tkeep[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tvalid">
-      <obj_property name="ElementShortName">s_axis_s2mm_tvalid</obj_property>
-      <obj_property name="ObjectShortName">s_axis_s2mm_tvalid</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tready">
-      <obj_property name="ElementShortName">s_axis_s2mm_tready</obj_property>
-      <obj_property name="ObjectShortName">s_axis_s2mm_tready</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/s_axis_s2mm_tlast">
-      <obj_property name="ElementShortName">s_axis_s2mm_tlast</obj_property>
-      <obj_property name="ObjectShortName">s_axis_s2mm_tlast</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/axi_dma_10xe_tb_top/DUT/mm2s_introut">
       <obj_property name="ElementShortName">mm2s_introut</obj_property>

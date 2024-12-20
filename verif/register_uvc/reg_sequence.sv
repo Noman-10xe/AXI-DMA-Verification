@@ -52,20 +52,40 @@ class base_sequence extends uvm_sequence #(reg_transaction);
 endclass : base_sequence
 
 //////////////////////////////////////////////////////////////////////
-//                          Read Sequence                           //
+//                          Random Sequence                         //
 //////////////////////////////////////////////////////////////////////
 
-class read_sequence extends base_sequence;
-  `uvm_object_utils(read_sequence)
+class random_sequence extends base_sequence;
+  `uvm_object_utils(random_sequence)
   
   reg_transaction item;
 
-  function new(string name="yapp_012_seq");
+  function new(string name="random_sequence");
     super.new(name);
   endfunction : new
 
   task body();
-    `uvm_info(get_type_name(), "Executing Read Sequence", UVM_LOW)
+    `uvm_info(get_type_name(), "Executing Random Sequence", UVM_LOW)
+    
+    repeat (20) begin
+    `uvm_do(item);
+    end
+  endtask : body
+
+endclass : random_sequence
+
+
+class default_sequence extends base_sequence;
+  `uvm_object_utils(default_sequence)
+  
+  reg_transaction item;
+
+  function new(string name="default_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing Default Sequence", UVM_LOW)
     
     `uvm_do_with(item, {  item.s_axi_lite_araddr == 10'h00;
                           item.s_axi_lite_arvalid == 1;
@@ -129,6 +149,6 @@ class read_sequence extends base_sequence;
 
   endtask : body
 
-endclass : read_sequence
+endclass : default_sequence
 
 `endif

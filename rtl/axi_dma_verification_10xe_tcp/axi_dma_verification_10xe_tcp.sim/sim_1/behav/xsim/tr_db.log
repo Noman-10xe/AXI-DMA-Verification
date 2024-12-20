@@ -4,3 +4,39 @@
   CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
   CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
   CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:577}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @1790000 {NAME:axis_read_seq T:Transactions SCOPE:uvm_test_top.env.axis_r_agt.sequencer STREAM:1082}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @1790000 {NAME:axis_read_seq T:Transactions SCOPE:uvm_test_top.env.axis_r_agt.sequencer STREAM:1082}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:779}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:779}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @1790000 {NAME:axis_read_seq T:Transactions SCOPE:uvm_test_top.env.axis_r_agt.sequencer STREAM:1082}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @1790000 {NAME:axis_read_seq T:Transactions SCOPE:uvm_test_top.env.axis_r_agt.sequencer STREAM:1082}
+  CREATE_STREAM @0 {NAME:axis_read_seq T:Transactions SCOPE:uvm_test_top.env.axis_r_agt.sequencer STREAM:781}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:779}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:779}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.axi_lite_agt.sequencer STREAM:781}

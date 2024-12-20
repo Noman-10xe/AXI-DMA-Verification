@@ -13,8 +13,9 @@
 
 class base_test extends uvm_agent;
 
-        environment env;
-        read_sequence seq;
+        environment             env;
+        default_sequence        seq;
+        axis_read               axis_read_seq;
 
         `uvm_component_utils(base_test)
         
@@ -32,8 +33,9 @@ endclass : base_test
 
 function void base_test::build_phase(uvm_phase phase);
         super.build_phase(phase);
-        env	= environment::type_id::create("env", this);
-        seq	= read_sequence::type_id::create("seq", this);
+        env	        = environment::type_id::create("env", this);
+        seq	        = default_sequence::type_id::create("seq", this);
+        axis_read_seq   = axis_read::type_id::create("axis_read_seq", this);
 endfunction: build_phase
 
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
@@ -45,6 +47,7 @@ task base_test::run_phase(uvm_phase phase);
         phase.raise_objection(this);
         `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
         seq.start(env.axi_lite_agt.sequencer);
+        axis_read_seq.start(env.axis_r_agt.sequencer);
         phase.drop_objection(this);
         `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
 endtask: run_phase

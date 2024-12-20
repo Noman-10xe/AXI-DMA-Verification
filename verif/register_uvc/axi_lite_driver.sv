@@ -32,21 +32,23 @@ function void build_phase(uvm_phase phase);
         `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
 endfunction: build_phase
 
+task reset_phase(uvm_phase phase);
+        phase.raise_objection(this);
+        vif.reset();
+        phase.drop_objection(this);
+endtask: reset_phase 
 
-task run_phase(uvm_phase phase);
+task main_phase(uvm_phase phase);
         forever begin
                 `uvm_info(get_full_name(), "Driver Started", UVM_NONE)
                 seq_item_port.get_next_item(item);
-
                 fork
-                        read();
-                        // write();
-                join
-
+                        vif.read_reg(item.s_axi_lite_araddr);
+                        vif.write_reg(item.s_axi_lite_wdata, item.s_axi_lite_awaddr);
+                join_any
                 seq_item_port.item_done();
         end
-
-endtask: run_phase
+endtask: main_phase
 
 task read();
         // Read Address Phase

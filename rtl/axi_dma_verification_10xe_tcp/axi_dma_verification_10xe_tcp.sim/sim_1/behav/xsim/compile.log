@@ -2,4 +2,6 @@ INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineer
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/interfaces/clk_rst_io.sv" into library xil_defaultlib
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/interfaces/s_axi_lite_io.sv" into library xil_defaultlib
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/axi_dma_10xe_tb_top.sv" into library xil_defaultlib
+WARNING: [VRFC 10-9157] macro 'DRIV' is redefined [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../stream_uvc/axis_read_driver.sv:14]
+WARNING: [VRFC 10-9157] macro 'MON' is redefined [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../stream_uvc/axis_read_monitor.sv:14]
 INFO: [VRFC 10-311] analyzing module axi_dma_10xe_tb_top
