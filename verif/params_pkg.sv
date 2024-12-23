@@ -18,13 +18,4 @@ package params_pkg;
   // Bus data width (must be a multiple of 8)
   localparam int DATA_WIDTH = 32;
 
-  // Bus address info (source) width
-  localparam int BUS_AIW = 8;
-
-  // Bus data info (source) width
-  localparam int BUS_DIW = 1;
-
-  // Bus data user width
-  localparam int BUS_DUW = 16;
-
 endpackage : params_pkg

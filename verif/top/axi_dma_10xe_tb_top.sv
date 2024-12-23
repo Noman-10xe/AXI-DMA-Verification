@@ -39,6 +39,9 @@ import params_pkg::*;
 `include "../stream_uvc/axis_read_driver.sv"
 `include "../stream_uvc/axis_read_monitor.sv"
 `include "../stream_uvc/axis_read_agent.sv"
+`include "../stream_uvc/axis_write_driver.sv"
+`include "../stream_uvc/axis_write_monitor.sv"
+`include "../stream_uvc/axis_write_agent.sv"
 ///////////////////////////////////////////
 `include "../environment/environment.sv"
 `include "../tests/base_test.sv"

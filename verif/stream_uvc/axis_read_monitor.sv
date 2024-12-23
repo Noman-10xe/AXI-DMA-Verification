@@ -18,7 +18,6 @@ class axis_read_monitor extends uvm_monitor;
 
         virtual axis_io vif;
         axis_transaction item;
-        axis_transaction FIFO[$];
 
         //  Constructor
         function new(string name = "axis_read_monitor", uvm_component parent);
@@ -42,7 +41,7 @@ endfunction: build_phase
 
 
 task axis_read_monitor::run_phase(uvm_phase phase);
-        `uvm_info(get_full_name(), "Monitor Started", UVM_NONE)
+        `uvm_info(get_full_name(), "AXIS Read Monitor Started", UVM_NONE)
         collect_transactions();
 endtask: run_phase
 
@@ -54,11 +53,11 @@ task axis_read_monitor::collect_transactions();
         forever begin
 
                 vif.wait_clks(2);
-                item.tdata      = `MON.m_axis_mm2s_tdata;
-                item.tkeep      = `MON.m_axis_mm2s_tkeep;
-                item.tvalid     = `MON.m_axis_mm2s_tvalid;
-                item.tready     = `MON.m_axis_mm2s_tready;
-                item.tlast      = `MON.m_axis_mm2s_tlast;
+                item.tdata      <= `MON.m_axis_mm2s_tdata;
+                item.tkeep      <= `MON.m_axis_mm2s_tkeep;
+                item.tvalid     <= `MON.m_axis_mm2s_tvalid;
+                item.tready     <= `MON.m_axis_mm2s_tready;
+                item.tlast      <= `MON.m_axis_mm2s_tlast;
 
                 // Print transaction
                 `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)

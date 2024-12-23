@@ -13,11 +13,11 @@
 
 class axis_transaction extends uvm_sequence_item;
 
-        rand bit [ DATA_WIDTH-1         :       0 ]     tdata;
-        rand bit [ 3                    :       0 ]     tkeep;
-        rand bit                                        tvalid;
-        rand bit                                        tready;
-        rand bit                                        tlast;
+        rand bit [ params_pkg::DATA_WIDTH-1             :       0 ]     tdata;
+        rand bit [              3                       :       0 ]     tkeep;
+        rand bit                                                        tvalid;
+        rand bit                                                        tready;
+        rand bit                                                        tlast;
 
 	// Constructor
 	function new ( string name = "axis_transaction" );

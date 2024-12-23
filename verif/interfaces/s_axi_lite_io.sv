@@ -104,6 +104,8 @@ interface s_axi_lite_io #(  int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
     ioDriv.s_axi_lite_awvalid <= 1'b0;
     ioDriv.s_axi_lite_arvalid <= 1'b0;
     ioDriv.s_axi_lite_wvalid <= 1'b0;
+    ioDriv.s_axi_lite_rready <= 1'b0;
+    ioDriv.s_axi_lite_bready <= 1'b0;
     wait(axi_resetn);
   endtask : reset
 

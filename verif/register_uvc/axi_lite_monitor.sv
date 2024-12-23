@@ -53,7 +53,7 @@ task axi_lite_monitor::collect_transactions();
         item = reg_transaction::type_id::create("item", this);
 
         forever begin
-                vif.wait_clks(2);
+                vif.wait_clks(3);
                 item.s_axi_lite_awvalid         <= `MON.s_axi_lite_awvalid;
                 item.s_axi_lite_awaddr          <= `MON.s_axi_lite_awaddr;
                 item.s_axi_lite_awready         <= `MON.s_axi_lite_awready;

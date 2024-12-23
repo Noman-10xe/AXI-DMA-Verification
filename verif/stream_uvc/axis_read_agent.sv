@@ -14,9 +14,9 @@
 
 class axis_read_agent extends uvm_agent;
 
-        uvm_sequencer           sequencer;
-        axis_read_driver        driver;
-        axis_read_monitor       monitor;
+        uvm_sequencer #(axis_transaction)       sequencer;
+        axis_read_driver                        driver;
+        axis_read_monitor                       monitor;
       
         `uvm_component_utils(axis_read_agent)
         
@@ -34,7 +34,7 @@ function void axis_read_agent::build_phase(uvm_phase phase);
         super.build_phase(phase);
         driver		= axis_read_driver::type_id::create("driver", this);
 	monitor 	= axis_read_monitor::type_id::create("monitor", this);
-	sequencer	= uvm_sequencer::type_id::create("sequencer", this);
+	sequencer	= uvm_sequencer#(axis_transaction)::type_id::create("sequencer", this);
 endfunction: build_phase
 
 function void axis_read_agent::connect_phase(uvm_phase phase);

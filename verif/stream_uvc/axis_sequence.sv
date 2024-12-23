@@ -44,7 +44,7 @@ class axis_base_sequence extends uvm_sequence #(axis_transaction);
 endclass : axis_base_sequence
 
 //////////////////////////////////////////////////////////////////////
-//                          Random Sequence                         //
+//                          Read Sequence                           //
 //////////////////////////////////////////////////////////////////////
 
 class axis_read extends axis_base_sequence;
@@ -65,5 +65,28 @@ class axis_read extends axis_base_sequence;
   endtask : body
 
 endclass : axis_read
+
+//////////////////////////////////////////////////////////////////////
+//                         Write Sequence                           //
+//////////////////////////////////////////////////////////////////////
+
+class axis_wr extends axis_base_sequence;
+  `uvm_object_utils(axis_wr)
+  
+  axis_transaction item;
+
+  function new(string name="axis_wr");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXIS Write Sequence", UVM_LOW)
+    
+    repeat (20) begin
+    `uvm_do(item);
+    end
+  endtask : body
+
+endclass : axis_wr
 
 `endif

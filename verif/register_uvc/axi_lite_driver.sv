@@ -38,17 +38,17 @@ task reset_phase(uvm_phase phase);
         phase.drop_objection(this);
 endtask: reset_phase 
 
-task main_phase(uvm_phase phase);
+task run_phase(uvm_phase phase);
         forever begin
                 `uvm_info(get_full_name(), "Driver Started", UVM_NONE)
                 seq_item_port.get_next_item(item);
                 fork
-                        vif.read_reg(item.s_axi_lite_araddr);
-                        vif.write_reg(item.s_axi_lite_wdata, item.s_axi_lite_awaddr);
-                join_any
+                        read();
+                        write();
+                join
                 seq_item_port.item_done();
         end
-endtask: main_phase
+endtask: run_phase
 
 task read();
         // Read Address Phase
@@ -57,13 +57,40 @@ task read();
                 `DRIV.s_axi_lite_arvalid        <= item.s_axi_lite_arvalid;
                 `DRIV.s_axi_lite_araddr         <= item.s_axi_lite_araddr;
                 wait(`DRIV.s_axi_lite_arready);
+                `DRIV.s_axi_lite_arvalid        <= 1'b0;
                 
                 // Read Data Phase
                 wait(`DRIV.s_axi_lite_rvalid);
                 @(posedge vif.axi_aclk);
                 `DRIV.s_axi_lite_rready <= item.s_axi_lite_rready;
+                @(posedge vif.axi_aclk);
+                `DRIV.s_axi_lite_rready <= 1'b0;
         end
 endtask : read
+
+task write();
+        // Write Address Phase
+        if (item.s_axi_lite_awvalid) begin
+                @(posedge vif.axi_aclk);
+                `DRIV.s_axi_lite_awvalid        <= item.s_axi_lite_awvalid;
+                `DRIV.s_axi_lite_awaddr         <= item.s_axi_lite_awaddr;
+                // wait(`DRIV.s_axi_lite_awready);
+                
+                // Write Data Phase
+                @(posedge vif.axi_aclk);
+                `DRIV.s_axi_lite_wvalid         <= item.s_axi_lite_wvalid;
+                `DRIV.s_axi_lite_wdata          <= item.s_axi_lite_wdata;
+                wait(`DRIV.s_axi_lite_wready);
+                `DRIV.s_axi_lite_awvalid        <= 1'b0;
+                `DRIV.s_axi_lite_wvalid         <= 1'b0;
+                
+                // Response Phase
+                wait(`DRIV.s_axi_lite_bvalid);
+                @(posedge vif.axi_aclk);
+                `DRIV.s_axi_lite_bready         <= 1'b1;
+        end
+endtask : write
+
 
 endclass: axi_lite_driver
 
