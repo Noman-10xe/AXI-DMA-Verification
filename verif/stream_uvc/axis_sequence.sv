@@ -85,9 +85,17 @@ class axis_wr extends axis_base_sequence;
   task body();
     `uvm_info(get_type_name(), "Executing AXIS Write Sequence", UVM_LOW)
     
+    item  = axis_transaction::type_id::create("item");
+    
     repeat (20) begin
-    `uvm_do(item);
-    end
+    start_item(item);
+    
+    if(!item.randomize())
+    `uvm_error(get_type_name(), "Randomization failed");
+    
+    finish_item(item);
+    
+  end
   endtask : body
 
 endclass : axis_wr

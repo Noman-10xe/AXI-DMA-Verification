@@ -145,25 +145,25 @@ module axi_dma_10xe_tb_top;
   .m_axis_mm2s_tlast(axis_intf.m_axis_mm2s_tlast),            // output wire m_axis_mm2s_tlast
   ///////////////////////       AXI4-Write Master   // /////////////////////
   // write address channel
-  .m_axi_s2mm_awaddr(),            // output wire [31 : 0] m_axi_s2mm_awaddr
-  .m_axi_s2mm_awlen(),              // output wire [7 : 0] m_axi_s2mm_awlen
-  .m_axi_s2mm_awsize(),            // output wire [2 : 0] m_axi_s2mm_awsize
-  .m_axi_s2mm_awburst(),          // output wire [1 : 0] m_axi_s2mm_awburst
-  .m_axi_s2mm_awprot(),            // output wire [2 : 0] m_axi_s2mm_awprot
-  .m_axi_s2mm_awcache(),          // output wire [3 : 0] m_axi_s2mm_awcache
-  .m_axi_s2mm_awvalid(),          // output wire m_axi_s2mm_awvalid
-  .m_axi_s2mm_awready(),          // input wire m_axi_s2mm_awready
+  .m_axi_s2mm_awaddr(axi_intf.awaddr),            // output wire [31 : 0] m_axi_s2mm_awaddr
+  .m_axi_s2mm_awlen(axi_intf.awlen),              // output wire [7 : 0] m_axi_s2mm_awlen
+  .m_axi_s2mm_awsize(axi_intf.awsize),            // output wire [2 : 0] m_axi_s2mm_awsize
+  .m_axi_s2mm_awburst(axi_intf.awburst),          // output wire [1 : 0] m_axi_s2mm_awburst
+  .m_axi_s2mm_awprot(axi_intf.awprot),            // output wire [2 : 0] m_axi_s2mm_awprot
+  .m_axi_s2mm_awcache(axi_intf.awcache),          // output wire [3 : 0] m_axi_s2mm_awcache
+  .m_axi_s2mm_awvalid(axi_intf.awvalid),          // output wire m_axi_s2mm_awvalid
+  .m_axi_s2mm_awready(axi_intf.awready),          // input wire m_axi_s2mm_awready
   // write data channel
-  .m_axi_s2mm_wdata(),              // output wire [31 : 0] m_axi_s2mm_wdata
-  .m_axi_s2mm_wstrb(),              // output wire [3 : 0] m_axi_s2mm_wstrb
-  .m_axi_s2mm_wlast(),              // output wire m_axi_s2mm_wlast
-  .m_axi_s2mm_wvalid(),            // output wire m_axi_s2mm_wvalid
-  .m_axi_s2mm_wready(),            // input wire m_axi_s2mm_wready
+  .m_axi_s2mm_wdata(axi_intf.wdata),              // output wire [31 : 0] m_axi_s2mm_wdata
+  .m_axi_s2mm_wstrb(axi_intf.wstrb),              // output wire [3 : 0] m_axi_s2mm_wstrb
+  .m_axi_s2mm_wlast(axi_intf.wlast),              // output wire m_axi_s2mm_wlast
+  .m_axi_s2mm_wvalid(axi_intf.wvalid),            // output wire m_axi_s2mm_wvalid
+  .m_axi_s2mm_wready(axi_intf.wready),            // input wire m_axi_s2mm_wready
   // write response channel
-  .m_axi_s2mm_bresp(),              // input wire [1 : 0] m_axi_s2mm_bresp
-  .m_axi_s2mm_bvalid(),            // input wire m_axi_s2mm_bvalid
-  .m_axi_s2mm_bready(),            // output wire m_axi_s2mm_bready
-  .s2mm_prmry_reset_out_n(),  // output wire s2mm_prmry_reset_out_n
+  .m_axi_s2mm_bresp(axi_intf.bresp),              // input wire [1 : 0] m_axi_s2mm_bresp
+  .m_axi_s2mm_bvalid(axi_intf.bvalid),            // input wire m_axi_s2mm_bvalid
+  .m_axi_s2mm_bready(axi_intf.bready),            // output wire m_axi_s2mm_bready
+  .s2mm_prmry_reset_out_n(axi_intf.s2mm_prmry_reset_out_n),  // output wire s2mm_prmry_reset_out_n
   ///////////////////////       AXI4-Stream slave  // /////////////////////
   .s_axis_s2mm_tdata(axis_intf.s_axis_s2mm_tdata),            // input wire [31 : 0] s_axis_s2mm_tdata
   .s_axis_s2mm_tkeep(axis_intf.s_axis_s2mm_tkeep),            // input wire [3 : 0] s_axis_s2mm_tkeep

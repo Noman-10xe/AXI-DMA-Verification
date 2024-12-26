@@ -1,6 +1,10 @@
 # compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../axi_dma_verification_10xe_tcp.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v" \
+
 sv xil_defaultlib  \
 "../../../../../../verif/params_pkg.sv" \
+"../../../../../../verif/interfaces/axi_io.sv" \
 "../../../../../../verif/interfaces/clk_rst_io.sv" \
 "../../../../../../verif/interfaces/s_axi_lite_io.sv" \
 "../../../../../../verif/top/axi_dma_10xe_tb_top.sv" \

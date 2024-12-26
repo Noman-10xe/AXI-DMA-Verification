@@ -46,14 +46,9 @@ task main_phase(uvm_phase phase);
                 @(posedge vif.axi_aclk);
                 `WRITE_DRIV.s_axis_s2mm_tdata         <= item.tdata;
                 `WRITE_DRIV.s_axis_s2mm_tvalid        <= item.tvalid;
-                wait(`WRITE_DRIV.s_axis_s2mm_tready);
-
-                @(posedge vif.axi_aclk);
                 `WRITE_DRIV.s_axis_s2mm_tkeep         <= item.tkeep;
                 `WRITE_DRIV.s_axis_s2mm_tlast         <= item.tlast;
                 wait(!`WRITE_DRIV.s_axis_s2mm_tready);
-                
-                `WRITE_DRIV.s_axis_s2mm_tvalid         <= 1'b0;
                 seq_item_port.item_done();
         end
 endtask: main_phase

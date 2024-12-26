@@ -36,7 +36,7 @@ class axis_transaction extends uvm_sequence_item;
         //                          Constraints                             //
         //////////////////////////////////////////////////////////////////////
         constraint c_tkeep {
-                tkeep == 1;
+                tkeep == 4'hf;
         }
         
         constraint c_tvalid { 
@@ -45,6 +45,10 @@ class axis_transaction extends uvm_sequence_item;
 
         constraint c_tready { 
                 tready == 1'b1;
+        }
+
+        constraint c_tlast { 
+                tlast dist {1:/ 1, 0:/9 }; 
         }
 	
 endclass : axis_transaction
