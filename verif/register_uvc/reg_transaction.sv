@@ -57,22 +57,6 @@ class reg_transaction extends uvm_sequence_item;
         //////////////////////////////////////////////////////////////////////
         //                          Constraints                             //
         //////////////////////////////////////////////////////////////////////
-        // constraint c_s_axi_lite_awvalid { 
-        //         s_axi_lite_awvalid == 1'b1;
-        // }
-        
-        // constraint c_s_axi_lite_arvalid { 
-        //         s_axi_lite_arvalid == 1'b1;
-        // }
-
-        // // constraint c_s_axi_lite_wvalid { 
-        // //         s_axi_lite_wvalid == 1'b1;
-        // // }
-
-        // constraint c_s_axi_lite_rready { 
-        //         s_axi_lite_rready == 1'b1;
-        // }
-
         constraint c_addr { 
                 s_axi_lite_araddr inside {10'h00, 10'h04, 10'h18, 10'h1C, 10'h28, 10'h30, 10'h34, 10'h34, 10'h48, 10'h4C, 10'h58 };
                 s_axi_lite_awaddr inside {10'h00, 10'h04, 10'h18, 10'h1C, 10'h28, 10'h30, 10'h34, 10'h34, 10'h48, 10'h4C, 10'h58 };

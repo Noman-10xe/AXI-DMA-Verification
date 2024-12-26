@@ -1,25 +1,25 @@
 /*************************************************************************
-   > File Name: axis_read_driver.sv
-   > Description: Driver Class For AXI-Stream Read Master.
+   > File Name: axis_write_driver.sv
+   > Description: Driver Class For AXI-Stream Write Slave.
    > Author: Noman Rafiq
-   > Modified: Dec 20, 2024
+   > Modified: Dec 21, 2024
    > Mail: noman.rafiq@10xengineers.ai
    ---------------------------------------------------------------
    Copyright   (c)2024 10xEngineers
    ---------------------------------------------------------------
 ************************************************************************/
-`ifndef AXIS_READ_DRIVER
-`define AXIS_READ_DRIVER
+`ifndef AXIS_WRITE_DRIVER
+`define AXIS_WRITE_DRIVER
 
-`define READ_DRIV vif.ioReadDriver
-class axis_read_driver extends uvm_driver #(axis_transaction);
+`define WRITE_DRIV vif.ioWriteDriver
+class axis_write_driver extends uvm_driver #(axis_transaction);
         
-        `uvm_component_utils(axis_read_driver);
+        `uvm_component_utils(axis_write_driver);
 
         virtual axis_io vif;
         axis_transaction item;
 
-        function new(string name = "axis_read_driver", uvm_component parent);
+        function new(string name = "axis_write_driver", uvm_component parent);
                 super.new(name, parent);
         endfunction: new
 
@@ -31,24 +31,33 @@ endfunction: build_phase
 
 task reset_phase(uvm_phase phase);
         phase.raise_objection(this);
-        vif.reset();
+        wait(!vif.axi_resetn);
+        `WRITE_DRIV.s_axis_s2mm_tdata         <= 0;
+        `WRITE_DRIV.s_axis_s2mm_tvalid        <= 0;
+        wait(vif.axi_resetn);
         phase.drop_objection(this);
-endtask: reset_phase
+endtask: reset_phase 
 
 task main_phase(uvm_phase phase);
         forever begin
-                `uvm_info(get_full_name(), "Axis READ Driver Started", UVM_NONE)
+                `uvm_info(get_full_name(), "Axis Write Driver Started", UVM_NONE)
                 seq_item_port.get_next_item(item);
-                wait(`READ_DRIV.m_axis_mm2s_tvalid);
+                
                 @(posedge vif.axi_aclk);
-                `READ_DRIV.m_axis_mm2s_tready        <= item.tready;
-                wait(!`READ_DRIV.m_axis_mm2s_tvalid);
+                `WRITE_DRIV.s_axis_s2mm_tdata         <= item.tdata;
+                `WRITE_DRIV.s_axis_s2mm_tvalid        <= item.tvalid;
+                wait(`WRITE_DRIV.s_axis_s2mm_tready);
+
                 @(posedge vif.axi_aclk);
-                `READ_DRIV.m_axis_mm2s_tready        <= 1'b0;
+                `WRITE_DRIV.s_axis_s2mm_tkeep         <= item.tkeep;
+                `WRITE_DRIV.s_axis_s2mm_tlast         <= item.tlast;
+                wait(!`WRITE_DRIV.s_axis_s2mm_tready);
+                
+                `WRITE_DRIV.s_axis_s2mm_tvalid         <= 1'b0;
                 seq_item_port.item_done();
         end
 endtask: main_phase
 
-endclass: axis_read_driver
+endclass: axis_write_driver
 
 `endif

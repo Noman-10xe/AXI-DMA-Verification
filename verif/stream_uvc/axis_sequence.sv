@@ -59,9 +59,12 @@ class axis_read extends axis_base_sequence;
   task body();
     `uvm_info(get_type_name(), "Executing AXIS Read Sequence", UVM_LOW)
     
-    repeat (20) begin
-    `uvm_do(item);
-    end
+    item  =axis_transaction::type_id::create("item");
+    start_item(item);
+    if(!item.randomize())
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+
   endtask : body
 
 endclass : axis_read

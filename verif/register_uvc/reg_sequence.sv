@@ -166,7 +166,6 @@ class mm2s_enable_sequence extends base_sequence;
 
     item.c_read_transaction.constraint_mode(0);
     item.c_addr.constraint_mode(0);
-    // item.s_axi_lite_wdata.rand_mode(0);
 
     // WRITE Control Register -> MM2S_DMACR == 32'h11003
     start_item(item);
@@ -175,23 +174,65 @@ class mm2s_enable_sequence extends base_sequence;
     `uvm_error(get_type_name(), "Randomization failed")
     finish_item(item);
 
-    // // WRITE Source Address Register -> MM2S_SA == 32'h00001000
+    // // WRITE Source Address Register -> MM2S_SA == 32'h00000000
     start_item(item);
     if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h18;
-                                item.s_axi_lite_wdata == 32'h1000;})
+                                item.s_axi_lite_wdata == 32'h0;})
     `uvm_error(get_type_name(), "Randomization failed")
     finish_item(item);
 
-    // WRITE Control Register -> MM2S_DMACR == 32'h11003
+    // WRITE LENGTH Register -> MM2S_LENGTH == 32'h14 (20 Bytes)
     start_item(item);
     if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h28;
-                                item.s_axi_lite_wdata == 32'h64;})
+                                item.s_axi_lite_wdata == 32'h80;})
     `uvm_error(get_type_name(), "Randomization failed")
     finish_item(item);
 
   endtask : body
 
 endclass : mm2s_enable_sequence
+
+class s2mm_enable_sequence extends base_sequence;
+  `uvm_object_utils(s2mm_enable_sequence)
+  
+  reg_transaction item;
+
+  function new(string name="s2mm_enable_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing S2MM Enable Sequence", UVM_LOW)
+    
+    item  = reg_transaction::type_id::create("item");
+
+    item.c_read_transaction.constraint_mode(0);
+    item.c_addr.constraint_mode(0);
+
+    // WRITE Control Register -> S2MM_DMACR == 32'h11003
+    start_item(item);
+    if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h30;
+                                item.s_axi_lite_wdata == 32'h11003;})
+    `uvm_error(get_type_name(), "Randomization failed")
+    finish_item(item);
+
+    // // WRITE Source Address Register -> S2MM_DA == 32'h10
+    start_item(item);
+    if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h48;
+                                item.s_axi_lite_wdata == 32'h10;})
+    `uvm_error(get_type_name(), "Randomization failed")
+    finish_item(item);
+
+    // WRITE LENGTH Register -> S2MM_LENGTH == 32'h80 (128 Bytes)
+    start_item(item);
+    if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h58;
+                                item.s_axi_lite_wdata == 32'h80;})
+    `uvm_error(get_type_name(), "Randomization failed")
+    finish_item(item);
+
+  endtask : body
+
+endclass : s2mm_enable_sequence
 
 
 `endif

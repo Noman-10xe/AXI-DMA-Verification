@@ -69,8 +69,9 @@ task read();
 endtask : read
 
 task write();
-        // Write Address Phase
+        
         if (item.s_axi_lite_awvalid) begin
+                // Write Address Phase
                 @(posedge vif.axi_aclk);
                 `DRIV.s_axi_lite_awvalid        <= item.s_axi_lite_awvalid;
                 `DRIV.s_axi_lite_awaddr         <= item.s_axi_lite_awaddr;
