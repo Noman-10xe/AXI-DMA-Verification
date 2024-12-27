@@ -52,7 +52,7 @@ task axis_write_monitor::collect_transactions();
 
         forever begin
 
-                vif.wait_clks(1);
+                vif.wait_clks(2);
                 item.tdata      = `WRITE_MON.s_axis_s2mm_tdata;
                 item.tkeep      = `WRITE_MON.s_axis_s2mm_tkeep;
                 item.tvalid     = `WRITE_MON.s_axis_s2mm_tvalid;

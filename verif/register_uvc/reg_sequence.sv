@@ -181,7 +181,7 @@ class mm2s_enable_sequence extends base_sequence;
     `uvm_error(get_type_name(), "Randomization failed")
     finish_item(item);
 
-    // WRITE LENGTH Register -> MM2S_LENGTH == 32'h14 (20 Bytes)
+    // WRITE LENGTH Register -> MM2S_LENGTH == 32'h80 (128 Bytes)
     start_item(item);
     if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h28;
                                 item.s_axi_lite_wdata == 32'h80;})
@@ -216,10 +216,10 @@ class s2mm_enable_sequence extends base_sequence;
     `uvm_error(get_type_name(), "Randomization failed")
     finish_item(item);
 
-    // // WRITE Source Address Register -> S2MM_DA == 32'h10
+    // // WRITE Source Address Register -> S2MM_DA == 32'h00
     start_item(item);
     if (!item.randomize() with {item.s_axi_lite_awaddr == 10'h48;
-                                item.s_axi_lite_wdata == 32'h10;})
+                                item.s_axi_lite_wdata == 32'h00;})
     `uvm_error(get_type_name(), "Randomization failed")
     finish_item(item);
 

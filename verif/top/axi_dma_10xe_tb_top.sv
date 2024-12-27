@@ -51,7 +51,6 @@ import params_pkg::*;
 ///////////////////////////////////////////
 `include "../environment/environment.sv"
 `include "../tests/base_test.sv"
-// `include "../axi4-memory/axi_ram.sv"
 
 module axi_dma_10xe_tb_top;
   

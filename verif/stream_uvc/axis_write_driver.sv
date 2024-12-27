@@ -42,13 +42,17 @@ task main_phase(uvm_phase phase);
         forever begin
                 `uvm_info(get_full_name(), "Axis Write Driver Started", UVM_NONE)
                 seq_item_port.get_next_item(item);
-                
+
+                // wait(`WRITE_DRIV.s_axis_s2mm_tready);
                 @(posedge vif.axi_aclk);
-                `WRITE_DRIV.s_axis_s2mm_tdata         <= item.tdata;
                 `WRITE_DRIV.s_axis_s2mm_tvalid        <= item.tvalid;
                 `WRITE_DRIV.s_axis_s2mm_tkeep         <= item.tkeep;
+
+                // wait(`WRITE_DRIV.s_axis_s2mm_tready);
+                @(posedge vif.axi_aclk);
+                `WRITE_DRIV.s_axis_s2mm_tdata         <= item.tdata;
                 `WRITE_DRIV.s_axis_s2mm_tlast         <= item.tlast;
-                wait(!`WRITE_DRIV.s_axis_s2mm_tready);
+                
                 seq_item_port.item_done();
         end
 endtask: main_phase
