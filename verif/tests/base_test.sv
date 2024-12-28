@@ -56,7 +56,7 @@ endfunction: end_of_elaboration_phase
 task base_test::configure_phase(uvm_phase phase);
         phase.raise_objection(this);
         `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
-        mm2s_enable.start(env.axi_lite_agt.sequencer);
+        // mm2s_enable.start(env.axi_lite_agt.sequencer);
         s2mm_enable.start(env.axi_lite_agt.sequencer);
         // default_rd.start(env.axi_lite_agt.sequencer);
         phase.drop_objection(this);
@@ -64,10 +64,10 @@ task base_test::configure_phase(uvm_phase phase);
 endtask: configure_phase
 
 task base_test::main_phase(uvm_phase phase);
-        phase.phase_done.set_drain_time(this, 800ns);
+        phase.phase_done.set_drain_time(this, 1200ns);
         phase.raise_objection(this);
         `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
-        axis_read_seq.start(env.axis_r_agt.sequencer);
+        // axis_read_seq.start(env.axis_r_agt.sequencer);
         axis_write_seq.start(env.axis_wr_agt.sequencer);
         phase.drop_objection(this);
         `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)

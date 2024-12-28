@@ -31,29 +31,23 @@ endfunction: build_phase
 
 task reset_phase(uvm_phase phase);
         phase.raise_objection(this);
-        wait(!vif.axi_resetn);
-        `WRITE_DRIV.s_axis_s2mm_tdata         <= 0;
-        `WRITE_DRIV.s_axis_s2mm_tvalid        <= 0;
-        wait(vif.axi_resetn);
+        vif.reset();
         phase.drop_objection(this);
 endtask: reset_phase 
 
 task main_phase(uvm_phase phase);
         forever begin
-                `uvm_info(get_full_name(), "Axis Write Driver Started", UVM_NONE)
+                `uvm_info(get_full_name(), "Axis Write Driver Started", UVM_NONE)        
+                
                 seq_item_port.get_next_item(item);
-
-                // wait(`WRITE_DRIV.s_axis_s2mm_tready);
                 @(posedge vif.axi_aclk);
                 `WRITE_DRIV.s_axis_s2mm_tvalid        <= item.tvalid;
                 `WRITE_DRIV.s_axis_s2mm_tkeep         <= item.tkeep;
-
-                // wait(`WRITE_DRIV.s_axis_s2mm_tready);
-                @(posedge vif.axi_aclk);
                 `WRITE_DRIV.s_axis_s2mm_tdata         <= item.tdata;
                 `WRITE_DRIV.s_axis_s2mm_tlast         <= item.tlast;
-                
+                wait(`WRITE_DRIV.s_axis_s2mm_tready);
                 seq_item_port.item_done();
+
         end
 endtask: main_phase
 

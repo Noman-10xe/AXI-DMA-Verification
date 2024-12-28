@@ -91,6 +91,7 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     @(posedge axi_aclk);
     ioWriteDriver.s_axis_s2mm_tvalid  <= 1'b0;
     ioReadDriver.m_axis_mm2s_tready   <= 1'b0;
+    ioWriteDriver.s_axis_s2mm_tdata   <= 0;
     wait(axi_resetn);
   endtask : reset
 
