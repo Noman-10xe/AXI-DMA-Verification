@@ -235,4 +235,38 @@ class s2mm_enable_sequence extends base_sequence;
 endclass : s2mm_enable_sequence
 
 
+class mm2s_dmacr_sequence extends uvm_sequence;
+  `uvm_object_utils(mm2s_dmacr_sequence)
+  
+   reg_block RAL_Model;
+  function new (string name = "mm2s_dmacr_sequence");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    uvm_status_e   status;
+    bit [31:0] data;
+    bit [31:0] dv, mv;     // Desired Value & Mirrored Values
+  
+      RAL_Model.MM2S_DMACR.read(status, data);  
+      
+      // Check 'dv' and 'mv' Values
+      dv = RAL_Model.MM2S_DMACR.get();                      // Get Desired Value
+      mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
+      `uvm_info("READ", $sformatf(" Desired Value = %0d, Mirrored Value = %0d ", dv, mv), UVM_NONE)
+
+      data = 32'h11003;
+      RAL_Model.MM2S_DMACR.write(status, data);
+      `uvm_info("WRITE", $sformatf(" Desired Value = %0d, Mirrored Value = %0d ", dv, mv), UVM_NONE)
+
+      RAL_Model.MM2S_DMACR.read(status, data);  
+      
+      // Check 'dv' and 'mv' Values
+      dv = RAL_Model.MM2S_DMACR.get();                      // Get Desired Value
+      mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
+      `uvm_info("READ", $sformatf(" Desired Value = %0d, Mirrored Value = %0d ", dv, mv), UVM_NONE)
+
+   endtask
+endclass
+
 `endif

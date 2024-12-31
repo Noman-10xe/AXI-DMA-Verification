@@ -42,9 +42,6 @@ task main_phase(uvm_phase phase);
                 wait(`READ_DRIV.m_axis_mm2s_tvalid);
                 @(posedge vif.axi_aclk);
                 `READ_DRIV.m_axis_mm2s_tready        <= item.tready;
-                // wait(!`READ_DRIV.m_axis_mm2s_tvalid);
-                // @(posedge vif.axi_aclk);
-                // `READ_DRIV.m_axis_mm2s_tready        <= 1'b0;
                 seq_item_port.item_done();
         end
 endtask: main_phase

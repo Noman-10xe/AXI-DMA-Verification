@@ -61,55 +61,6 @@ interface axi_io        #(      int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
   bit                                         bready;
   bit                                         s2mm_prmry_reset_out_n;
 
-  ////////////////////////////////////////////////////////////////////////////////////////
-  //                             Clocking Blocks                                        //
-  ////////////////////////////////////////////////////////////////////////////////////////
-
-  // 1. Read Address Channel
-  clocking ioRead @(posedge axi_aclk);
-        default input #0ns output #2;
-
-        // Read Address Channel
-        input           araddr; 
-        input           arlen;
-        input           arsize;
-        input           arburst;
-        input           arprot;
-        input           arcache;
-        input           arvalid;
-        output          arready;
-
-        // Read Data Channel
-        output          rdata;
-        output          rresp;
-        output          rlast;
-        output          rvalid;
-        input           rready;
-        input           mm2s_prmry_reset_out_n;
-  endclocking : ioRead
-
-  // Monitor Clocking Block
-  clocking ioMon @(posedge axi_aclk);
-    default input #0ns output #2;
-    // Read Address Channel
-    input           araddr; 
-    input           arlen;
-    input           arsize;
-    input           arburst;
-    input           arprot;
-    input           arcache;
-    input           arvalid;
-    input          arready;
-
-    // Read Data Channel
-    input          rdata;
-    input          rresp;
-    input          rlast;
-    input          rvalid;
-    input          rready;
-    input           mm2s_prmry_reset_out_n;
-  endclocking : ioMon
-
   ///////////////////////////////////////////////////////////////
   //
   // Wait Clocks
