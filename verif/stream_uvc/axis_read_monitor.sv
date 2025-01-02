@@ -18,6 +18,7 @@ class axis_read_monitor extends uvm_monitor;
 
         virtual axis_io vif;
         axis_transaction item;
+        uvm_analysis_port #(axis_transaction) read_broadcast;
 
         //  Constructor
         function new(string name = "axis_read_monitor", uvm_component parent);
@@ -35,6 +36,7 @@ endclass: axis_read_monitor
 
 function void axis_read_monitor::build_phase(uvm_phase phase);
         super.build_phase(phase);
+        read_broadcast = new("read_broadcast", this);
         if (!uvm_config_db#(virtual axis_io)::get(this, get_full_name(), "axis_intf", vif))
         `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
 endfunction: build_phase
@@ -52,18 +54,25 @@ task axis_read_monitor::collect_transactions();
 
         forever begin
 
-                vif.wait_clks(2);
-                item.tdata      = `READ_MON.m_axis_mm2s_tdata;
-                item.tkeep      = `READ_MON.m_axis_mm2s_tkeep;
-                item.tvalid     = `READ_MON.m_axis_mm2s_tvalid;
-                item.tready     = `READ_MON.m_axis_mm2s_tready;
-                item.tlast      = `READ_MON.m_axis_mm2s_tlast;
+                vif.wait_clks(1);
+                if (`READ_MON.m_axis_mm2s_tvalid)   begin
+                        if(`READ_MON.m_axis_mm2s_tready) begin
+                                item.tdata      = `READ_MON.m_axis_mm2s_tdata;
+                                item.tkeep      = `READ_MON.m_axis_mm2s_tkeep;
+                                item.tvalid     = `READ_MON.m_axis_mm2s_tvalid;
+                                item.tready     = `READ_MON.m_axis_mm2s_tready;
+                                item.tlast      = `READ_MON.m_axis_mm2s_tlast;
 
-                // Print transaction
-                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                `uvm_info("", $sformatf("//                      MM2S READ Monitor                            //"), UVM_LOW)
-                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)
+                                // Print transaction
+                                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                                `uvm_info("", $sformatf("//                      MM2S READ Monitor                            //"), UVM_LOW)
+                                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)
+                                
+                                // Boradcast to Scoreboard
+                                read_broadcast.write(item);
+                        end
+                end
         end
 endtask: collect_transactions
 

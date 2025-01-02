@@ -18,4 +18,9 @@ package params_pkg;
   // Bus data width (must be a multiple of 8)
   localparam int DATA_WIDTH = 32;
 
+  // Bus data mask width (number of byte lanes)
+  localparam int Byte_Lanes = (DATA_WIDTH >> 3);
+
+  `define SRC_ADDR 32'h0;
+
 endpackage : params_pkg

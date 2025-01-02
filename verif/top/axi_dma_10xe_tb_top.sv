@@ -18,6 +18,7 @@
 import uvm_pkg::*;
 
 import params_pkg::*;
+// import mem_model_pkg::*;
 import includes_pkg::*;
 
 // Interfaces
@@ -57,7 +58,7 @@ module axi_dma_10xe_tb_top;
 
   initial begin
     fork
-    run_test("mm2s_dmacr_test");
+    run_test("read_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join

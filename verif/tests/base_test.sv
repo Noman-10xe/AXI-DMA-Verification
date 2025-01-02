@@ -11,11 +11,9 @@
 `ifndef BASE_TEST
 `define BASE_TEST
 
-class base_test extends uvm_agent;
+class base_test extends uvm_test;
 
         environment             env;
-        // default_rd_sequence     default_rd;
-        // random_sequence         rand_seq;
         // axis_read               axis_read_seq;
         // axis_wr                 axis_write_seq;
         // mm2s_enable_sequence    mm2s_enable;
@@ -31,20 +29,14 @@ class base_test extends uvm_agent;
 
         extern function void end_of_elaboration_phase(uvm_phase phase);
 
-        // extern task configure_phase(uvm_phase phase);
-
-        // extern task main_phase(uvm_phase phase);
-
 endclass : base_test
 
 function void base_test::build_phase(uvm_phase phase);
         super.build_phase(phase);
         env	        = environment::type_id::create("env", this);
-        // default_rd      = default_rd_sequence::type_id::create("default_rd", this);
         // axis_read_seq   = axis_read::type_id::create("axis_read_seq", this);
         // axis_write_seq  = axis_wr::type_id::create("axis_write_seq", this);
         // mm2s_enable     = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
-        // rand_seq        = random_sequence::type_id::create("rand_seq", this);
         // s2mm_enable     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
 endfunction: build_phase
 
@@ -76,62 +68,61 @@ endfunction: end_of_elaboration_phase
 ////////////////////////////////////////////////////////////////////////
 //                            Reset Test                              //
 ////////////////////////////////////////////////////////////////////////
-class reset_test extends base_test;
-        `uvm_component_utils(reset_test)
+// class reset_test extends base_test;
+//         `uvm_component_utils(reset_test)
         
-        default_rd_sequence     default_rd;
+//         default_rd_sequence     default_rd;
 
-        function new(string name = "reset_test", uvm_component parent);
-                super.new(name, parent);
-        endfunction : new
-
-        extern function void build_phase(uvm_phase phase);
-        extern task main_phase(uvm_phase phase);
-endclass : reset_test
-
-function void reset_test::build_phase(uvm_phase phase);
-        super.build_phase(phase);
-        default_rd     = default_rd_sequence::type_id::create("default_rd", this);
-endfunction: build_phase
-
-task reset_test::main_phase(uvm_phase phase);
-        phase.raise_objection(this);
-        `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
-        default_rd.start(env.axi_lite_agt.sequencer);
-        #1000ns;
-        phase.drop_objection(this);
-        `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
-endtask: main_phase
-
-////////////////////////////////////////////////////////////////////////
-//                              MM2S Enable Test                      //
-////////////////////////////////////////////////////////////////////////
-// class mm2s_enable_test extends base_test;
-//         `uvm_component_utils(mm2s_enable_test)
-        
-//         mm2s_enable_sequence mm2s_enable;
-
-//         function new(string name = "mm2s_enable_test", uvm_component parent);
+//         function new(string name = "reset_test", uvm_component parent);
 //                 super.new(name, parent);
 //         endfunction : new
 
 //         extern function void build_phase(uvm_phase phase);
 //         extern task main_phase(uvm_phase phase);
-// endclass : mm2s_enable_test
+// endclass : reset_test
 
-// function void mm2s_enable_test::build_phase(uvm_phase phase);
+// function void reset_test::build_phase(uvm_phase phase);
 //         super.build_phase(phase);
-//         mm2s_enable     = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
+//         default_rd     = default_rd_sequence::type_id::create("default_rd", this);
 // endfunction: build_phase
 
-// task mm2s_enable_test::main_phase(uvm_phase phase);
+// task reset_test::main_phase(uvm_phase phase);
 //         phase.raise_objection(this);
 //         `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
-//         mm2s_enable.start(env.axi_lite_agt.sequencer);
+//         default_rd.start(env.axi_lite_agt.sequencer);
+//         #1000ns;
 //         phase.drop_objection(this);
 //         `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
 // endtask: main_phase
 
+////////////////////////////////////////////////////////////////////////
+//                              MM2S Enable Test                      //
+////////////////////////////////////////////////////////////////////////
+class mm2s_enable_test extends base_test;
+        `uvm_component_utils(mm2s_enable_test)
+        
+        mm2s_enable_sequence mm2s_enable;
+
+        function new(string name = "mm2s_enable_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                mm2s_enable     = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
+        endfunction: build_phase
+        
+        task configure_phase(uvm_phase phase);
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                mm2s_enable.RAL_Model = env.RAL_Model;
+                mm2s_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                phase.phase_done.set_drain_time(this, 500ns);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+        endtask: configure_phase
+
+endclass : mm2s_enable_test
 
 ////////////////////////////////////////////////////////////////////////
 //                            MM2S_DMACR Read                         //
@@ -163,5 +154,44 @@ task mm2s_dmacr_test::main_phase(uvm_phase phase);
         `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
 endtask: main_phase
 
+
+////////////////////////////////////////////////////////////////////////
+//                      AXI4 to AXI-Stream Read Test                  //
+////////////////////////////////////////////////////////////////////////
+class read_test extends base_test;
+        `uvm_component_utils(read_test)
+        
+        mm2s_enable_sequence  mm2s_enable;
+        axis_read             axis_read_seq;
+
+        function new(string name = "read_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                mm2s_enable     = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
+                axis_read_seq   = axis_read::type_id::create("axis_read_seq", this);
+        endfunction: build_phase
+        
+        task configure_phase(uvm_phase phase);
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                mm2s_enable.RAL_Model = env.RAL_Model;
+                mm2s_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+        endtask: configure_phase
+        
+        task main_phase(uvm_phase phase);
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+                phase.drop_objection(this);
+                phase.phase_done.set_drain_time(this, 700ns);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+        endtask: main_phase
+
+endclass : read_test
 
 `endif

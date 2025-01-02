@@ -87,7 +87,7 @@ class reg_block extends uvm_reg_block;
                 S2MM_DA_MSB.configure(this,null);
                 S2MM_DA_MSB.build();
 
-                default_map.set_auto_predict(1);                // explicit  prediction
+                default_map.set_auto_predict(1);                // auto-prediction
 
                 /* 
                  *  "default_map.add_reg()"

@@ -33,7 +33,7 @@ endclass : axi_lite_agent
 function void axi_lite_agent::build_phase(uvm_phase phase);
         super.build_phase(phase);
         driver		= axi_lite_driver::type_id::create("driver", this);
-	monitor 	= axi_lite_monitor::type_id::create("monitor", this);
+	// monitor 	= axi_lite_monitor::type_id::create("monitor", this);
 	sequencer	= axi_lite_sequencer::type_id::create("sequencer", this);
 endfunction: build_phase
 

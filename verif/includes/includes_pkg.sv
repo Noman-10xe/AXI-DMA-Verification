@@ -46,6 +46,10 @@ package includes_pkg;
         `include "../ral_model/registers/s2mm_length.sv"
         `include "../ral_model/reg_block.sv"
         `include "../ral_model/axi_lite_adapter.sv"
+        // Memory Model Package
+        import mem_model_pkg::*;
+        // Scoreboard
+        `include "../environment/scoreboard.sv"
         // Environment and Test Library
         `include "../environment/environment.sv"
         `include "../tests/base_test.sv"

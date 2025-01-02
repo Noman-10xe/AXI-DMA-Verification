@@ -32,7 +32,7 @@ class axi_lite_adapter extends uvm_reg_adapter;
     end
 
     // Write
-    else begin
+    else if (rw.kind == UVM_WRITE) begin
       bus_item.s_axi_lite_awvalid = 1'b1;
       bus_item.s_axi_lite_awaddr = rw.addr[9:0];
       bus_item.s_axi_lite_wvalid = 1'b1;
@@ -42,7 +42,7 @@ class axi_lite_adapter extends uvm_reg_adapter;
     `uvm_info(get_type_name(),
       $sformatf("reg2bus: addr = %0h, data = %0h, kind = %s", 
         rw.addr, rw.data, (rw.kind == UVM_READ) ? "READ" : "WRITE"), 
-      UVM_LOW);
+        UVM_DEBUG);
     return bus_item;
 
   endfunction : reg2bus
@@ -57,23 +57,39 @@ class axi_lite_adapter extends uvm_reg_adapter;
     end
 
     // Read
-    if (bus_pkt.s_axi_lite_rvalid) begin
-      rw.addr = bus_pkt.s_axi_lite_araddr;
-      rw.data = bus_pkt.s_axi_lite_rdata;
-      rw.kind = UVM_READ;
-    end 
+    if (bus_pkt.s_axi_lite_arvalid) begin
+      rw.addr[9:0]  = bus_pkt.s_axi_lite_araddr;
+      rw.data       = bus_pkt.s_axi_lite_rdata;
+      rw.kind       = UVM_READ;
+
+      if (bus_pkt.s_axi_lite_rresp == 2'b00) begin
+        rw.status = UVM_IS_OK;
+      end 
+      else begin
+        rw.status = UVM_NOT_OK;
+      end
+    end
     
     // Write
-    else if (bus_pkt.s_axi_lite_bvalid) begin
-      rw.addr = bus_pkt.s_axi_lite_awaddr;
-      rw.data = bus_pkt.s_axi_lite_wdata;
-      rw.kind = UVM_WRITE;
+    else if (bus_pkt.s_axi_lite_awvalid) begin
+      rw.addr[9:0]  = bus_pkt.s_axi_lite_awaddr;
+      rw.data       = bus_pkt.s_axi_lite_wdata;
+      rw.kind       = UVM_WRITE;
+
+      if (bus_pkt.s_axi_lite_bresp == 2'b00) begin
+        rw.status = UVM_IS_OK;
+      end 
+      else begin
+        rw.status = UVM_NOT_OK;
+      end
+
     end
 
     `uvm_info(get_type_name(),
       $sformatf("bus2reg: addr = %0h, data = %0h, kind = %s", 
         rw.addr, rw.data, (rw.kind == UVM_READ) ? "READ" : "WRITE"), 
-      UVM_LOW);
+      UVM_DEBUG);
+
   endfunction : bus2reg
 
 endclass : axi_lite_adapter
