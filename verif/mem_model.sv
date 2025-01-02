@@ -43,7 +43,6 @@ class mem_model #(int AddrWidth = params_pkg::ADDR_WIDTH,
   function void compare_byte(mem_addr_t addr, bit [7:0] act_data);
    `uvm_info(`gfn, $sformatf("Compare Mem : Addr[0x%0h], Act Data[0x%0h], Exp Data[0x%0h]",
                              addr, act_data, system_memory[addr]), UVM_HIGH)
-    system_memory[addr] = act_data;
     `DV_CHECK_EQ(act_data, system_memory[addr], $sformatf("addr 0x%0h read out mismatch", addr))
   endfunction
 
@@ -86,7 +85,9 @@ class mem_model #(int AddrWidth = params_pkg::ADDR_WIDTH,
   endfunction
 
   // First 22 words to reflect init_file.coe, rest will be deadbeef
-  mem_data_t init_values[22] = '{ 'h1, 'h2, 'h3, 'h4, 'h5, 'h7, 'h7, 'h8, 'h9, 'h10, 'h11, 'h12, 'h13, 'h14, 'h15, 'h16, 'h1A, 'h1B, 'h1C, 'h1D, 'h1E, 'h1F };
+  mem_data_t init_values[22] = '{ 'h1, 'h2, 'h3, 'h4, 'h5, 'h6, 'h7, 'h8, 'h9, 'h10, 'h11, 
+                                  'h12, 'h13, 'h14, 'h15, 'h16, 'h1A, 'h1B, 'h1C, 'h1D, 'h1E, 
+                                  'h1F };
 
   function void init_memory();
     mem_addr_t addr = 0;

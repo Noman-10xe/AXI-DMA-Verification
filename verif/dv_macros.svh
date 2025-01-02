@@ -86,15 +86,15 @@
       end \
     end
 `endif
-
+    
 `ifndef DV_CHECK_EQ
-  `define DV_CHECK_EQ(ACT_, EXP_, MSG_="", SEV_=error, ID_=`gfn) \
-    begin \
-      if (!((ACT_) == (EXP_))) begin \
-        `dv_``SEV_($sformatf("Check failed %s == %s (%0d [0x%0h] vs %0d [0x%0h]) %s", \
-                             `"ACT_`", `"EXP_`", ACT_, ACT_, EXP_, EXP_, MSG_), ID_) \
-      end \
-    end
+  `define DV_CHECK_EQ(ACT_, EXP_, MSG_="", ID_=`gfn) \
+  begin \
+    if (!((ACT_) == (EXP_))) begin \
+      `uvm_error(ID_, $sformatf("Check failed %s == %s (%0d [0x%0h] vs %0d [0x%0h]) %s", \
+                               `"ACT_`", `"EXP_`", ACT_, ACT_, EXP_, EXP_, MSG_)); \
+    end \
+  end
 `endif
 
 `ifndef DV_CHECK_NE

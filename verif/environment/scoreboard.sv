@@ -62,14 +62,20 @@ class scoreboard extends uvm_scoreboard;
       bit [params_pkg::ADDR_WIDTH-1:0] addr = `SRC_ADDR;
 
       forever begin
-        wait(read_queue.size > 0);
+         fork
+            begin
+               // Read
+               wait(read_queue.size > 0);
 
-        if (read_queue.size > 0) begin
-          item       = read_queue.pop_front();
-         //  expected   = memory.read(`SRC_ADDR, item.tkeep);
-          memory.compare(addr, item.tdata, item.tkeep);
-          addr =   addr+4;
-        end
+               if (read_queue.size > 0) begin
+                 item       = read_queue.pop_front();
+                 memory.compare(addr, item.tdata, item.tkeep);
+                 addr =   addr+4;
+               end
+            end
+            begin
+            end
+         join
       end
    endtask : run_phase
 

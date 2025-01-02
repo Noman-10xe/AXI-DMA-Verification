@@ -18,7 +18,6 @@
 import uvm_pkg::*;
 
 import params_pkg::*;
-// import mem_model_pkg::*;
 import includes_pkg::*;
 
 // Interfaces
