@@ -80,7 +80,7 @@ class mm2s_enable_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values
+    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values (For Debugging Only)
   
     data = 32'h11003;
     RAL_Model.MM2S_DMACR.write(status, data);
@@ -93,5 +93,67 @@ class mm2s_enable_sequence extends base_sequence;
 
    endtask
 endclass : mm2s_enable_sequence
+
+
+//////////////////////////////////////////////////////////////////////
+//                     S2MM Enable Sequence                         //
+//////////////////////////////////////////////////////////////////////
+
+class s2mm_enable_sequence extends base_sequence;
+  `uvm_object_utils(s2mm_enable_sequence)
+  
+   reg_block RAL_Model;
+  function new (string name = "s2mm_enable_sequence");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    uvm_status_e  status;
+    bit [31:0]    data;
+    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values  (For Debugging Only)
+  
+    data = 32'h11003;
+    RAL_Model.S2MM_DMACR.write(status, data);
+
+    data = `DST_ADDR;
+    RAL_Model.S2MM_DA.write(status, data);
+
+    data = 128;
+    RAL_Model.S2MM_LENGTH.write(status, data);
+
+   endtask
+endclass : s2mm_enable_sequence
+
+
+//////////////////////////////////////////////////////////////////////
+//                        Reset Sequence                            //
+//////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////
+//                       RAL Model Sanity Sequence                  //
+//////////////////////////////////////////////////////////////////////
+
+class reset_sequence extends base_sequence;
+  `uvm_object_utils(reset_sequence)
+  
+   reg_block RAL_Model;
+  function new (string name = "reset_sequence");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    uvm_status_e  status;
+    bit [31:0]    data;
+    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values
+  
+      RAL_Model.MM2S_DMACR.read(status, data);  
+      
+      data = 32'h4;
+      
+      RAL_Model.MM2S_DMACR.write(status, data);
+
+   endtask
+endclass : reset_sequence
 
 `endif

@@ -18,7 +18,7 @@ class axis_read_monitor extends uvm_monitor;
 
         virtual axis_io vif;
         axis_transaction item;
-        uvm_analysis_port #(axis_transaction) read_broadcast;
+        uvm_analysis_port #(axis_transaction) mm2s_read;
 
         //  Constructor
         function new(string name = "axis_read_monitor", uvm_component parent);
@@ -36,7 +36,7 @@ endclass: axis_read_monitor
 
 function void axis_read_monitor::build_phase(uvm_phase phase);
         super.build_phase(phase);
-        read_broadcast = new("read_broadcast", this);
+        mm2s_read = new("mm2s_read", this);
         if (!uvm_config_db#(virtual axis_io)::get(this, get_full_name(), "axis_intf", vif))
         `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
 endfunction: build_phase
@@ -53,7 +53,6 @@ task axis_read_monitor::collect_transactions();
         item = axis_transaction::type_id::create("item", this);
 
         forever begin
-
                 vif.wait_clks(1);
                 if (`READ_MON.m_axis_mm2s_tvalid)   begin
                         if(`READ_MON.m_axis_mm2s_tready) begin
@@ -70,7 +69,7 @@ task axis_read_monitor::collect_transactions();
                                 `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)
                                 
                                 // Boradcast to Scoreboard
-                                read_broadcast.write(item);
+                                mm2s_read.write(item);
                         end
                 end
         end

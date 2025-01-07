@@ -20,7 +20,7 @@ class environment extends uvm_env;
         axis_write_agent        axis_wr_agt;
         scoreboard              sco;
 
-        `uvm_component_utils(environment)
+        `uvm_component_utils(environment) 
         
         function new(string name = "environment", uvm_component parent);
                 super.new(name, parent);
@@ -33,7 +33,7 @@ endclass : environment
 
 function void environment::build_phase(uvm_phase phase);
         super.build_phase(phase);
-        axi_lite_agt	= axi_lite_agent::type_id::create("axi_lite_agt", this);
+        axi_lite_agt	= axi_lite_agent::type_id::create("axi_lite_agt", this); 
         RAL_Model	= reg_block::type_id::create("RAL_Model", this);
         RAL_Model.build();
         adapter         = axi_lite_adapter::type_id::create("adapter", this);
@@ -43,11 +43,16 @@ function void environment::build_phase(uvm_phase phase);
 endfunction: build_phase
 
 function void environment::connect_phase(uvm_phase phase);
-        super.build_phase(phase);
+        
+        super.connect_phase(phase);
+        
         RAL_Model.default_map.set_sequencer(axi_lite_agt.sequencer, adapter);
         RAL_Model.default_map.set_base_addr(0);
+
         // Connect Analysis Ports
-        axis_r_agt.monitor.read_broadcast.connect(sco.read_export);
+        axis_r_agt.monitor.mm2s_read.connect(sco.read_export);
+        axis_wr_agt.monitor.s2mm_write.connect(sco.write_export);
+
 endfunction: connect_phase
 
 `endif

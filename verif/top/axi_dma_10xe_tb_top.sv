@@ -57,7 +57,7 @@ module axi_dma_10xe_tb_top;
 
   initial begin
     fork
-    run_test("read_test");
+    run_test("raw_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join

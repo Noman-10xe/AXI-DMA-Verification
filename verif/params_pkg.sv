@@ -22,5 +22,6 @@ package params_pkg;
   localparam int Byte_Lanes = (DATA_WIDTH >> 3);
 
   `define SRC_ADDR 32'h0;
+  `define DST_ADDR 32'h0;
 
 endpackage : params_pkg

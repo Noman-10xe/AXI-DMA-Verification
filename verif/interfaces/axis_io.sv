@@ -95,49 +95,6 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     wait(axi_resetn);
   endtask : reset
 
-
-//   /* write_reg()
-//    * Writes a Specified Value to a Register
-//    * Inputs: Data and Addr
-//    */
-//   task write_reg (input logic [DATA_WIDTH-1:0] data, input logic [9:0] addr);
-//     // Address Phase
-//     ioDriv.s_axi_lite_awvalid <= 1'b1;
-//     ioDriv.s_axi_lite_awaddr  <= addr;
-//     wait (ioDriv.s_axi_lite_awready);     // Wait for handshake
-//     ioDriv.s_axi_lite_awvalid <= 1'b0;    // Deassert valid
-  
-//     // Write Data Phase
-//     ioDriv.s_axi_lite_wvalid <= 1'b1;
-//     ioDriv.s_axi_lite_wdata  <= data;
-//     wait (ioDriv.s_axi_lite_wready);      // Wait for handshake
-//     ioDriv.s_axi_lite_wvalid <= 1'b0;     // Deassert valid
-  
-//     // Write Response Phase
-//     wait (ioMon.s_axi_lite_bvalid);       // Wait for valid response
-//     ioDriv.s_axi_lite_bready <= 1'b1;     // Assert ready for response
-//     wait (!ioMon.s_axi_lite_bvalid);      // Wait for response to complete
-//     ioDriv.s_axi_lite_bready <= 1'b0;     // Deassert ready
-//   endtask : write_reg
-  
-  /* read_stream()
-   * Reads the Value from Memory and streams it
-   * Inputs: Data and Addr
-   */
-  // task read_stream(axis_transaction item);
-  //   // Address Phase
-  //   ioDriv.s_axi_lite_arvalid <= 1'b1;
-  //   ioDriv.s_axi_lite_araddr  <= addr;
-  //   wait (ioDriv.s_axi_lite_arready);     // Wait for handshake
-  //   ioDriv.s_axi_lite_arvalid <= 1'b0;    // Deassert valid
-  
-  //   // Data Phase
-  //   wait (ioMon.s_axi_lite_rvalid);       // Wait for valid read data
-  //   ioDriv.s_axi_lite_rready <= 1'b1;     // Assert ready for response
-  //   wait (!ioMon.s_axi_lite_rvalid);      // Wait for transaction to complete
-  //   ioDriv.s_axi_lite_rready <= 1'b0;     // Deassert ready
-  // endtask : read_stream
-
   ///////////////////////////////////////////////////////////////
   //
   // Wait Clocks
