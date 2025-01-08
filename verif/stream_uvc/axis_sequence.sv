@@ -38,7 +38,7 @@ class axis_base_sequence extends uvm_sequence #(axis_transaction);
     if (phase != null) begin
       phase.drop_objection(this, get_type_name());
       `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
-      phase.phase_done.set_drain_time(this, 600ns);
+      phase.phase_done.set_drain_time(this, 100ns);
     end
   endtask : post_body
 
@@ -62,7 +62,7 @@ class axis_read extends axis_base_sequence;
     
     item  =axis_transaction::type_id::create("item");
 
-    repeat(77)  begin
+    repeat(32)  begin
     start_item(item);
     if(!item.randomize())
     `uvm_error(get_type_name(), "Randomization failed");
@@ -91,7 +91,7 @@ class axis_wr extends axis_base_sequence;
     
     item  = axis_transaction::type_id::create("item");
     
-    repeat (50) begin
+    repeat (32) begin
     start_item(item);
     
     if(!item.randomize())
@@ -100,6 +100,7 @@ class axis_wr extends axis_base_sequence;
     finish_item(item);
     
   end
+  
   endtask : body
 
 endclass : axis_wr

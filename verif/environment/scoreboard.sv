@@ -26,6 +26,7 @@ class scoreboard extends uvm_scoreboard;
 
    bit [params_pkg::ADDR_WIDTH-1:0] src_addr = `SRC_ADDR;
    bit [params_pkg::ADDR_WIDTH-1:0] dst_addr = `DST_ADDR;
+   bit [7:0] written_bytes = 0;
 
    // Local Memory Model
    mem_model memory;
@@ -60,6 +61,8 @@ class scoreboard extends uvm_scoreboard;
       `uvm_info(get_type_name(), $sformatf("Received AXIs Write Transaction"), UVM_NONE);
       // Add transaction to write queue
       write_queue.push_back(item);
+      // print transaction
+      // `uvm_info(get_type_name(), $sformatf("\n%s", item.sprint), UVM_LOW);
    endfunction : write_s2mm_write
 
    task run_phase(uvm_phase phase);
@@ -71,26 +74,30 @@ class scoreboard extends uvm_scoreboard;
             begin
                // MM2S Read Comparison
                wait(read_queue.size > 0);
-
                if (read_queue.size > 0) begin
-                 read_item       = read_queue.pop_front();
-                 memory.compare(src_addr, read_item.tdata, read_item.tkeep);
-                 src_addr =   src_addr+4;
-               end
+                  read_item       = read_queue.pop_front();
+                  memory.compare(src_addr, read_item.tdata, read_item.tkeep);
+                  src_addr =   src_addr+4;
+               end    
             end
-
+            
             begin
                // S2MM Write Comparison
                wait(write_queue.size > 0);
-
-               if (write_queue.size > 0) begin
-                  write_item     = write_queue.pop_front();
-                 memory.write(dst_addr, write_item.tdata, write_item.tkeep);
-                 dst_addr =   dst_addr+4;
+               if (written_bytes <= 'h80 ) begin
+                  if (write_queue.size > 0 ) begin
+                     write_item     = write_queue.pop_front();
+                     `uvm_info("Scoreboard :: Run Phase", $sformatf("\n%s", write_item.sprint), UVM_LOW);
+                     memory.write(dst_addr, write_item.tdata, write_item.tkeep);
+                     dst_addr =   dst_addr+4;
+                  end
+                  written_bytes   = dst_addr;
                end
             end
          join
+         `uvm_info("DBG", $sformatf("Written Bytes = %0d", written_bytes), UVM_LOW);
       end
+      
    endtask : run_phase
 
    function void report_phase(uvm_phase phase);

@@ -48,7 +48,8 @@ class axis_transaction extends uvm_sequence_item;
         }
 
         constraint c_tlast { 
-                tlast dist {1:/1, 0:/99 }; 
+                // tlast dist {1:/1, 0:/49 };
+                tlast == 0; 
         }
 
         constraint c_tdata { 

@@ -49,10 +49,9 @@ endtask: run_phase
 
 task axis_write_monitor::collect_transactions();
         
-        // Create Transaction
-        item = axis_transaction::type_id::create("item", this);
-
         forever begin
+                // Create Transaction
+                item = axis_transaction::type_id::create("item", this);
 
                 vif.wait_clks(1);
                 if (`WRITE_MON.s_axis_s2mm_tvalid)   begin

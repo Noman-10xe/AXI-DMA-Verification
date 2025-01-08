@@ -147,7 +147,7 @@ module axi_dma_10xe_tb_top;
   ///////////////////////       Interrupts          // ///////////////////
   .mm2s_introut                   (                                     ),
   .s2mm_introut                   (                                     ),
-  .axi_dma_tstvec                 (   axi_dma_tstvec                    )
+  .axi_dma_tstvec                 (                                     )
   );
   
 

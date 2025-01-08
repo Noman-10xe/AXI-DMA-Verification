@@ -260,38 +260,29 @@ class raw_test extends base_test;
                 reset_dma       = reset_sequence::type_id::create("reset_dma", this);
         endfunction: build_phase
                 
-        task main_phase(uvm_phase phase);
-
-                fork
-                        begin
-                                phase.raise_objection(this);
-                                s2mm_enable.RAL_Model = env.RAL_Model;
-                                s2mm_enable.start(env.axi_lite_agt.sequencer);
-                                phase.drop_objection(this);
-
-                                axis_write_seq.set_starting_phase(phase); 
-                                axis_write_seq.start(env.axis_wr_agt.sequencer);
-
-                                phase.raise_objection(this);
-                                reset_dma.RAL_Model = env.RAL_Model;
-                                #300ns;
-                                reset_dma.start(env.axi_lite_agt.sequencer);
-                                #400ns;
-                                s2mm_enable.RAL_Model = env.RAL_Model;
-                                s2mm_enable.start(env.axi_lite_agt.sequencer);
-                                // mm2s_enable.RAL_Model = env.RAL_Model;
-                                // mm2s_enable.start(env.axi_lite_agt.sequencer);
-                                phase.drop_objection(this);
-                                axis_write_seq.set_starting_phase(phase); 
-                                axis_write_seq.start(env.axis_wr_agt.sequencer);
-
-                        end
-                join
-
-                // axis_read_seq.set_starting_phase(phase);
-                // axis_read_seq.start(env.axis_r_agt.sequencer);
+        task run_phase(uvm_phase phase);
                 
-        endtask: main_phase
+                phase.raise_objection(this);
+                s2mm_enable.RAL_Model = env.RAL_Model;
+                s2mm_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                axis_write_seq.set_starting_phase(phase); 
+                axis_write_seq.start(env.axis_wr_agt.sequencer);
+
+                phase.raise_objection(this);
+                reset_dma.RAL_Model = env.RAL_Model;
+                #300ns;
+                reset_dma.start(env.axi_lite_agt.sequencer);
+                #400ns;
+                mm2s_enable.RAL_Model = env.RAL_Model;
+                mm2s_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+
+        endtask: run_phase
 
 endclass : raw_test
 
