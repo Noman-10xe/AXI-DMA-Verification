@@ -13,6 +13,7 @@
 
 `uvm_analysis_imp_decl(_mm2s_read)
 `uvm_analysis_imp_decl(_s2mm_write)
+`uvm_analysis_imp_decl(_resp)
 class scoreboard extends uvm_scoreboard;
    `uvm_component_utils(scoreboard);
 
@@ -20,9 +21,13 @@ class scoreboard extends uvm_scoreboard;
    uvm_analysis_imp_mm2s_read   #(axis_transaction, scoreboard) read_export;
    uvm_analysis_imp_s2mm_write  #(axis_transaction, scoreboard) write_export;
 
+   // Response Port from AXI
+   uvm_analysis_imp_resp  #(axi_transaction, scoreboard) resp_export;
+
    // Read and Write Queues for Comparison
    axis_transaction read_queue[$];
    axis_transaction write_queue[$];
+   axi_transaction resp_queue[$];
 
    bit [params_pkg::ADDR_WIDTH-1:0] src_addr = `SRC_ADDR;
    bit [params_pkg::ADDR_WIDTH-1:0] dst_addr = `DST_ADDR;
@@ -38,6 +43,7 @@ class scoreboard extends uvm_scoreboard;
       // Create implementation ports
       read_export    = new("read_export", this);
       write_export   = new("write_export", this);
+      resp_export    = new("resp_export", this);
    endfunction: new
 
    function void build_phase(uvm_phase phase);
@@ -65,20 +71,33 @@ class scoreboard extends uvm_scoreboard;
       // `uvm_info(get_type_name(), $sformatf("\n%s", item.sprint), UVM_LOW);
    endfunction : write_s2mm_write
 
+   // Write Method for response Port
+   virtual function void write_resp (axi_transaction item);
+      `uvm_info(get_type_name(), $sformatf("Received AXI Response Transaction"), UVM_LOW);
+      // Add transaction to response queue
+      resp_queue.push_back(item);
+   endfunction : write_resp
+
    task run_phase(uvm_phase phase);
       axis_transaction read_item;
       axis_transaction write_item;
+      axi_transaction  resp_item;
 
       forever begin
          fork
             begin
                // MM2S Read Comparison
+               // wait(resp_queue.size>0);
+               // resp_item = resp_queue.pop_front();
+
+               // if ((resp_item.bvalid && resp_item.bready) && (resp_item.bresp == 'h0)) begin
                wait(read_queue.size > 0);
                if (read_queue.size > 0) begin
                   read_item       = read_queue.pop_front();
                   memory.compare(src_addr, read_item.tdata, read_item.tkeep);
                   src_addr =   src_addr+4;
                end    
+               // end
             end
             
             begin

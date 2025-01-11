@@ -20,6 +20,7 @@ class environment_config extends uvm_object;
       
         axis_read_agent_config  read_agt_cfg;
         axis_write_agent_config write_agt_cfg;
+        int num_trans = 33;
 
         function new( string name = "" );
            super.new( name );

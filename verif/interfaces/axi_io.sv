@@ -76,6 +76,15 @@ interface axi_io        #(      int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
 
   endclocking : ioReadDriver
 
+  clocking ioMon @(posedge axi_aclk);
+      default input #0ns output #2;
+
+      input bresp;
+      input bvalid;
+      input bready;
+  endclocking : ioMon
+
+
   ///////////////////////////////////////////////////////////////
   //
   // Wait Clocks

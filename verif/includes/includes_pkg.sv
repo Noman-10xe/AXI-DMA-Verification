@@ -18,6 +18,7 @@ package includes_pkg;
 
         // defines
         `include "defines.svh"
+        
         // Axi-Lite UVC
         `include "../register_uvc/reg_transaction.sv"
         `include "../register_uvc/reg_sequence.sv"
@@ -49,6 +50,10 @@ package includes_pkg;
         `include "../ral_model/registers/s2mm_length.sv"
         `include "../ral_model/reg_block.sv"
         `include "../ral_model/axi_lite_adapter.sv"
+        // Write Response Agent
+        `include "../mm2s_uvc/axi_transaction.sv"
+        `include "../s2mm_uvc/s2mm_monitor.sv"
+        `include "../s2mm_uvc/s2mm_agent.sv"
         // Memory Model Package
         import mem_model_pkg::*;
         // Scoreboard

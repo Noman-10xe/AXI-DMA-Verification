@@ -58,19 +58,23 @@ class axi_transaction extends uvm_sequence_item;
 	endfunction : new
 	
 	`uvm_object_utils_begin(axi_transaction)
-                `uvm_field_int      (araddr,	        UVM_DEFAULT)
-	    	`uvm_field_int      (arlen,	        UVM_DEFAULT)
-	    	`uvm_field_int      (arsize,            UVM_DEFAULT)
-	    	`uvm_field_int      (arburst,           UVM_DEFAULT)
-	    	`uvm_field_int      (arprot,            UVM_DEFAULT)
-	    	`uvm_field_int      (arcache,           UVM_DEFAULT)
-	    	`uvm_field_int      (arvalid,           UVM_DEFAULT)
-	    	`uvm_field_int      (arready,           UVM_DEFAULT)
-	    	`uvm_field_int      (rdata,             UVM_DEFAULT)
-	    	`uvm_field_int      (rresp,	        UVM_DEFAULT)
-	    	`uvm_field_int      (rlast,	        UVM_DEFAULT)
-                `uvm_field_int      (rvalid,            UVM_DEFAULT)
-                `uvm_field_int      (rready,            UVM_DEFAULT)
+                // `uvm_field_int      (araddr,	        UVM_DEFAULT)
+	    	// `uvm_field_int      (arlen,	        UVM_DEFAULT)
+	    	// `uvm_field_int      (arsize,            UVM_DEFAULT)
+	    	// `uvm_field_int      (arburst,           UVM_DEFAULT)
+	    	// `uvm_field_int      (arprot,            UVM_DEFAULT)
+	    	// `uvm_field_int      (arcache,           UVM_DEFAULT)
+	    	// `uvm_field_int      (arvalid,           UVM_DEFAULT)
+	    	// `uvm_field_int      (arready,           UVM_DEFAULT)
+	    	// `uvm_field_int      (rdata,             UVM_DEFAULT)
+	    	// `uvm_field_int      (rresp,	        UVM_DEFAULT)
+	    	// `uvm_field_int      (rlast,	        UVM_DEFAULT)
+                // `uvm_field_int      (rvalid,            UVM_DEFAULT)
+                // `uvm_field_int      (rready,            UVM_DEFAULT)
+                `uvm_field_int      (bvalid,            UVM_DEFAULT)
+                `uvm_field_int      (bready,            UVM_DEFAULT)
+                `uvm_field_int      (bresp,            UVM_DEFAULT)
+
                 // TODO : Add Signals For Write Transactions
   	`uvm_object_utils_end
 

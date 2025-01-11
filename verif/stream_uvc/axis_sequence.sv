@@ -17,7 +17,7 @@ class axis_base_sequence extends uvm_sequence #(axis_transaction);
   `uvm_object_utils(axis_base_sequence)
 
   int num_trans = 10;   // Default
-      
+
   // Constructor
   function new(string name="axis_base_sequence");
     super.new(name);
@@ -31,6 +31,7 @@ class axis_base_sequence extends uvm_sequence #(axis_transaction);
       phase.raise_objection(this, get_type_name());
       `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
     end
+
   endtask : pre_body
  
   task post_body();

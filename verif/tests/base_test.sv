@@ -19,7 +19,6 @@ class base_test extends uvm_test;
         environment_config      axis_env_cfg;
         axis_read_agent_config  read_agt_cfg;
         axis_write_agent_config write_agt_cfg;
-        sequence_config         sequence_cfg;
 
         `uvm_component_utils(base_test)
         
@@ -37,17 +36,15 @@ function void base_test::build_phase(uvm_phase phase);
         super.build_phase(phase);
         env	        = environment::type_id::create("env", this);
         
-        // Configuraton Objects
+        // Configuraton Object
         axis_env_cfg                    = environment_config::type_id::create("axis_env_cfg");
         read_agt_cfg                    = axis_read_agent_config::type_id::create("read_agt_cfg");
         write_agt_cfg                   = axis_write_agent_config::type_id::create("write_agt_cfg");
-        sequence_cfg                    = sequence_config::type_id::create("sequence_cfg");
         axis_env_cfg.read_agt_cfg       = read_agt_cfg;
         axis_env_cfg.write_agt_cfg      = write_agt_cfg;
         
-        // Set Configurations
+        // Set Configuration
         uvm_config_db #(environment_config)::set(this, "*", "env_cfg", axis_env_cfg);
-        uvm_config_db #(sequence_config)::set(this, "*", "sequence_cfg", sequence_cfg);
 endfunction: build_phase
 
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
@@ -109,7 +106,7 @@ class mm2s_enable_test extends base_test;
                 mm2s_enable.RAL_Model = env.RAL_Model;
                 mm2s_enable.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-                phase.phase_done.set_drain_time(this, 500ns);
+                phase.phase_done.set_drain_time(this, 1500ns);
                 `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
         endtask: configure_phase
 
@@ -231,8 +228,6 @@ class raw_test extends base_test;
         axis_wr                 axis_write_seq;
         mm2s_enable_sequence    mm2s_enable;
         axis_read               axis_read_seq;
-        reset_sequence          reset_dma;
-        read_status_sequence    status_read;
 
         function new(string name = "raw_test", uvm_component parent);
                 super.new(name, parent);
@@ -244,10 +239,8 @@ class raw_test extends base_test;
                 axis_write_seq                  = axis_wr::type_id::create("axis_write_seq", this);
                 mm2s_enable                     = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
-                reset_dma                       = reset_sequence::type_id::create("reset_dma", this);
-                status_read                     = read_status_sequence::type_id::create("status_read", this);
-                axis_read_seq.num_trans         = sequence_cfg.num_trans;
-                axis_write_seq.num_trans        = sequence_cfg.num_trans;
+                axis_read_seq.num_trans         = axis_env_cfg.num_trans;
+                axis_write_seq.num_trans        = axis_env_cfg.num_trans;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
