@@ -20,8 +20,5 @@ package params_pkg;
 
   // Bus data mask width (number of byte lanes)
   localparam int Byte_Lanes = (DATA_WIDTH >> 3);
-
-  `define SRC_ADDR 32'h0;
-  `define DST_ADDR 32'h0;
-
+  
 endpackage : params_pkg

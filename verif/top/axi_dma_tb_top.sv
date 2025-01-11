@@ -1,5 +1,5 @@
 /*************************************************************************
-   > File Name: axi_dma_10xe_tb_top.sv
+   > File Name: axi_dma_tb_top.sv
    > Description: Top Level module for Verification.
    > Author: Noman Rafiq
    > Modified: Dec 18, 2024
@@ -25,8 +25,8 @@ import includes_pkg::*;
 `include "../interfaces/s_axi_lite_io.sv"
 `include "../interfaces/axis_io.sv"
 
-module axi_dma_10xe_tb_top;
-  
+module axi_dma_tb_top;
+    
   // global clock & reset signals 
   wire axi_aclk;
   wire axi_resetn;
@@ -35,28 +35,37 @@ module axi_dma_10xe_tb_top;
   //                        Interface Instantiations                          //
   //////////////////////////////////////////////////////////////////////////////
   //
-  // clk_rst_if
   //
+  //////////////////////////////////////////
+  //      Clock and Reset Interface       //
+  //////////////////////////////////////////
   clk_rst_io  clk_rst_if( .axi_aclk   (axi_aclk), 
                           .axi_resetn (axi_resetn)
                         );
-  
-  // axi_lite_intf
+
+  ////////////////////////////////////////////////////////////
+  //      Axi-Lite Interface for Register Read/Writes       //
+  ////////////////////////////////////////////////////////////
   s_axi_lite_io axi_lite_intf ( .axi_aclk(axi_aclk),
                                 .axi_resetn(axi_resetn)
                               );
-  
-  // axis_intf
+
+  ////////////////////////////////////////////////////////////
+  //      Axi-Stream Interface for MM2S/S2MM Transfers      //
+  ////////////////////////////////////////////////////////////
   axis_io axis_intf ( .axi_aclk(axi_aclk),
                       .axi_resetn(axi_resetn)
                     );
 
+  ////////////////////////////////////////////////////////////
+  //  Axi interface for Memory Mapped Read/Write Operations //
+  ////////////////////////////////////////////////////////////
   axi_io  axi_intf ( .axi_aclk(axi_aclk),
                      .axi_resetn(axi_resetn) 
                    );
 
   initial begin
-    fork
+    fork  
     run_test("raw_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
@@ -190,6 +199,6 @@ module axi_dma_10xe_tb_top;
   .s_axi_rready                   (   axi_intf.rready                   )
 );
      
-endmodule : axi_dma_10xe_tb_top
+endmodule : axi_dma_tb_top
 
 `endif

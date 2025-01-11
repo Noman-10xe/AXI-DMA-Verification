@@ -49,9 +49,11 @@ endtask: run_phase
 
 task axis_read_monitor::collect_transactions();
         
+
         forever begin
                 // Create Transaction
                 item = axis_transaction::type_id::create("item", this);
+                
                 vif.wait_clks(1);
                 if (`READ_MON.m_axis_mm2s_tvalid)   begin
                         if(`READ_MON.m_axis_mm2s_tready) begin

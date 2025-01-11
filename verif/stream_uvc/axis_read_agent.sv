@@ -17,6 +17,7 @@ class axis_read_agent extends uvm_agent;
         uvm_sequencer #(axis_transaction)       sequencer;
         axis_read_driver                        driver;
         axis_read_monitor                       monitor;
+        axis_read_agent_config                  agt_cfg;
       
         `uvm_component_utils(axis_read_agent)
         
@@ -32,13 +33,21 @@ endclass : axis_read_agent
 
 function void axis_read_agent::build_phase(uvm_phase phase);
         super.build_phase(phase);
+        if(!uvm_config_db #(axis_read_agent_config)::get(this, "", "agt_cfg", agt_cfg))
+        `uvm_fatal("NOCONFIG",{"Environment Configurations must be set for: ",get_full_name()});
+
+        if (agt_cfg.active == UVM_ACTIVE) begin
         driver		= axis_read_driver::type_id::create("driver", this);
-	monitor 	= axis_read_monitor::type_id::create("monitor", this);
 	sequencer	= uvm_sequencer#(axis_transaction)::type_id::create("sequencer", this);
+        end
+
+	monitor 	= axis_read_monitor::type_id::create("monitor", this);
 endfunction: build_phase
 
 function void axis_read_agent::connect_phase(uvm_phase phase);
+        if (agt_cfg.active == UVM_ACTIVE) begin
         driver.seq_item_port.connect(sequencer.seq_item_export);
+        end
 endfunction: connect_phase
 
 `endif

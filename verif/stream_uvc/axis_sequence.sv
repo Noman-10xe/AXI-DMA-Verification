@@ -15,6 +15,8 @@ class axis_base_sequence extends uvm_sequence #(axis_transaction);
   
   // Required macro for sequences automation
   `uvm_object_utils(axis_base_sequence)
+
+  int num_trans = 10;   // Default
       
   // Constructor
   function new(string name="axis_base_sequence");
@@ -62,7 +64,7 @@ class axis_read extends axis_base_sequence;
     
     item  =axis_transaction::type_id::create("item");
 
-    repeat(32)  begin
+    repeat(num_trans)  begin
     start_item(item);
     if(!item.randomize())
     `uvm_error(get_type_name(), "Randomization failed");
@@ -91,7 +93,7 @@ class axis_wr extends axis_base_sequence;
     
     item  = axis_transaction::type_id::create("item");
     
-    repeat (32) begin
+    repeat (num_trans) begin
     start_item(item);
     
     if(!item.randomize())
@@ -104,5 +106,29 @@ class axis_wr extends axis_base_sequence;
   endtask : body
 
 endclass : axis_wr
+
+//////////////////////////////////////////////////////////////////////
+//                Read After Write (RAW) Sequence                   //
+//////////////////////////////////////////////////////////////////////
+
+class axis_raw extends axis_base_sequence;
+  `uvm_object_utils(axis_raw)
+
+  axis_wr   axis_write_seq;
+  axis_read axis_rd_seq;
+  
+  function new(string name="axis_raw");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXIS RAW Sequence", UVM_LOW)
+
+    `uvm_do(axis_write_seq);
+    `uvm_do(axis_rd_seq);
+  
+  endtask : body
+
+endclass : axis_raw
 
 `endif

@@ -16,6 +16,8 @@ package includes_pkg;
         `include "uvm_macros.svh"
         import uvm_pkg::*;
 
+        // defines
+        `include "defines.svh"
         // Axi-Lite UVC
         `include "../register_uvc/reg_transaction.sv"
         `include "../register_uvc/reg_sequence.sv"
@@ -33,6 +35,7 @@ package includes_pkg;
         `include "../stream_uvc/axis_write_driver.sv"
         `include "../stream_uvc/axis_write_monitor.sv"
         `include "../stream_uvc/axis_write_agent.sv"
+        `include "../stream_uvc/virtual_sequencer.sv"
         // Registration Abstraction Layer (RAL Model)
         `include "../ral_model/registers/mm2s_dmacr.sv"
         `include "../ral_model/registers/mm2s_dmasr.sv"
@@ -50,8 +53,14 @@ package includes_pkg;
         import mem_model_pkg::*;
         // Scoreboard
         `include "../environment/scoreboard.sv"
+        // Configurations
+        `include "../configurations/axis_read_agent_config.sv"
+        `include "../configurations/axis_write_agent_config.sv"
+        `include "../configurations/environment_config.sv"
+        `include "../configurations/sequence_config.sv"
         // Environment and Test Library
         `include "../environment/environment.sv"
+        `include "../tests/virtual_sequence.sv"
         `include "../tests/base_test.sv"
 
 endpackage : includes_pkg

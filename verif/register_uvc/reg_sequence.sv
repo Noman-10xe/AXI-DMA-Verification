@@ -124,14 +124,8 @@ class s2mm_enable_sequence extends base_sequence;
    endtask
 endclass : s2mm_enable_sequence
 
-
 //////////////////////////////////////////////////////////////////////
 //                        Reset Sequence                            //
-//////////////////////////////////////////////////////////////////////
-
-
-//////////////////////////////////////////////////////////////////////
-//                       RAL Model Sanity Sequence                  //
 //////////////////////////////////////////////////////////////////////
 
 class reset_sequence extends base_sequence;
@@ -156,4 +150,30 @@ class reset_sequence extends base_sequence;
    endtask
 endclass : reset_sequence
 
+//////////////////////////////////////////////////////////////////////
+//                    Read Status Sequence                          //
+//////////////////////////////////////////////////////////////////////
+
+class read_status_sequence extends base_sequence;
+  `uvm_object_utils(read_status_sequence)
+  
+   reg_block RAL_Model;
+  function new (string name = "read_status_sequence");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    uvm_status_e  status;
+    bit [31:0]    data;
+
+      RAL_Model.MM2S_DMASR.read(status, data);
+      RAL_Model.S2MM_DMASR.read(status, data);
+      
+      data = 32'h1000; // Clears Interrupt (IOC)
+
+      // RAL_Model.MM2S_DMASR.write(status, data);
+      RAL_Model.S2MM_DMASR.write(status, data);
+
+   endtask
+endclass : read_status_sequence
 `endif

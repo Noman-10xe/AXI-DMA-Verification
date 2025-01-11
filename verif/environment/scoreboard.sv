@@ -87,7 +87,7 @@ class scoreboard extends uvm_scoreboard;
                if (written_bytes <= 'h80 ) begin
                   if (write_queue.size > 0 ) begin
                      write_item     = write_queue.pop_front();
-                     `uvm_info("Scoreboard :: Run Phase", $sformatf("\n%s", write_item.sprint), UVM_LOW);
+                     `uvm_info("Scoreboard :: Run Phase", $sformatf("\n%s", write_item.sprint), UVM_DEBUG);
                      memory.write(dst_addr, write_item.tdata, write_item.tkeep);
                      dst_addr =   dst_addr+4;
                   end
@@ -95,7 +95,7 @@ class scoreboard extends uvm_scoreboard;
                end
             end
          join
-         `uvm_info("DBG", $sformatf("Written Bytes = %0d", written_bytes), UVM_LOW);
+         `uvm_info("DBG", $sformatf("Written Bytes = %0d", written_bytes), UVM_DEBUG);
       end
       
    endtask : run_phase
