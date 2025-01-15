@@ -15,9 +15,6 @@
 package includes_pkg;
         `include "uvm_macros.svh"
         import uvm_pkg::*;
-
-        // defines
-        `include "defines.svh"
         
         // Axi-Lite UVC
         `include "../register_uvc/reg_transaction.sv"

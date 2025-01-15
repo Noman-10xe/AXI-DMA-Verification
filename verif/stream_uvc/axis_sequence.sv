@@ -106,30 +106,17 @@ class axis_wr extends axis_base_sequence;
   
   endtask : body
 
+  task post_body();
+    uvm_phase phase;
+    phase = get_starting_phase();
+ 
+    if (phase != null) begin
+      phase.drop_objection(this, get_type_name());
+      `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+      phase.phase_done.set_drain_time(this, 1000ns);
+    end
+  endtask : post_body
+
 endclass : axis_wr
-
-//////////////////////////////////////////////////////////////////////
-//                Read After Write (RAW) Sequence                   //
-//////////////////////////////////////////////////////////////////////
-
-class axis_raw extends axis_base_sequence;
-  `uvm_object_utils(axis_raw)
-
-  axis_wr   axis_write_seq;
-  axis_read axis_rd_seq;
-  
-  function new(string name="axis_raw");
-    super.new(name);
-  endfunction : new
-
-  task body();
-    `uvm_info(get_type_name(), "Executing AXIS RAW Sequence", UVM_LOW)
-
-    `uvm_do(axis_write_seq);
-    `uvm_do(axis_rd_seq);
-  
-  endtask : body
-
-endclass : axis_raw
 
 `endif

@@ -31,11 +31,6 @@ module axi_dma_tb_top;
   wire axi_aclk;
   wire axi_resetn;
   
-  //////////////////////////////////////////////////////////////////////////////
-  //                        Interface Instantiations                          //
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  //
   //////////////////////////////////////////
   //      Clock and Reset Interface       //
   //////////////////////////////////////////
@@ -66,7 +61,7 @@ module axi_dma_tb_top;
 
   initial begin
     fork  
-    run_test("raw_test");
+    run_test("data_realignment_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join

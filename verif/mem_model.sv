@@ -42,7 +42,7 @@ class mem_model #(int AddrWidth = params_pkg::ADDR_WIDTH,
 
   function void compare_byte(mem_addr_t addr, bit [7:0] act_data);
    `uvm_info(`gfn, $sformatf("Compare Mem : Addr[0x%0h], Act Data[0x%0h], Exp Data[0x%0h]",
-                             addr, act_data, system_memory[addr]), UVM_HIGH)
+                             addr, act_data, system_memory[addr]), UVM_LOW)
     `DV_CHECK_EQ(act_data, system_memory[addr], $sformatf("addr 0x%0h read out mismatch", addr))
   endfunction
 
@@ -71,18 +71,26 @@ class mem_model #(int AddrWidth = params_pkg::ADDR_WIDTH,
 
   function void compare(mem_addr_t addr, mem_data_t act_data, mem_mask_t mask = '1);
     bit [7:0] byte_data;
-    for (int i = 0; i < DataWidth / 8; i++) begin
-      byte_data = act_data[7:0];
-      if (mask[0]) begin
-        compare_byte(addr + i, byte_data);
-      end else begin
-        `DV_CHECK_EQ(byte_data, 0,
-                     $sformatf("addr 0x%0h masked data aren't 0, mask 0x%0h", addr, mask))
-      end
-      act_data = act_data>> 8;
-      mask = mask >> 1;
+
+    // Calculate starting byte offset within the word
+    int start_byte = addr % (DataWidth / 8);
+
+    // Iterate over only the bytes specified by the mask
+    for (int i = 0; i < $bits(mask); i++) begin
+        if (mask[i]) begin
+            // Calculate the byte address within the word
+            int byte_addr = addr + (i - start_byte);
+
+            // Extract the corresponding byte from act_data
+            byte_data = act_data >> (8 * i);
+
+            // Compare the byte
+            compare_byte(byte_addr, byte_data);
+        end
     end
-  endfunction
+endfunction
+
+
 
   // First 22 words to reflect init_file.coe, rest will be deadbeef
   mem_data_t init_values[22] = '{ 'h1, 'h2, 'h3, 'h4, 'h5, 'h6, 'h7, 'h8, 'h9, 'h10, 'h11, 

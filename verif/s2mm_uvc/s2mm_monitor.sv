@@ -67,7 +67,7 @@ task s2mm_monitor::collect_transactions();
                         `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
                         `uvm_info("", $sformatf("//                      S2MM Response Monitor                        //"), UVM_LOW)
                         `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                        `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_LOW)
+                        `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_HIGH)
                         response_port.write(item);
                         end
                 end

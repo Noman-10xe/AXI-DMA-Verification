@@ -53,26 +53,28 @@ task axi_lite_monitor::collect_transactions();
         item = reg_transaction::type_id::create("item", this);
 
         forever begin
-                vif.wait_clks(3);
-                item.s_axi_lite_awvalid         = `MON.s_axi_lite_awvalid;
-                item.s_axi_lite_awaddr          = `MON.s_axi_lite_awaddr;
-                item.s_axi_lite_awready         = `MON.s_axi_lite_awready;
-                item.s_axi_lite_wvalid          = `MON.s_axi_lite_wvalid;
-                item.s_axi_lite_wdata           = `MON.s_axi_lite_wdata;
-                item.s_axi_lite_wready          = `MON.s_axi_lite_wready;
-                item.s_axi_lite_bready          = `MON.s_axi_lite_bready;
-                item.s_axi_lite_bresp           = `MON.s_axi_lite_bresp;
-                item.s_axi_lite_bvalid          = `MON.s_axi_lite_bvalid;
-                item.s_axi_lite_arvalid         = `MON.s_axi_lite_arvalid;
-                item.s_axi_lite_araddr          = `MON.s_axi_lite_araddr;
-                item.s_axi_lite_arready         = `MON.s_axi_lite_arready;
-                item.s_axi_lite_rready          = `MON.s_axi_lite_rready;   
-                item.s_axi_lite_rvalid          = `MON.s_axi_lite_rvalid;
-                item.s_axi_lite_rdata           = `MON.s_axi_lite_rdata;
-                item.s_axi_lite_rresp           = `MON.s_axi_lite_rresp;
-                
-                // Print transaction
-                `uvm_info(get_type_name(), $sformatf("Transaction Collected :\n%s",item.sprint()), UVM_LOW)
+                vif.wait_clks(1);
+                if ( (`MON.s_axi_lite_wready && `MON.s_axi_lite_wvalid) || (`MON.s_axi_lite_rvalid && `MON.s_axi_lite_rready) ) begin
+                        item.s_axi_lite_awvalid         = `MON.s_axi_lite_awvalid;
+                        item.s_axi_lite_awaddr          = `MON.s_axi_lite_awaddr;
+                        item.s_axi_lite_awready         = `MON.s_axi_lite_awready;
+                        item.s_axi_lite_wvalid          = `MON.s_axi_lite_wvalid;
+                        item.s_axi_lite_wdata           = `MON.s_axi_lite_wdata;
+                        item.s_axi_lite_wready          = `MON.s_axi_lite_wready;
+                        item.s_axi_lite_bready          = `MON.s_axi_lite_bready;
+                        item.s_axi_lite_bresp           = `MON.s_axi_lite_bresp;
+                        item.s_axi_lite_bvalid          = `MON.s_axi_lite_bvalid;
+                        item.s_axi_lite_arvalid         = `MON.s_axi_lite_arvalid;
+                        item.s_axi_lite_araddr          = `MON.s_axi_lite_araddr;
+                        item.s_axi_lite_arready         = `MON.s_axi_lite_arready;
+                        item.s_axi_lite_rready          = `MON.s_axi_lite_rready;   
+                        item.s_axi_lite_rvalid          = `MON.s_axi_lite_rvalid;
+                        item.s_axi_lite_rdata           = `MON.s_axi_lite_rdata;
+                        item.s_axi_lite_rresp           = `MON.s_axi_lite_rresp;
+                        
+                        // Print transaction
+                        `uvm_info(get_type_name(), $sformatf("Transaction Collected :\n%s",item.sprint()), UVM_DEBUG)
+                end                
         end
 endtask: collect_transactions
 

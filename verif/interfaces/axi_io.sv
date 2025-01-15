@@ -83,7 +83,7 @@ interface axi_io        #(      int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
       input bvalid;
       input bready;
   endclocking : ioMon
-
+  
 
   ///////////////////////////////////////////////////////////////
   //
