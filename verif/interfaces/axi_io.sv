@@ -1,5 +1,5 @@
 /*************************************************************************
-   > File Name:     axi_io.sv
+   > File `gfn:     axi_io.sv
    > Description:   Interface for Memory Mapped Reads & Writes
    > Author:        Noman Rafiq
    > Modified:      Dec 18, 2024
@@ -76,6 +76,31 @@ interface axi_io        #(      int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
 
   endclocking : ioReadDriver
 
+
+  clocking ioWriteDriver @(posedge axi_aclk);
+    default input #0ns output #2;
+
+    input       awaddr;
+    input       awlen;
+    input       awsize;
+    input       awburst;
+    input       awprot;
+    input       awcache;
+    input       awvalid;
+    output      awready;
+
+    input       wdata;
+    input       wstrb;
+    input       wlast;
+    input       wvalid;
+    output      wready;
+
+    input       bready;
+    output      bresp;
+    output      bvalid;
+
+endclocking : ioWriteDriver
+
   clocking ioMon @(posedge axi_aclk);
       default input #0ns output #2;
 
@@ -96,6 +121,49 @@ interface axi_io        #(      int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
   task automatic wait_neg_clks(input int num);
         repeat (num) @(negedge axi_aclk);
   endtask
+
+
+always @(negedge axi_aclk)
+begin
+
+// write address must not be X or Z during address write phase
+assertWriteAddrUnknown:assert property (
+  
+    ($onehot(awvalid) && $onehot(awready) |-> !$isunknown(awaddr)))
+		else
+		  $error({$psprintf("err_awaddr %s went to X or Z during address write phase when awvalid=1", `gfn)});
+
+// write data must not be X or Z during data write phase
+assertWriteDataUnknown:assert property (
+  
+    ($onehot(wvalid) && $onehot(wready) |-> !$isunknown(wdata)))
+		else
+		  $error({$psprintf("err_wdata %s went to X or Z during data write phase when wvalid=1", `gfn)});
+
+// write resp must not be X or Z during resp write phase
+assertWriteRespUnKnown:assert property (
+  
+    ($onehot(bvalid) && $onehot(bready) |-> !$isunknown(bresp)))
+    else
+      $error({$psprintf("err_bresp %s went to X or Z during response write phase when bvalid=1", `gfn)});
+
+// read address must not be X or Z during address read phase
+assertReadAddrUnKnown:assert property (
+  
+    ($onehot(arvalid) && $onehot(arready) |-> !$isunknown(araddr)))
+    else
+      $error({$psprintf("err_araddr %s went to X or Z during address read phase when arvalid=1", `gfn)});
+
+// read data must not be X or Z during read data phase
+assertReadDataUnKnown:assert property (
+  
+    ($onehot(rvalid) && $onehot(rready) |-> !$isunknown(rdata)))
+    else
+      $error({$psprintf("err_ardata %s went to X or Z during data read phase when rvalid=1", `gfn)});
+
+// assert each pin has value not unknown
+
+end
 
 endinterface : axi_io
 

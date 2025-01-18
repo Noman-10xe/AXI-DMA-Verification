@@ -91,7 +91,7 @@ class s2mm_dmasr extends uvm_reg;
       Dly_Irq.configure          (this, 1, 13, "WC", 0, 1'b0, 1, 1, 0);
       Err_Irq.configure          (this, 1, 14, "WC", 0, 1'b0, 1, 1, 0);
       RSVD4.configure            (this, 1, 15, "RO", 0, 1'b0, 1, 1, 0);
-      IRQThresholdSts.configure  (this, 8, 16, "RO", 0, 8'h1, 1, 1, 0);
+      IRQThresholdSts.configure  (this, 8, 16, "RO", 0, 8'h0, 1, 1, 0);
       IRQDelaySts.configure      (this, 8, 24, "RO", 0, 8'h0, 1, 1, 0);
 
    endfunction

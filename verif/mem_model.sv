@@ -72,25 +72,20 @@ class mem_model #(int AddrWidth = params_pkg::ADDR_WIDTH,
   function void compare(mem_addr_t addr, mem_data_t act_data, mem_mask_t mask = '1);
     bit [7:0] byte_data;
 
-    // Calculate starting byte offset within the word
-    int start_byte = addr % (DataWidth / 8);
-
-    // Iterate over only the bytes specified by the mask
+    // Iterate over the mask to identify valid bytes
     for (int i = 0; i < $bits(mask); i++) begin
         if (mask[i]) begin
-            // Calculate the byte address within the word
-            int byte_addr = addr + (i - start_byte);
+            // Calculate the current byte address
+            int byte_addr = addr + i;
 
             // Extract the corresponding byte from act_data
-            byte_data = act_data >> (8 * i);
+            byte_data = (act_data >> (8 * i)) & 8'hFF;
 
             // Compare the byte
             compare_byte(byte_addr, byte_data);
         end
     end
-endfunction
-
-
+  endfunction
 
   // First 22 words to reflect init_file.coe, rest will be deadbeef
   mem_data_t init_values[22] = '{ 'h1, 'h2, 'h3, 'h4, 'h5, 'h6, 'h7, 'h8, 'h9, 'h10, 'h11, 

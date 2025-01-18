@@ -18,7 +18,8 @@ class environment extends uvm_env;
         axi_lite_adapter        adapter;
         axis_read_agent         axis_r_agt;
         axis_write_agent        axis_wr_agt;
-        s2mm_agent              resp_agt;
+        // mm2s_agent              axi_r_agt;
+        // s2mm_agent              axi_wr_agt;
         scoreboard              sco;
         environment_config      env_cfg;
 
@@ -40,7 +41,10 @@ function void environment::build_phase(uvm_phase phase);
         RAL_Model	= reg_block::type_id::create("RAL_Model", this);
         RAL_Model.build();
         adapter         = axi_lite_adapter::type_id::create("adapter", this);
-        resp_agt        = s2mm_agent::type_id::create("resp_agt", this);
+        
+        // AXI Agents
+        // axi_r_agt      = mm2s_agent::type_id::create("axis_r_agt", this);
+        // axi_wr_agt     = s2mm_agent::type_id::create("axi_wr_agt", this);
         
         // Environment Configuration
         if (!uvm_config_db#(environment_config)::get(this, get_full_name(), "env_cfg", env_cfg))
@@ -73,7 +77,7 @@ function void environment::connect_phase(uvm_phase phase);
         RAL_Model.default_map.set_sequencer(axi_lite_agt.sequencer, adapter);
         RAL_Model.default_map.set_base_addr(0);
 
-        resp_agt.monitor.response_port.connect(sco.resp_export);
+        // axi_wr_agt.monitor.response_port.connect(sco.resp_export);
 
         // Connect Analysis Ports
         if (env_cfg.has_axis_read_agent && env_cfg.has_scoreboard) begin
@@ -83,6 +87,7 @@ function void environment::connect_phase(uvm_phase phase);
         if (env_cfg.has_axis_write_agent && env_cfg.has_scoreboard) begin
         axis_wr_agt.monitor.s2mm_write.connect(sco.write_export);
         end
+
 endfunction: connect_phase
 
 `endif

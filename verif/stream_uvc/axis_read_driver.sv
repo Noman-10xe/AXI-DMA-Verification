@@ -39,9 +39,7 @@ task main_phase(uvm_phase phase);
         forever begin
                 seq_item_port.get_next_item(item);
                 `uvm_info(get_full_name(), "Axis READ Driver Started", UVM_NONE)
-                // wait(`READ_DRIV.m_axis_mm2s_tvalid);
                 @(`READ_DRIV iff `READ_DRIV.m_axis_mm2s_tvalid == 1);
-                // @(posedge vif.axi_aclk);
                 `READ_DRIV.m_axis_mm2s_tready        <= item.tready;
                 seq_item_port.item_done();
         end

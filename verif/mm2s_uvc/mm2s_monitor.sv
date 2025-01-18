@@ -53,7 +53,7 @@ task mm2s_monitor::collect_transactions();
         item = axi_transaction::type_id::create("item", this);
 
         forever begin
-                vif.wait_clks(3);
+                vif.wait_clks(1);
                 item.araddr                     = `MM2S_MON.araddr; 
                 item.arlen                      = `MM2S_MON.arlen;
                 item.arsize                     = `MM2S_MON.arsize;

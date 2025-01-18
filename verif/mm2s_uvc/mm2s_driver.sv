@@ -11,7 +11,7 @@
 `ifndef AXI_MM2S_DRIVER
 `define AXI_MM2S_DRIVER
 
-`define MM2S_DRIV vif.ioRead
+`define MM2S_DRIV vif.ioReadDriver
 class mm2s_driver extends uvm_driver #(axi_transaction);
         
         `uvm_component_utils(mm2s_driver);

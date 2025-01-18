@@ -48,10 +48,8 @@ class axis_transaction extends uvm_sequence_item;
                 tready == 1'b1;
         }
 
-        constraint c_tlast { 
-                // tlast is 1 only if packet_length >= 32
-                if (packet_length == 32) tlast == 1;
-                else tlast == 0;
+        constraint c_tlast {  
+                tlast == 0;
         }
 
         constraint c_tdata { 
@@ -62,11 +60,6 @@ class axis_transaction extends uvm_sequence_item;
                 32'h18181818, 32'h19191919, 32'h20202020, 32'h21212121, 32'h22222222, 32'h23232323, 
                 32'h24242424, 32'h25252525, 32'h26262626, 32'h27272727, 32'h28282828, 32'h29292929}; 
         }
-
-        function void post_randomize();
-                packet_length = packet_length + 1;
-                `uvm_info("AXIS-Transaction", $sformatf("tlast: %0b, packet_length: %0d", tlast, packet_length), UVM_DEBUG)
-        endfunction
 	
 endclass : axis_transaction
 

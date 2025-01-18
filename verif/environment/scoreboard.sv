@@ -14,6 +14,7 @@
 `uvm_analysis_imp_decl(_mm2s_read)
 `uvm_analysis_imp_decl(_s2mm_write)
 `uvm_analysis_imp_decl(_resp)
+`uvm_analysis_imp_decl(_reg)
 
 class scoreboard extends uvm_scoreboard;
    `uvm_component_utils(scoreboard);
@@ -24,6 +25,10 @@ class scoreboard extends uvm_scoreboard;
 
    // Response Port from AXI
    uvm_analysis_imp_resp  #(axi_transaction, scoreboard) resp_export;
+
+   // Register Analysis Port
+   uvm_analysis_imp_reg #(reg_transaction, scoreboard) reg_export;
+
 
    // Read and Write Queues for Comparison
    axis_transaction read_queue[$];
@@ -50,6 +55,7 @@ class scoreboard extends uvm_scoreboard;
       read_export    = new("read_export", this);
       write_export   = new("write_export", this);
       resp_export    = new("resp_export", this);
+      reg_export     = new("reg_export", this);
    endfunction: new
 
    function void build_phase(uvm_phase phase);
@@ -73,17 +79,23 @@ class scoreboard extends uvm_scoreboard;
 
    // write methods implementation
    virtual function void write_mm2s_read (axis_transaction item);
-      `uvm_info(get_type_name(), $sformatf("Received AXIs Read Transaction"), UVM_NONE);
-      // Add transaction to read queue
-      read_queue.push_back(item);
+
+      if ( item.tvalid && item.tready ) begin
+         `uvm_info(get_type_name(), $sformatf("Received AXIs Read Transaction"), UVM_NONE);
+         
+         // Add transaction to read queue
+         read_queue.push_back(item);
+      end
    endfunction : write_mm2s_read
 
    virtual function void write_s2mm_write (axis_transaction item);
-      `uvm_info(get_type_name(), $sformatf("Received AXIs Write Transaction"), UVM_NONE);
-      // Add transaction to write queue
-      write_queue.push_back(item);
-      // print transaction
-      `uvm_info(get_type_name(), $sformatf("\n%s", item.sprint), UVM_DEBUG);
+
+      // Add valid transaction to write queue
+      if ( item.tvalid && item.tready ) begin
+         `uvm_info(get_type_name(), $sformatf("Received AXIs Write Transaction"), UVM_NONE);
+         write_queue.push_back(item);
+      end
+
    endfunction : write_s2mm_write
 
    // Write Method for response Port
@@ -92,6 +104,12 @@ class scoreboard extends uvm_scoreboard;
       // Add transaction to response queue
       resp_queue.push_back(item);
    endfunction : write_resp
+
+   // Write Method for response Port
+   virtual function void write_reg (reg_transaction item);
+
+   endfunction : write_reg
+
 
    task run_phase(uvm_phase phase);
       axis_transaction read_item;
@@ -112,8 +130,7 @@ class scoreboard extends uvm_scoreboard;
                      read_item       = read_queue.pop_front();
                      memory.compare(src_addr, read_item.tdata, read_item.tkeep);
                      src_addr = src_addr + calculate_offset(read_item.tkeep);
-                  end    
-                  // end
+                  end
                end
             end
             
@@ -121,16 +138,13 @@ class scoreboard extends uvm_scoreboard;
                if ( env_cfg.scoreboard_write ) begin
                   // S2MM Write Comparison
                   wait(write_queue.size > 0);
-                  if (written_bytes <= 'h80 ) begin
                      if (write_queue.size > 0 ) begin
                         write_item     = write_queue.pop_front();
                         `uvm_info("Scoreboard :: Run Phase", $sformatf("\n%s", write_item.sprint), UVM_DEBUG);
                         memory.write(dst_addr, write_item.tdata, write_item.tkeep);
                         dst_addr = dst_addr + calculate_offset(write_item.tkeep);
-                        // dst_addr =   dst_addr+offset;
                      end
                      written_bytes   = dst_addr;
-                  end
                end
             end
          join

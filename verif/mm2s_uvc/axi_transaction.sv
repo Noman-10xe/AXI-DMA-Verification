@@ -93,6 +93,12 @@ class axi_transaction extends uvm_sequence_item;
                 rvalid == 1;
         }
 
+        constraint c_bresp {
+                bresp == 2'b00;
+        }
+
+
+
 
 endclass : axi_transaction
 

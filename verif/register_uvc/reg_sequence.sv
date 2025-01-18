@@ -22,49 +22,95 @@ class base_sequence extends uvm_sequence #(reg_transaction);
     super.new(name);
   endfunction : new
 
+  task pre_body();
+    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
+  endtask
+
 endclass : base_sequence
 
 //////////////////////////////////////////////////////////////////////
-//                       RAL Model Sanity Sequence                  //
+//                        RAL Model Reset Sequence                  //
 //////////////////////////////////////////////////////////////////////
 
-class mm2s_dmacr_sequence extends base_sequence;
-  `uvm_object_utils(mm2s_dmacr_sequence)
+class ral_reset_sequence extends base_sequence;
+  `uvm_object_utils(ral_reset_sequence)
   
    reg_block RAL_Model;
-  function new (string name = "mm2s_dmacr_sequence");
+  function new (string name = "ral_reset_sequence");
     super.new(name);  
   endfunction
   
   task body;
     uvm_status_e   status;
     bit [31:0] data;
-    bit [31:0] dv, mv;     // Desired Value & Mirrored Values
+    bit [31:0] expected;     // Expected Value
   
-      RAL_Model.MM2S_DMACR.read(status, data);  
-      
-      // Check 'dv' and 'mv' Values
-      dv = RAL_Model.MM2S_DMACR.get();                      // Get Desired Value
-      mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
-      `uvm_info("READ", $sformatf(" Desired Value = %0h, Mirrored Value = %0h ", dv, mv), UVM_NONE)
+    // MM2S Control Register
+    RAL_Model.MM2S_DMACR.read(status, data);
+    expected = RAL_Model.MM2S_DMACR.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
-      data = 32'h11003;
-      
-      RAL_Model.MM2S_DMACR.write(status, data);
-      
-      dv = RAL_Model.MM2S_DMACR.get();
-      mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
-      `uvm_info("WRITE(11003)", $sformatf(" Desired Value = %0h, Mirrored Value = %0h ", dv, mv), UVM_NONE)
+    // MM2S Status Register
+    RAL_Model.MM2S_DMASR.read(status, data);
+    expected = RAL_Model.MM2S_DMASR.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMASR Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
-      RAL_Model.MM2S_DMACR.read(status, data);  
-      
-      // Check 'dv' and 'mv' Values
-      dv = RAL_Model.MM2S_DMACR.get();                      // Get Desired Value
-      mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
-      `uvm_info("READ", $sformatf(" Desired Value = %0h, Mirrored Value = %0h ", dv, mv), UVM_NONE)
+    // MM2S Source Address Register
+    RAL_Model.MM2S_SA.read(status, data);
+    expected = RAL_Model.MM2S_SA.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("MM2S_SA Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+    // MM2S Source Address Register (MSB)
+    RAL_Model.MM2S_SA_MSB.read(status, data);
+    expected = RAL_Model.MM2S_SA_MSB.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("MM2S_SA_MSB Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+    // MM2S Length Register
+    RAL_Model.MM2S_LENGTH.read(status, data);
+    expected = RAL_Model.MM2S_LENGTH.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("MM2S_LENGTH Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+
+    ////////////////////////////////////////////////
+    //                S2MM Register               //
+    ////////////////////////////////////////////////
+    // S2MM Control Register
+    RAL_Model.S2MM_DMACR.read(status, data);
+    expected = RAL_Model.S2MM_DMACR.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+    // S2MM Status Register
+    RAL_Model.S2MM_DMASR.read(status, data);
+    expected = RAL_Model.S2MM_DMASR.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_DMASR Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+    // S2MM Destination Address Register
+    RAL_Model.S2MM_DA.read(status, data);
+    expected = RAL_Model.S2MM_DA.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_DA Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+    // S2MM Destination Address Register (MSB)
+    RAL_Model.S2MM_DA_MSB.read(status, data);
+    expected = RAL_Model.S2MM_DA_MSB.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_DA_MSB Mismatch:: Act = %0h, Exp = %0h", data, expected));
+
+    // S2MM Length Register
+    RAL_Model.S2MM_LENGTH.read(status, data);
+    expected = RAL_Model.S2MM_LENGTH.get_reset();
+    
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_LENGTH Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
    endtask
-endclass : mm2s_dmacr_sequence
+endclass : ral_reset_sequence
 
 //////////////////////////////////////////////////////////////////////
 //                     MM2S Enable Sequence                         //
@@ -81,18 +127,23 @@ class mm2s_enable_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values (For Debugging Only)
+    bit [31:0]    mv;     // Mirrored value
   
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
-
-    data = 32'h11003;
+    data = 32'h11001;
     RAL_Model.MM2S_DMACR.write(status, data);
+    mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
+    `DV_CHECK_EQ(data, mv, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, mv));
 
     data = cfg.SRC_ADDR;
     RAL_Model.MM2S_SA.write(status, data);
+    mv = RAL_Model.MM2S_SA.get_mirrored_value();
+    `DV_CHECK_EQ(data, mv, $sformatf("MM2S_SA Mismatch:: Act = %0h, Exp = %0h", data, mv));
 
-    data = 128;
+
+    data = cfg.DATA_LENGTH;
     RAL_Model.MM2S_LENGTH.write(status, data);
+    mv = RAL_Model.MM2S_LENGTH.get_mirrored_value();
+    `DV_CHECK_EQ(data, mv, $sformatf("MM2S_LENGTH Mismatch:: Act = %0h, Exp = %0h", data, mv));
 
    endtask
 endclass : mm2s_enable_sequence
@@ -113,13 +164,11 @@ class mm2s_custom_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
   
     /* To Enable Err_IrqEn: data = 32'h14003;
      */
 
-    data = 32'h11003;
+    data = 32'h11001;
     RAL_Model.MM2S_DMACR.write(status, data);
 
     data = cfg.SRC_ADDR;
@@ -148,9 +197,7 @@ class mm2s_boundary_sequence extends base_sequence;
     uvm_status_e  status;
     bit [31:0]    data;
 
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
-
-    data = 32'h11003;
+    data = 32'h11001;
     RAL_Model.MM2S_DMACR.write(status, data);
 
     data = cfg.SRC_ADDR;
@@ -178,8 +225,7 @@ class mm2s_SlvErr_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
-
+    
     /* To Enable Err_IrqEn: data = 32'h14003;
      */
 
@@ -212,8 +258,6 @@ class mm2s_DecErr_sequence extends base_sequence;
     uvm_status_e  status;
     bit [31:0]    data;
 
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
-  
     /* To Enable Err_IrqEn: data = 32'h14003;
      */
 
@@ -246,18 +290,22 @@ class s2mm_enable_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values  (For Debugging Only)
-
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
+    bit [31:0]    expected;     // Expected
   
-    data = 32'h11003;
+    data = 32'h11001;
     RAL_Model.S2MM_DMACR.write(status, data);
+    expected = RAL_Model.S2MM_DMACR.get_mirrored_value();
+    `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
     data = cfg.DST_ADDR;
     RAL_Model.S2MM_DA.write(status, data);
+    expected = RAL_Model.S2MM_DA.get_mirrored_value();
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_DA Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
-    data = 128;
+    data = cfg.DATA_LENGTH;
     RAL_Model.S2MM_LENGTH.write(status, data);
+    expected = RAL_Model.S2MM_LENGTH.get_mirrored_value();
+    `DV_CHECK_EQ(data, expected, $sformatf("S2MM_LENGTH Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
    endtask
 endclass : s2mm_enable_sequence
@@ -278,10 +326,8 @@ class s2mm_custom_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-
-    uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
-  
-    data = 32'h11003;
+ 
+    data = 32'h11001;
     RAL_Model.S2MM_DMACR.write(status, data);
 
     data = cfg.DST_ADDR;
@@ -308,7 +354,7 @@ class reset_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
-    bit [31:0]    dv, mv;     // Desired Value & Mirrored Values
+    bit [31:0]    expected;     // Desired Value & Mirrored Values
   
       RAL_Model.MM2S_DMACR.read(status, data);  
       

@@ -55,25 +55,22 @@ task axis_read_monitor::collect_transactions();
                 item = axis_transaction::type_id::create("item", this);
                 
                 vif.wait_clks(1);
-                if (`READ_MON.m_axis_mm2s_tvalid)   begin
-                        if(`READ_MON.m_axis_mm2s_tready) begin
-                                item.tdata      = `READ_MON.m_axis_mm2s_tdata;
-                                item.tkeep      = `READ_MON.m_axis_mm2s_tkeep;
-                                item.tvalid     = `READ_MON.m_axis_mm2s_tvalid;
-                                item.tready     = `READ_MON.m_axis_mm2s_tready;
-                                item.tlast      = `READ_MON.m_axis_mm2s_tlast;
+                
+                item.tdata      = `READ_MON.m_axis_mm2s_tdata;
+                item.tkeep      = `READ_MON.m_axis_mm2s_tkeep;
+                item.tvalid     = `READ_MON.m_axis_mm2s_tvalid;
+                item.tready     = `READ_MON.m_axis_mm2s_tready;
+                item.tlast      = `READ_MON.m_axis_mm2s_tlast;
 
-                                // Print transaction
-                                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                                `uvm_info("", $sformatf("//                      MM2S READ Monitor                            //"), UVM_LOW)
-                                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)
-                                
-                                // Boradcast to Scoreboard
-                                mm2s_read.write(item);
-                        end
-                end
-        end
+                // Print transaction
+                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                `uvm_info("", $sformatf("//                      MM2S READ Monitor                            //"), UVM_LOW)
+                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)
+                
+                // Boradcast to Scoreboard
+                mm2s_read.write(item);
+end
 endtask: collect_transactions
 
 `endif

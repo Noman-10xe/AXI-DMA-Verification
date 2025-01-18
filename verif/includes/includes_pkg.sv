@@ -47,8 +47,13 @@ package includes_pkg;
         `include "../ral_model/registers/s2mm_length.sv"
         `include "../ral_model/reg_block.sv"
         `include "../ral_model/axi_lite_adapter.sv"
-        // Write Response Agent
+        // AXI Agents
         `include "../mm2s_uvc/axi_transaction.sv"
+        `include "../mm2s_uvc/axi_sequence.sv"
+        // `include "../mm2s_uvc/mm2s_driver.sv"
+        // `include "../mm2s_uvc/mm2s_monitor.sv"
+        // `include "../mm2s_uvc/axi_read_agent.sv"
+        `include "../s2mm_uvc/s2mm_driver.sv"
         `include "../s2mm_uvc/s2mm_monitor.sv"
         `include "../s2mm_uvc/s2mm_agent.sv"
         // Memory Model Package

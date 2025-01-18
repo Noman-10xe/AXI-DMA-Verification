@@ -54,22 +54,18 @@ task axis_write_monitor::collect_transactions();
                 item = axis_transaction::type_id::create("item", this);
 
                 vif.wait_clks(1);
-                if (`WRITE_MON.s_axis_s2mm_tvalid)   begin
-                        if(`WRITE_MON.s_axis_s2mm_tready) begin
-                        item.tdata      = `WRITE_MON.s_axis_s2mm_tdata;
-                        item.tkeep      = `WRITE_MON.s_axis_s2mm_tkeep;
-                        item.tvalid     = `WRITE_MON.s_axis_s2mm_tvalid;
-                        item.tready     = `WRITE_MON.s_axis_s2mm_tready;
-                        item.tlast      = `WRITE_MON.s_axis_s2mm_tlast;
-                                
-                        // Print transaction
-                        `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                        `uvm_info("", $sformatf("//                      S2MM WRITE Monitor                            //"), UVM_LOW)
-                        `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                        `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_LOW)
-                        s2mm_write.write(item);
-                        end
-                end
+                item.tdata      = `WRITE_MON.s_axis_s2mm_tdata;
+                item.tkeep      = `WRITE_MON.s_axis_s2mm_tkeep;
+                item.tvalid     = `WRITE_MON.s_axis_s2mm_tvalid;
+                item.tready     = `WRITE_MON.s_axis_s2mm_tready;
+                item.tlast      = `WRITE_MON.s_axis_s2mm_tlast;
+                        
+                // Print transaction
+                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                `uvm_info("", $sformatf("//                      S2MM WRITE Monitor                            //"), UVM_LOW)
+                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_LOW)
+                s2mm_write.write(item);
         end
 endtask: collect_transactions
 

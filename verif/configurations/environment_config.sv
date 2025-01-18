@@ -17,9 +17,9 @@ class environment_config extends uvm_object;
         bit has_axis_read_agent  = 1; // switch to instantiate Stream Read Agent
         bit has_axis_write_agent = 1; // switch to instantiate Stream Write Agent
         bit has_scoreboard       = 1; // switch to instantiate Scoreboard
-        bit scoreboard_read      = 1;
-        bit scoreboard_write     = 1;
-
+        bit scoreboard_read      = 1; // Switch to Enable/Disable Read Queues
+        bit scoreboard_write     = 1; // Switch to Enable/Disable Write Queues
+        
         // Source Address for Read
         bit [ 31:0 ] SRC_ADDR = 32'h1E;
 
@@ -32,7 +32,14 @@ class environment_config extends uvm_object;
         axis_read_agent_config  read_agt_cfg;
         axis_write_agent_config write_agt_cfg;
         
-        int num_trans = DATA_LENGTH/params_pkg::Byte_Lanes;
+        int num_trans;
+
+        function int calculate_txns ();
+         real num = real'(DATA_LENGTH/params_pkg::Byte_Lanes);
+         int txn_count;
+         txn_count = (num == $floor(num)) ? num : $floor(num) + 1; 
+         return txn_count;
+        endfunction
 
         function new( string name = "" );
            super.new( name );

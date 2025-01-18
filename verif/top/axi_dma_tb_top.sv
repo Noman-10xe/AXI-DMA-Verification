@@ -61,7 +61,7 @@ module axi_dma_tb_top;
 
   initial begin
     fork  
-    run_test("data_realignment_test");
+    run_test("write_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join

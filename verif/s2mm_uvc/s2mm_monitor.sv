@@ -57,18 +57,18 @@ task s2mm_monitor::collect_transactions();
                 item = axi_transaction::type_id::create("item", this);
                 
                 vif.wait_clks(1);
-                if (`S2MM_MON.bvalid)   begin
-                        if(`S2MM_MON.bready) begin
-                        item.bresp      = `S2MM_MON.bresp;
-                        item.bvalid     = `S2MM_MON.bvalid;
-                        item.bready     = `S2MM_MON.bready;
-                                
-                        // Print transaction
-                        `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                        `uvm_info("", $sformatf("//                      S2MM Response Monitor                        //"), UVM_LOW)
-                        `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                        `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_HIGH)
-                        response_port.write(item);
+                if ( `S2MM_MON.bvalid )   begin
+                        if (`S2MM_MON.bready) begin
+                                item.bresp      = `S2MM_MON.bresp;
+                                item.bvalid     = `S2MM_MON.bvalid;
+                                item.bready     = `S2MM_MON.bready;
+                                        
+                                // Print transaction
+                                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                                `uvm_info("", $sformatf("//                      S2MM Response Monitor                        //"), UVM_LOW)
+                                `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
+                                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_HIGH)
+                                response_port.write(item);
                         end
                 end
         end
