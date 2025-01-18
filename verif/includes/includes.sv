@@ -1,6 +1,6 @@
 /*************************************************************************
-   > File Name:     includes_pkg.sv
-   > Description:   This Package File contains all the include files that
+   > File Name:     includes.sv
+   > Description:   This File contains all the include files that
    >                need to be compiled before tb_top.
    > Author:        Noman Rafiq
    > Modified:      Dec 31, 2024
@@ -12,10 +12,14 @@
 `ifndef INCLUDES
 `define INCLUDES
 
-package includes_pkg;
         `include "uvm_macros.svh"
         import uvm_pkg::*;
         
+        // Configurations
+        `include "../configurations/axis_read_agent_config.sv"
+        `include "../configurations/axis_write_agent_config.sv"
+        `include "../configurations/environment_config.sv"
+
         // Axi-Lite UVC
         `include "../register_uvc/reg_transaction.sv"
         `include "../register_uvc/reg_sequence.sv"
@@ -24,7 +28,6 @@ package includes_pkg;
         `include "../register_uvc/axi_lite_monitor.sv"
         `include "../register_uvc/axi_lite_agent.sv"
         // AXI-Stream UVC
-        `include "../stream_uvc/axis_transaction.sv"
         `include "../stream_uvc/axis_transaction.sv"
         `include "../stream_uvc/axis_sequence.sv"
         `include "../stream_uvc/axis_read_driver.sv"
@@ -47,29 +50,13 @@ package includes_pkg;
         `include "../ral_model/registers/s2mm_length.sv"
         `include "../ral_model/reg_block.sv"
         `include "../ral_model/axi_lite_adapter.sv"
-        // AXI Agents
-        `include "../mm2s_uvc/axi_transaction.sv"
-        `include "../mm2s_uvc/axi_sequence.sv"
-        // `include "../mm2s_uvc/mm2s_driver.sv"
-        // `include "../mm2s_uvc/mm2s_monitor.sv"
-        // `include "../mm2s_uvc/axi_read_agent.sv"
-        `include "../s2mm_uvc/s2mm_driver.sv"
-        `include "../s2mm_uvc/s2mm_monitor.sv"
-        `include "../s2mm_uvc/s2mm_agent.sv"
         // Memory Model Package
         import mem_model_pkg::*;
         // Scoreboard
         `include "../environment/scoreboard.sv"
-        // Configurations
-        `include "../configurations/axis_read_agent_config.sv"
-        `include "../configurations/axis_write_agent_config.sv"
-        `include "../configurations/environment_config.sv"
-        `include "../configurations/sequence_config.sv"
         // Environment and Test Library
         `include "../environment/environment.sv"
         `include "../tests/virtual_sequence.sv"
-        `include "../tests/base_test.sv"
-
-endpackage : includes_pkg
+        `include "../tests/testlib.sv"
 
 `endif

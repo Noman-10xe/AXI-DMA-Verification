@@ -1,6 +1,6 @@
 /*************************************************************************
-   > File Name: base_test.sv
-   > Description: Base Test Class
+   > File Name: testlib.sv
+   > Description: Test Library Class
    > Author: Noman Rafiq
    > Modified: Dec 19, 2024
    > Mail: noman.rafiq@10xengineers.ai
@@ -8,8 +8,8 @@
    Copyright   (c)2024 10xEngineers
    ---------------------------------------------------------------
 ************************************************************************/
-`ifndef BASE_TEST
-`define BASE_TEST
+`ifndef TEST_LIB
+`define TEST_LIB
 
 class base_test extends uvm_test;
 
@@ -195,6 +195,7 @@ class read_test extends base_test;
 
                 axis_read_seq.set_starting_phase(phase); 
                 axis_read_seq.start(env.axis_r_agt.sequencer);
+
         endtask: run_phase
 
 endclass : read_test
@@ -244,7 +245,7 @@ class raw_test extends base_test;
 
                 axis_read_seq.set_starting_phase(phase);
                 axis_read_seq.start(env.axis_r_agt.sequencer);
-                
+
         endtask: run_phase
 
 endclass : raw_test
@@ -259,6 +260,7 @@ class read_introut_test extends base_test;
         mm2s_custom_sequence            mm2s_short;
         axis_read                       axis_read_seq;
         clear_mm2s_introut_sequence     clear_introut_seq;
+        mm2s_length_sequence            length_seq;
 
         function new(string name = "read_introut_test", uvm_component parent);
                 super.new(name, parent);
@@ -269,13 +271,25 @@ class read_introut_test extends base_test;
                 mm2s_short                      = mm2s_custom_sequence::type_id::create("mm2s_short", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
                 clear_introut_seq               = clear_mm2s_introut_sequence::type_id::create("clear_introut_seq", this);
+                length_seq                      = mm2s_length_sequence::type_id::create("length_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.SRC_ADDR                = 'h20;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
-                
                 phase.raise_objection(this);
                 mm2s_short.RAL_Model = env.RAL_Model;
                 mm2s_short.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                repeat(10) begin
+                env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+                env.sco.src_addr                = env_cfg.SRC_ADDR;
+
+                phase.raise_objection(this);
+                length_seq.RAL_Model = env.RAL_Model;
+                length_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
                 axis_read_seq.set_starting_phase(phase);
@@ -286,6 +300,7 @@ class read_introut_test extends base_test;
                 clear_introut_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
                 phase.phase_done.set_drain_time(this, 100ns);
+                end
 
         endtask: run_phase
         
@@ -293,7 +308,7 @@ endclass : read_introut_test
 
 
 ////////////////////////////////////////////////////////////////////////
-//                       Read Introut Test                            //
+//                      Write Introut Test                            //
 ////////////////////////////////////////////////////////////////////////
 
 class write_introut_test extends base_test;
@@ -302,6 +317,7 @@ class write_introut_test extends base_test;
         s2mm_custom_sequence            s2mm_short;
         axis_wr                         axis_write_seq;
         clear_s2mm_introut_sequence     clear_introut_seq;
+        s2mm_length_sequence            length_seq;
 
         function new(string name = "write_introut_test", uvm_component parent);
                 super.new(name, parent);
@@ -312,6 +328,9 @@ class write_introut_test extends base_test;
                 s2mm_short                      = s2mm_custom_sequence::type_id::create("s2mm_short", this);
                 axis_write_seq                  = axis_wr::type_id::create("axis_write_seq", this);
                 clear_introut_seq               = clear_s2mm_introut_sequence::type_id::create("clear_introut_seq", this);
+                length_seq                      = s2mm_length_sequence::type_id::create("length_seq", this);
+                env_cfg.scoreboard_read         = 0;
+                env_cfg.DST_ADDR                = 'h20;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -320,6 +339,18 @@ class write_introut_test extends base_test;
                 s2mm_short.RAL_Model = env.RAL_Model;
                 s2mm_short.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
+
+                repeat(10) begin
+
+                env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+                env.sco.dst_addr                = env_cfg.DST_ADDR;
+
+                phase.raise_objection(this);
+                length_seq.RAL_Model = env.RAL_Model;
+                length_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+        
 
                 axis_write_seq.set_starting_phase(phase);
                 axis_write_seq.start(env.axis_wr_agt.sequencer);
@@ -330,7 +361,7 @@ class write_introut_test extends base_test;
                 clear_introut_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
                 phase.phase_done.set_drain_time(this, 100ns);
-
+                end
         endtask: run_phase
         
 endclass : write_introut_test
@@ -349,6 +380,7 @@ class rs_test extends base_test;
         axis_read                       axis_read_seq;
         stop_mm2s_sequence              stop_mm2s_seq;
         mm2s_length_sequence            write_length_seq;
+        clear_mm2s_introut_sequence     clear_introut_seq;
 
         function new(string name = "rs_test", uvm_component parent);
                 super.new(name, parent);
@@ -360,6 +392,11 @@ class rs_test extends base_test;
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
                 stop_mm2s_seq                   = stop_mm2s_sequence::type_id::create("stop_mm2s_seq", this);
                 write_length_seq                = mm2s_length_sequence::type_id::create("write_length_seq", this);
+                clear_introut_seq               = clear_mm2s_introut_sequence::type_id::create("clear_introut_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 240;
+                env_cfg.SRC_ADDR                = 'h14;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -385,15 +422,30 @@ class rs_test extends base_test;
                         end
                 join
 
+                phase.raise_objection(this);
+                clear_introut_seq.RAL_Model = env.RAL_Model;
+                clear_introut_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                
+                env_cfg.DATA_LENGTH = 20;
+                env_cfg.num_trans = env_cfg.calculate_txns();
+
                 // Write to Length Register
                 phase.raise_objection(this);
                 write_length_seq.RAL_Model = env.RAL_Model;
                 write_length_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-
-                env_cfg.num_trans = 3;
-                axis_read_seq.set_starting_phase(phase);
-                axis_read_seq.start(env.axis_r_agt.sequencer);
+                
+                fork
+                        begin
+                                #600ns;
+                        end
+                        begin
+                                axis_read_seq.set_starting_phase(phase);
+                                axis_read_seq.start(env.axis_r_agt.sequencer);
+                        end
+                join_any
+                phase.drop_objection(this);
 
         endtask: run_phase
         
@@ -425,6 +477,10 @@ class soft_reset_test extends base_test;
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
                 soft_reset_seq                  = reset_sequence::type_id::create("soft_reset_seq", this);
                 read_regs                       = read_registers_sequence::type_id::create("read_regs", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 140;
+                env_cfg.SRC_ADDR                = 'h8;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -434,19 +490,13 @@ class soft_reset_test extends base_test;
                 mm2s_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
-                fork
-                        begin
-                                axis_read_seq.set_starting_phase(phase);
-                                axis_read_seq.start(env.axis_r_agt.sequencer);
-                        end
-                        begin
-                                #40ns;
-                                phase.raise_objection(this);
-                                soft_reset_seq.RAL_Model = env.RAL_Model;
-                                soft_reset_seq.start(env.axi_lite_agt.sequencer);
-                                phase.drop_objection(this);
-                        end
-                join
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+
+                phase.raise_objection(this);
+                soft_reset_seq.RAL_Model = env.RAL_Model;
+                soft_reset_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
 
                 phase.raise_objection(this);
                 read_regs.RAL_Model = env.RAL_Model;
@@ -524,9 +574,13 @@ class idle_state_test extends base_test;
 
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
-                read_status             = read_status_sequence::type_id::create("read_status", this);
-                mm2s_custom_seq         = mm2s_custom_sequence::type_id::create("mm2s_custom_seq", this);
-                axis_read_seq           = axis_read::type_id::create("axis_read_seq", this);
+                read_status                     = read_status_sequence::type_id::create("read_status", this);
+                mm2s_custom_seq                 = mm2s_custom_sequence::type_id::create("mm2s_custom_seq", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 190;
+                env_cfg.SRC_ADDR                = 'h12;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -581,18 +635,23 @@ class slave_error_test extends base_test;
 
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
-                read_status             = read_status_sequence::type_id::create("read_status", this);
-                SlvErr_seq              = mm2s_SlvErr_sequence::type_id::create("SlvErr_seq", this);
-                axis_read_seq           = axis_read::type_id::create("axis_read_seq", this);
+                read_status                     = read_status_sequence::type_id::create("read_status", this);
+                SlvErr_seq                      = mm2s_SlvErr_sequence::type_id::create("SlvErr_seq", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 433;
+                env_cfg.SRC_ADDR                = 'h16;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
 
         task run_phase(uvm_phase phase);
-                // force axi_dma_0.axi_io.bresp = 2'b10;
                 
                 phase.raise_objection(this);
                 SlvErr_seq.RAL_Model = env.RAL_Model;
                 SlvErr_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
+
+                force axi_dma_tb_top.axi_intf.rresp = 2'b10;
 
                 axis_read_seq.set_starting_phase(phase);
                 axis_read_seq.start(env.axis_r_agt.sequencer);
@@ -603,11 +662,11 @@ class slave_error_test extends base_test;
                 read_status.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
+                release axi_dma_tb_top.axi_intf.rresp;
+
         endtask: run_phase
         
 endclass : slave_error_test
-
-
 
 ////////////////////////////////////////////////////////////////////////
 // Test Name:   Decode Error Test                                     //
@@ -630,9 +689,13 @@ class decode_error_test extends base_test;
 
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
-                read_status             = read_status_sequence::type_id::create("read_status", this);
-                DecErr_seq              = mm2s_DecErr_sequence::type_id::create("DecErr_seq", this);
-                axis_read_seq           = axis_read::type_id::create("axis_read_seq", this);
+                read_status                     = read_status_sequence::type_id::create("read_status", this);
+                DecErr_seq                      = mm2s_DecErr_sequence::type_id::create("DecErr_seq", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 540;
+                env_cfg.SRC_ADDR                = 'h3fff;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -642,15 +705,18 @@ class decode_error_test extends base_test;
                 DecErr_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
+                force axi_dma_tb_top.axi_intf.rresp = 2'b11;
+
                 axis_read_seq.set_starting_phase(phase);
                 axis_read_seq.start(env.axis_r_agt.sequencer);
 
                 // Read After the Transfer to check if the Error Interrupt was Generated
                 phase.raise_objection(this);
-                #200ns;
                 read_status.RAL_Model = env.RAL_Model;
                 read_status.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
+
+                release axi_dma_tb_top.axi_intf.rresp;
 
         endtask: run_phase
         
@@ -678,8 +744,10 @@ class boundary_test extends base_test;
                 super.build_phase(phase);
                 boundary_test_seq               = mm2s_boundary_sequence::type_id::create("boundary_test_seq", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
-                env_cfg.SRC_ADDR           = 'hFFC;
-                env_cfg.DATA_LENGTH        = 128;
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.SRC_ADDR                = 'hFFC;
+                env_cfg.DATA_LENGTH             = 8208;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -718,10 +786,10 @@ class data_realignment_test extends base_test;
                 super.build_phase(phase);
                 realignment_seq                 = mm2s_custom_sequence::type_id::create("realignment_seq", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
-                env_cfg.scoreboard_write   = 0;
-                env_cfg.DATA_LENGTH        = 160;
-                env_cfg.SRC_ADDR           = 'h33;
-                env_cfg.num_trans          = env_cfg.calculate_txns();
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 163;
+                env_cfg.SRC_ADDR                = 'h33;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -759,13 +827,13 @@ class buffer_overflow_test extends base_test;
 
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
-                mm2s_seq                                = mm2s_custom_sequence::type_id::create("mm2s_seq", this);
-                slave_sel_seq                           = ready_low_sequence::type_id::create("slave_sel_seq", this);
-                env_cfg.scoreboard_write           = 0;
-                env_cfg.has_axis_write_agent       = 0;
-                env_cfg.DATA_LENGTH                = 640;
-                env_cfg.SRC_ADDR                   = 'h00;
-                env_cfg.num_trans                  = env_cfg.calculate_txns();
+                mm2s_seq                        = mm2s_custom_sequence::type_id::create("mm2s_seq", this);
+                slave_sel_seq                   = ready_low_sequence::type_id::create("slave_sel_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.has_axis_write_agent    = 0;
+                env_cfg.DATA_LENGTH             = 640;
+                env_cfg.SRC_ADDR                = 'h00;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
 
         endfunction: build_phase
                 

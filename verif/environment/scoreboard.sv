@@ -13,8 +13,6 @@
 
 `uvm_analysis_imp_decl(_mm2s_read)
 `uvm_analysis_imp_decl(_s2mm_write)
-`uvm_analysis_imp_decl(_resp)
-`uvm_analysis_imp_decl(_reg)
 
 class scoreboard extends uvm_scoreboard;
    `uvm_component_utils(scoreboard);
@@ -23,17 +21,9 @@ class scoreboard extends uvm_scoreboard;
    uvm_analysis_imp_mm2s_read   #(axis_transaction, scoreboard) read_export;
    uvm_analysis_imp_s2mm_write  #(axis_transaction, scoreboard) write_export;
 
-   // Response Port from AXI
-   uvm_analysis_imp_resp  #(axi_transaction, scoreboard) resp_export;
-
-   // Register Analysis Port
-   uvm_analysis_imp_reg #(reg_transaction, scoreboard) reg_export;
-
-
    // Read and Write Queues for Comparison
    axis_transaction read_queue[$];
    axis_transaction write_queue[$];
-   axi_transaction resp_queue[$];
 
    // Environment configuration Handle
    environment_config env_cfg;
@@ -54,8 +44,6 @@ class scoreboard extends uvm_scoreboard;
       // Create implementation ports
       read_export    = new("read_export", this);
       write_export   = new("write_export", this);
-      resp_export    = new("resp_export", this);
-      reg_export     = new("reg_export", this);
    endfunction: new
 
    function void build_phase(uvm_phase phase);
@@ -98,32 +86,13 @@ class scoreboard extends uvm_scoreboard;
 
    endfunction : write_s2mm_write
 
-   // Write Method for response Port
-   virtual function void write_resp (axi_transaction item);
-      `uvm_info(get_type_name(), $sformatf("Received AXI Response Transaction"), UVM_LOW);
-      // Add transaction to response queue
-      resp_queue.push_back(item);
-   endfunction : write_resp
-
-   // Write Method for response Port
-   virtual function void write_reg (reg_transaction item);
-
-   endfunction : write_reg
-
-
    task run_phase(uvm_phase phase);
       axis_transaction read_item;
       axis_transaction write_item;
-      axi_transaction  resp_item;
 
       forever begin
          fork
             begin
-               // MM2S Read Comparison
-               // wait(resp_queue.size>0);
-               // resp_item = resp_queue.pop_front();
-
-               // if ((resp_item.bvalid && resp_item.bready) && (resp_item.bresp == 'h0)) begin
                if ( env_cfg.scoreboard_read ) begin
                   wait(read_queue.size > 0);
                   if (read_queue.size > 0) begin

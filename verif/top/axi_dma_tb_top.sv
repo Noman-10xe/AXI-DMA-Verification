@@ -18,7 +18,9 @@
 import uvm_pkg::*;
 
 import params_pkg::*;
-import includes_pkg::*;
+// Memory Model Package
+import mem_model_pkg::*;
+`include "../includes/includes.sv"
 
 // Interfaces
 `include "../interfaces/clk_rst_io.sv"
@@ -61,7 +63,7 @@ module axi_dma_tb_top;
 
   initial begin
     fork  
-    run_test("write_test");
+    run_test("buffer_overflow_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join
