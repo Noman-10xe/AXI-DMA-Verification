@@ -20,6 +20,7 @@ class environment extends uvm_env;
         axis_write_agent        axis_wr_agt;
         scoreboard              sco;
         environment_config      env_cfg;
+        virtual_sequencer       vseqr;
 
         `uvm_component_utils(environment) 
         
@@ -37,6 +38,7 @@ function void environment::build_phase(uvm_phase phase);
 
         axi_lite_agt	= axi_lite_agent::type_id::create("axi_lite_agt", this); 
         RAL_Model	= reg_block::type_id::create("RAL_Model", this);
+        vseqr           = virtual_sequencer::type_id::create("vseqr", this);
         RAL_Model.build();
         adapter         = axi_lite_adapter::type_id::create("adapter", this);
           
@@ -71,6 +73,9 @@ function void environment::connect_phase(uvm_phase phase);
         RAL_Model.default_map.set_sequencer(axi_lite_agt.sequencer, adapter);
         RAL_Model.default_map.set_base_addr(0);
 
+        vseqr.axis_read_sequencer = axis_r_agt.sequencer;
+        vseqr.axis_read_sequencer = axis_wr_agt.sequencer;
+        
         // Connect Analysis Ports
         if (env_cfg.has_axis_read_agent && env_cfg.has_scoreboard) begin
         axis_r_agt.monitor.mm2s_read.connect(sco.read_export);

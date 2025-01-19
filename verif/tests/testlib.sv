@@ -193,7 +193,7 @@ class read_test extends base_test;
                 phase.drop_objection(this);
                 `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
 
-                axis_read_seq.set_starting_phase(phase); 
+                axis_read_seq.set_starting_phase(phase);
                 axis_read_seq.start(env.axis_r_agt.sequencer);
 
         endtask: run_phase

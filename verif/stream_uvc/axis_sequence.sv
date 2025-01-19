@@ -72,8 +72,9 @@ class axis_read extends axis_base_sequence;
     `uvm_error(get_type_name(), "Randomization failed");
     finish_item(item);
     end
-
   endtask : body
+
+
 
 endclass : axis_read
 

@@ -12,23 +12,43 @@
 `ifndef VIRTUAL_SEQUENCE
 `define VIRTUAL_SEQUENCE
 
-class virtual_sequence extends uvm_sequence;
+class virtual_sequence extends uvm_sequence #(axis_transaction);
     
         `uvm_object_utils(virtual_sequence)
         
         // p_sequencer declaration
         `uvm_declare_p_sequencer(virtual_sequencer)
-        uvm_sequencer #(axis_transaction) read_seqr;
-        uvm_sequencer #(axis_transaction) write_seqr;
-        
+
+        axis_read               axis_read_seq;
+        axis_wr                 axis_write_seq;
+        environment_config      cfg;
+
         function new(string name = "virtual_sequence");
            super.new(name);
         endfunction : new
              
+        task pre_body();
+                uvm_config_db #(environment_config)::get(null, get_full_name(), "env_cfg", cfg);
+
+                if(cfg.scoreboard_read) begin
+                        axis_read_seq	= axis_read::type_id::create("axis_read_seq");
+                end
+        
+                if (cfg.scoreboard_write) begin
+                        axis_write_seq	= axis_wr::type_id::create("axis_write_seq");
+                end
+                
+        endtask : pre_body
+        
         // Sequence Body
         virtual task body();
-                read_seqr = p_sequencer.axis_read_sequencer;
-                write_seqr = p_sequencer.axis_write_sequencer;
+                if(cfg.scoreboard_read) begin
+                        axis_read_seq.start(p_sequencer.axis_read_sequencer);
+                end
+                
+                if (cfg.scoreboard_write) begin
+                        axis_write_seq.start(p_sequencer.axis_write_sequencer);
+                end
         endtask
      
 endclass : virtual_sequence
