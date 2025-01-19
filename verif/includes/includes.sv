@@ -19,6 +19,7 @@ import uvm_pkg::*;
 `include "../configurations/axis_read_agent_config.sv"
 `include "../configurations/axis_write_agent_config.sv"
 `include "../configurations/environment_config.sv"
+
 // Axi-Lite UVC
 `include "../register_uvc/reg_transaction.sv"
 `include "../register_uvc/reg_sequence.sv"
@@ -26,6 +27,7 @@ import uvm_pkg::*;
 `include "../register_uvc/axi_lite_sequencer.sv"
 `include "../register_uvc/axi_lite_monitor.sv"
 `include "../register_uvc/axi_lite_agent.sv"
+
 // AXI-Stream UVC
 `include "../stream_uvc/axis_transaction.sv"
 `include "../stream_uvc/axis_sequence.sv"
@@ -36,6 +38,7 @@ import uvm_pkg::*;
 `include "../stream_uvc/axis_write_monitor.sv"
 `include "../stream_uvc/axis_write_agent.sv"
 `include "../stream_uvc/virtual_sequencer.sv"
+
 // Registration Abstraction Layer (RAL Model)
 `include "../ral_model/registers/mm2s_dmacr.sv"
 `include "../ral_model/registers/mm2s_dmasr.sv"
@@ -49,10 +52,20 @@ import uvm_pkg::*;
 `include "../ral_model/registers/s2mm_length.sv"
 `include "../ral_model/reg_block.sv"
 `include "../ral_model/axi_lite_adapter.sv"
+
+// AXI Components
+`include "../axi_coverage_monitor/axi_transaction.sv"
+`include "../axi_coverage_monitor/axi_monitor.sv"
+
+// Coverage Model
+`include "../environment/coverage_model.sv"
+
 // Memory Model Package
 import mem_model_pkg::*;
+
 // Scoreboard
 `include "../environment/scoreboard.sv"
+
 // Environment and Test Library
 `include "../environment/environment.sv"
 `include "../tests/virtual_sequence.sv"

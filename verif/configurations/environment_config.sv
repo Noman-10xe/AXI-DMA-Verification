@@ -17,6 +17,7 @@ class environment_config extends uvm_object;
         bit has_axis_read_agent  = 1; // switch to instantiate Stream Read Agent
         bit has_axis_write_agent = 1; // switch to instantiate Stream Write Agent
         bit has_scoreboard       = 1; // switch to instantiate Scoreboard
+        bit has_functional_cov   = 1; // switch to collect coverage
         bit scoreboard_read      = 1; // Switch to Enable/Disable Read Queues
         bit scoreboard_write     = 1; // Switch to Enable/Disable Write Queues
         

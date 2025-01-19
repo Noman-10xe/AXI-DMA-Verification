@@ -104,9 +104,36 @@ endclocking : ioWriteDriver
   clocking ioMon @(posedge axi_aclk);
       default input #0ns output #2;
 
-      input bresp;
-      input bvalid;
-      input bready;
+      input     araddr;
+      input     arlen;
+      input     arsize;
+      input     arburst;
+      input     arprot;
+      input     arcache;
+      input     arvalid;
+      input     arready;
+      input     rdata;
+      input     rresp;
+      input     rlast;
+      input     rvalid;
+      input     rready;
+      input     awaddr;
+      input     awlen;
+      input     awsize;
+      input     awburst;
+      input     awprot;
+      input     awcache;
+      input     awvalid;
+      input     awready;
+      input     wdata;
+      input     wstrb;
+      input     wlast;
+      input     wvalid;
+      input     wready;
+      input     bvalid;
+      input     bready;
+      input     bresp;
+      
   endclocking : ioMon
   
 
