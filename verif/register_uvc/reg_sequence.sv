@@ -618,4 +618,161 @@ endclass : read_registers_sequence
 
 
 
+////////////////////////////////////////
+//          Coverage Tests            //
+////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+//                 Read Registers Sequence                          //
+//////////////////////////////////////////////////////////////////////
+
+class random_reg_sequence extends base_sequence;
+  `uvm_object_utils(random_reg_sequence)
+  
+   reg_block RAL_Model;
+  function new (string name = "random_reg_sequence");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    uvm_status_e  status;
+    bit [31:0]    data;
+ 
+    ///////////  MM2S Registers ///////////////
+    // Writing 1s
+
+    data = 'hFFFFFFFF;
+    RAL_Model.MM2S_DMACR.write(status, data);
+
+    data = 'hFFFFFFFF;
+    RAL_Model.MM2S_DMASR.write(status, data);
+    
+    data = 'hFFFFFFFF;
+    RAL_Model.MM2S_SA.write(status, data);
+
+    data = 'hFFFFFFFF;
+    RAL_Model.MM2S_SA_MSB.write(status, data);
+
+    data = 'hFFFFFFFF;
+    RAL_Model.MM2S_LENGTH.write(status, data);
+
+    ///////////  MM2S Registers ///////////////
+    // Writing 0s
+    data = 'h0;
+    RAL_Model.MM2S_DMACR.write(status, data);
+
+    data = 'h0;
+    RAL_Model.MM2S_DMASR.write(status, data);
+    
+    data = 'h0;
+    RAL_Model.MM2S_SA.write(status, data);
+
+    data = 'h0;
+    RAL_Model.MM2S_SA_MSB.write(status, data);
+
+    data = 'h0;
+    RAL_Model.MM2S_LENGTH.write(status, data);
+
+    ///////////  MM2S Registers ///////////////
+    // Writing random
+    data = $urandom;
+    RAL_Model.MM2S_DMACR.write(status, data);
+
+    data = $urandom;
+    RAL_Model.MM2S_DMASR.write(status, data);
+    
+    data = $urandom;
+    RAL_Model.MM2S_SA.write(status, data);
+
+    data = $urandom;
+    RAL_Model.MM2S_SA_MSB.write(status, data);
+
+    data = $urandom;
+    RAL_Model.MM2S_LENGTH.write(status, data);
+
+    ///////////  S2MM Registers ///////////////
+    // Writing 1s
+    data = 'hFFFFFFFF;
+    RAL_Model.S2MM_DMACR.write(status, data);
+
+    data = 'hFFFFFFFF;
+    RAL_Model.S2MM_DMASR.write(status, data);
+    
+    data = 'hFFFFFFFF;
+    RAL_Model.S2MM_DA.write(status, data);
+
+    data = 'hFFFFFFFF;
+    RAL_Model.S2MM_DA_MSB.write(status, data);
+
+    data = 'hFFFFFFFF;
+    RAL_Model.S2MM_LENGTH.write(status, data);
+
+    ///////////  S2MM Registers ///////////////
+    // Writing 0s
+    data = 'h0;
+    RAL_Model.S2MM_DMACR.write(status, data);
+
+    data = 'h0;
+    RAL_Model.S2MM_DMASR.write(status, data);
+    
+    data = 'h0;
+    RAL_Model.S2MM_DA.write(status, data);
+
+    data = 'h0;
+    RAL_Model.S2MM_DA_MSB.write(status, data);
+
+    data = 'h0;
+    RAL_Model.S2MM_LENGTH.write(status, data);
+
+
+    ///////////  S2MM Registers ///////////////
+    // Writing Random Values
+    data = $urandom;
+    RAL_Model.S2MM_DMACR.write(status, data);
+
+    data = $urandom;
+    RAL_Model.S2MM_DMASR.write(status, data);
+    
+    data = $urandom;
+    RAL_Model.S2MM_DA.write(status, data);
+
+    data = $urandom;
+    RAL_Model.S2MM_DA_MSB.write(status, data);
+
+    data = $urandom;
+    RAL_Model.S2MM_LENGTH.write(status, data);
+
+   endtask
+endclass : random_reg_sequence
+
+
+class read_allreg_sequence extends base_sequence;
+  `uvm_object_utils(read_allreg_sequence)
+  
+   reg_block RAL_Model;
+  function new (string name = "read_allreg_sequence");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    uvm_status_e  status;
+    bit [31:0]    data;
+    bit [31:0]    expected;
+
+    RAL_Model.MM2S_DMACR.read(status, data);
+    RAL_Model.MM2S_DMASR.read(status, data); 
+    RAL_Model.MM2S_SA.read(status, data); 
+    RAL_Model.MM2S_SA_MSB.read(status, data); 
+    RAL_Model.MM2S_LENGTH.read(status, data); 
+
+    RAL_Model.S2MM_DMACR.read(status, data);
+    RAL_Model.S2MM_DMASR.read(status, data); 
+    RAL_Model.S2MM_DA.read(status, data); 
+    RAL_Model.S2MM_DA_MSB.read(status, data); 
+    RAL_Model.S2MM_LENGTH.read(status, data); 
+
+   endtask
+endclass : read_allreg_sequence
+
+
 `endif

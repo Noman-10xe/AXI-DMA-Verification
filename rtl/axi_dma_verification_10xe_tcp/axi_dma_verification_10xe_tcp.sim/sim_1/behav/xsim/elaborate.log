@@ -1,17 +1,23 @@
 Vivado Simulator v2022.1
 Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
-Running: /home/xe-user106/vivado/Vivado/2022.1/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L blk_mem_gen_v8_4_5 -L lib_pkg_v1_0_2 -L fifo_generator_v13_2_7 -L lib_fifo_v1_0_16 -L lib_srl_fifo_v1_0_2 -L lib_cdc_v1_0_2 -L axi_datamover_v5_1_28 -L axi_sg_v4_1_15 -L axi_dma_v7_1_27 -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot axi_dma_10xe_tb_top_behav xil_defaultlib.axi_dma_10xe_tb_top xil_defaultlib.glbl -log elaborate.log -L uvm 
+Running: /home/xe-user106/vivado/Vivado/2022.1/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -cc_db coverage_report -cc_dir coverage -L xil_defaultlib -L lib_pkg_v1_0_2 -L fifo_generator_v13_2_7 -L lib_fifo_v1_0_16 -L lib_srl_fifo_v1_0_2 -L lib_cdc_v1_0_2 -L axi_datamover_v5_1_28 -L axi_sg_v4_1_15 -L axi_dma_v7_1_27 -L blk_mem_gen_v8_4_5 -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot axi_dma_tb_top_behav xil_defaultlib.axi_dma_tb_top xil_defaultlib.glbl -log elaborate.log -L uvm 
 Using 8 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-9380] size mismatch in mixed-language port association of VHDL port 'axi_dma_tstvec' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/axi_dma_10xe_tb_top.sv:101]
+WARNING: [VRFC 10-3597] non-void function 'get' called as a task without void casting [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/register_uvc/reg_sequence.sv:26]
+WARNING: [VRFC 10-3597] non-void function 'get' called as a task without void casting [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/stream_uvc/axis_sequence.sv:35]
+WARNING: [VRFC 10-3597] non-void function 'get' called as a task without void casting [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/tests/virtual_sequence.sv:31]
+WARNING: [VRFC 10-8967] first argument of $fatal is invalid; expected 0, 1 or 2 [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/mem_model.sv:32]
 Completed static elaboration
+INFO: [XSIM 43-4329] Assuming default value 1 for the first arguement of $fatal at Line 32, File /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/mem_model.sv
 Starting simulation data flow analysis
-WARNING: [XSIM 43-4468] File : /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/reg_transaction.sv, Line : 27, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
-WARNING: [XSIM 43-4468] File : /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/top/../register_uvc/reg_transaction.sv, Line : 18, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
+WARNING: [XSIM 43-4468] File : /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/register_uvc/reg_transaction.sv, Line : 27, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
+WARNING: [XSIM 43-4468] File : /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/register_uvc/reg_transaction.sv, Line : 18, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
 WARNING: [XSIM 43-4099] "/proj/xbuilds/SWIP/9999.0_1117_2127/installs/lin64/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 4356. Module uvm_pkg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/proj/xbuilds/SWIP/9999.0_1117_2127/installs/lin64/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 4356. Module uvm_pkg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4468] File : /proj/xbuilds/SWIP/9999.0_1117_2127/installs/lin64/Vivado/2022.1/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv, Line : 25994, RANDC variable size more than 8 bits. This will be treated as a RAND variable instead.
+WARNING: [XSIM 43-4099] "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/mem_model_pkg.sv" Line 7. Module mem_model_pkg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/mem_model_pkg.sv" Line 7. Module mem_model_pkg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/params_pkg.sv" Line 13. Module params_pkg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/params_pkg.sv" Line 13. Module params_pkg doesn't have a timescale but at least one module in design has a timescale.
 Completed simulation data flow analysis
@@ -31,9 +37,10 @@ Compiling package ieee.vital_timing
 Compiling package ieee.vital_primitives
 Compiling package unisim.vpkg
 Compiling package xpm.vcomponents
-Compiling package xil_defaultlib.$unit_params_pkg_sv_3383809595
+Compiling package xil_defaultlib.$unit_params_pkg_sv_2076944976
 Compiling package uvm.uvm_pkg
 Compiling package std.std
+Compiling package xil_defaultlib.mem_model_pkg
 Compiling package xil_defaultlib.params_pkg
 Compiling module xil_defaultlib.cb
 Compiling module xil_defaultlib.cbn
@@ -46,6 +53,7 @@ Compiling module xil_defaultlib.ioReadMonitor
 Compiling module xil_defaultlib.ioWriteDriver
 Compiling module xil_defaultlib.ioWriteMonitor
 Compiling module xil_defaultlib.axis_io_default
+Compiling module xil_defaultlib.ioMon
 Compiling module xil_defaultlib.axi_io_default
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_smple_sm [\axi_dma_smple_sm(c_extra=1)\]
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_mm2s_cmdsts_if [\axi_dma_mm2s_cmdsts_if(c_extra=...]
@@ -64,10 +72,10 @@ Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_lite_if 
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_register [\axi_dma_register(c_num_register...]
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_register_s2mm [\axi_dma_register_s2mm(c_num_reg...]
 Compiling architecture implementation of entity axi_dma_v7_1_27.axi_dma_reg_module [\axi_dma_reg_module(c_include_sg...]
-Compiling architecture behavioral of entity lib_srl_fifo_v1_0_2.dynshreg_f [\dynshreg_f(c_depth=4,c_dwidth=8...]
-Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_rbu_f [\srl_fifo_rbu_f(c_dwidth=8,c_dep...]
-Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_f [\srl_fifo_f(c_dwidth=8,c_depth=4...]
-Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_fifo [\axi_datamover_fifo(c_dwidth=8,c...]
+Compiling architecture behavioral of entity lib_srl_fifo_v1_0_2.dynshreg_f [\dynshreg_f(c_depth=4,c_dwidth=1...]
+Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_rbu_f [\srl_fifo_rbu_f(c_dwidth=12,c_de...]
+Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_f [\srl_fifo_f(c_dwidth=12,c_depth=...]
+Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_fifo [\axi_datamover_fifo(c_dwidth=12,...]
 Compiling module xpm.xpm_fifo_rst_default
 Compiling module xpm.xpm_fifo_reg_bit
 Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=8...
@@ -81,6 +89,9 @@ Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
 Compiling architecture implementation of entity lib_fifo_v1_0_16.sync_fifo_fg [\sync_fifo_fg(c_family="zynq",c_...]
 Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_sfifo_autord [\axi_datamover_sfifo_autord(c_dw...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_rd_sf [\axi_datamover_rd_sf(c_sf_fifo_d...]
+Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_dre_mux2_1_x_n [\axi_datamover_dre_mux2_1_x_n(c_...]
+Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_dre_mux4_1_x_n [\axi_datamover_dre_mux4_1_x_n(c_...]
+Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_mm2s_dre [\axi_datamover_mm2s_dre(c_dwidth...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_skid_buf [axi_datamover_skid_buf_default]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_reset [axi_datamover_reset_default]
 Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_fifo [\axi_datamover_fifo(c_dwidth=8,c...]
@@ -96,12 +107,12 @@ Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_rbu_f [\srl_fi
 Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_f [\srl_fifo_f(c_dwidth=59,c_depth=...]
 Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_fifo [\axi_datamover_fifo(c_dwidth=59,...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_addr_cntl [\axi_datamover_addr_cntl(c_famil...]
-Compiling architecture behavioral of entity lib_srl_fifo_v1_0_2.dynshreg_f [\dynshreg_f(c_depth=4,c_dwidth=2...]
-Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_rbu_f [\srl_fifo_rbu_f(c_dwidth=29,c_de...]
-Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_f [\srl_fifo_f(c_dwidth=29,c_depth=...]
-Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_fifo [\axi_datamover_fifo(c_dwidth=29,...]
+Compiling architecture behavioral of entity lib_srl_fifo_v1_0_2.dynshreg_f [\dynshreg_f(c_depth=4,c_dwidth=3...]
+Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_rbu_f [\srl_fifo_rbu_f(c_dwidth=31,c_de...]
+Compiling architecture imp of entity lib_srl_fifo_v1_0_2.srl_fifo_f [\srl_fifo_f(c_dwidth=31,c_depth=...]
+Compiling architecture imp of entity axi_datamover_v5_1_28.axi_datamover_fifo [\axi_datamover_fifo(c_dwidth=31,...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_rdmux [\axi_datamover_rdmux(c_sel_addr_...]
-Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_rddata_cntl [\axi_datamover_rddata_cntl(c_ali...]
+Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_rddata_cntl [\axi_datamover_rddata_cntl(c_inc...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_mm2s_full_wrap [\axi_datamover_mm2s_full_wrap(c_...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_ibttcc [\axi_datamover_ibttcc(c_sf_xfer_...]
 Compiling architecture implementation of entity axi_datamover_v5_1_28.axi_datamover_ms_strb_set [\axi_datamover_ms_strb_set(c_str...]
@@ -208,6 +219,6 @@ Compiling module blk_mem_gen_v8_4_5.blk_mem_gen_v8_4_5_softecc_outpu...
 Compiling module blk_mem_gen_v8_4_5.blk_mem_gen_v8_4_5_mem_module(C_...
 Compiling module blk_mem_gen_v8_4_5.blk_mem_gen_v8_4_5(C_FAMILY="zyn...
 Compiling module xil_defaultlib.blk_mem_gen_0
-Compiling module xil_defaultlib.axi_dma_10xe_tb_top
+Compiling module xil_defaultlib.axi_dma_tb_top
 Compiling module xil_defaultlib.glbl
-Built simulation snapshot axi_dma_10xe_tb_top_behav
+Built simulation snapshot axi_dma_tb_top_behav

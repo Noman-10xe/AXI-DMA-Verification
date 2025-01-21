@@ -20,9 +20,12 @@ class environment extends uvm_env;
         axis_write_agent        axis_wr_agt;
         axi_monitor             axi_cov_mon;
         scoreboard              sco;
-        coverage_model          func_cov;
+        // coverage_model          func_cov;
         environment_config      env_cfg;
         virtual_sequencer       vseqr;
+
+        // Coverage
+        axi_lite_coverage       axi_lite_cov;
 
         `uvm_component_utils(environment) 
         
@@ -69,7 +72,8 @@ function void environment::build_phase(uvm_phase phase);
         end
 
         if (env_cfg.has_functional_cov) begin
-                func_cov        = coverage_model::type_id::create("func_cov", this);
+                // func_cov        = coverage_model::type_id::create("func_cov", this);
+                axi_lite_cov    = axi_lite_coverage::type_id::create("axi_lite_cov", this);
         end
 
 endfunction: build_phase
@@ -105,21 +109,21 @@ function void environment::connect_phase(uvm_phase phase);
 
         if (env_cfg.has_functional_cov) begin
                 
-                // Stream Write Agent
-                if (env_cfg.has_axis_write_agent) begin
-                        axis_wr_agt.monitor.s2mm_write.connect(func_cov.axis_write_export);
-                end
+                // // Stream Write Agent
+                // if (env_cfg.has_axis_write_agent) begin
+                //         axis_wr_agt.monitor.s2mm_write.connect(func_cov.axis_write_export);
+                // end
 
-                // Stream Read Agent
-                if (env_cfg.has_axis_read_agent) begin
-                        axis_r_agt.monitor.mm2s_read.connect(func_cov.axis_read_export);
-                end
+                // // Stream Read Agent
+                // if (env_cfg.has_axis_read_agent) begin
+                //         axis_r_agt.monitor.mm2s_read.connect(func_cov.axis_read_export);
+                // end
 
                 // Axi Lite Agent
-                axi_lite_agt.monitor.ap.connect(func_cov.axi_lite_export);
+                axi_lite_agt.monitor.ap.connect(axi_lite_cov.analysis_export);
 
-                // AXI Monitor
-                axi_cov_mon.ap.connect(func_cov.axi_export);
+                // // AXI Monitor
+                // axi_cov_mon.ap.connect(func_cov.axi_export);
         end
 
 endfunction: connect_phase

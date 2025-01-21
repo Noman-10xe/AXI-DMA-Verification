@@ -851,4 +851,48 @@ class buffer_overflow_test extends base_test;
         
 endclass : buffer_overflow_test
 
+/////////////////////////////////////////////////////////////////////////////
+//                              Coverage Tests                             //
+/////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////
+// Test Name:   Random Register Writes Test                           //
+// Description: The test will write random registers  including       //
+// invalid register addrresses to check for Write Access              //
+// Dated: Jan 20, 2025                                                //
+////////////////////////////////////////////////////////////////////////
+
+class random_reg_test extends base_test;
+        `uvm_component_utils(random_reg_test)
+        
+        random_reg_sequence            rand_reg_write_seq;
+        read_allreg_sequence           read_all_reg;
+
+        function new(string name = "random_reg_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                rand_reg_write_seq = random_reg_sequence::type_id::create("rand_reg_write_seq", this);
+                read_all_reg        = read_allreg_sequence::type_id::create("read_all_reg", this);
+        endfunction: build_phase
+                
+        task run_phase(uvm_phase phase);
+                
+                phase.raise_objection(this);
+                rand_reg_write_seq.RAL_Model = env.RAL_Model;
+                rand_reg_write_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                phase.raise_objection(this);
+                read_all_reg.RAL_Model = env.RAL_Model;
+                read_all_reg.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+        endtask: run_phase
+        
+endclass : random_reg_test
+
+
 `endif

@@ -63,7 +63,7 @@ module axi_dma_tb_top;
 
   initial begin
     fork  
-    run_test("read_test");
+    run_test("reset_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join
@@ -73,6 +73,11 @@ module axi_dma_tb_top;
     uvm_config_db #(virtual s_axi_lite_io)::set(null, "*", "axi_lite_intf", axi_lite_intf);
     uvm_config_db #(virtual axis_io)::set(null, "*", "axis_intf", axis_intf);
     uvm_config_db #(virtual axi_io)::set(null, "*", "axi_intf", axi_intf);
+  end
+
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
   end
 
   /////////////////////////////////////
