@@ -4,7 +4,7 @@ RTL     := rtl
 TB      := verif
 SIM     := sim
 SHELL   := /bin/bash
-TEST_NAME ?= reset_test
+TEST_NAME ?=
 
 # Script Paths
 SCRIPT_DIR := $(shell realpath ./rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.sim/sim_1/behav/xsim)
@@ -39,9 +39,15 @@ elaborate: $(ELAB_DIR)
 
 # Simulation Target
 simulate: $(SIM_DIR)
+	@if [ -z "$(TEST_NAME)" ]; then TEST_NAME=reset_test; fi
 	@mkdir -p $(SIM_DIR)/$(TEST_NAME)
 	@echo "Running simulation for test: $(TEST_NAME)"
-	@cd $(SCRIPT_DIR) && ./simulate.sh +UVM_TESTNAME=$(TEST_NAME) | tee $(SIM_DIR)/$(TEST_NAME)/simulate.log
+	xsim axi_dma_tb_top_behav \
+	    -key {Behavioral:sim_1:Functional:axi_dma_tb_top} \
+	    -tclbatch axi_dma_tb_top.tcl \
+	    -view /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_tb_top_behav.wcfg \
+	    -log $(SIM_DIR)/$(TEST_NAME)/simulate.log \
+	    -testplusarg UVM_TESTNAME=$(TEST_NAME)
 	@cp $(SCRIPT_DIR)/dump.vcd $(SIM_DIR)/$(TEST_NAME)/dump.vcd || echo "dump.vcd not found for $(TEST_NAME), skipping copy."
 	@xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$(TEST_NAME)
 	@echo "Simulation complete for test: $(TEST_NAME)"
@@ -52,7 +58,7 @@ regress: $(REGRESS_DIR)
 	@echo "Starting regression..."
 	@for t in $(TESTS); do \
 		echo "Running test: $$t"; \
-		$(MAKE) simulate TEST_NAME=$$t +UVM_TESTNAME=$$t"; \
+		$(MAKE) simulate TEST_NAME=$$t; \
 		mkdir -p $(REGRESS_DIR)/$$t; \
 		mv $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
 		xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$$t; \
@@ -64,7 +70,7 @@ regress: $(REGRESS_DIR)
 # Clean Target
 clean:
 	@echo "Cleaning simulation files but preserving logs and coverage..."
-	@rm -rf $(COMPILE_DIR) $(ELAB_DIR)
+	@rm -rf $(OUT_DIR) $(COVERAGE_DIR) xcrg.log xsim.covdb
 	@echo "Logs and coverage preserved in $(LOG_DIR) and $(COVERAGE_DIR)."
 
 # Phony Targets

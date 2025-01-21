@@ -15,7 +15,7 @@ class reg_transaction extends uvm_sequence_item;
 	
         rand    bit                                     s_axi_lite_awvalid;
         rand    bit                                     s_axi_lite_awready;
-        randc   bit     [ 9             :   0]          s_axi_lite_awaddr;
+        rand    bit     [ 9             :   0]          s_axi_lite_awaddr;
         rand    bit                                     s_axi_lite_wvalid;
         rand    bit                                     s_axi_lite_wready;
         rand    bit     [ 31            :   0]          s_axi_lite_wdata;
@@ -24,7 +24,7 @@ class reg_transaction extends uvm_sequence_item;
         rand    bit                                     s_axi_lite_bready;
         rand    bit                                     s_axi_lite_arvalid;
         rand    bit                                     s_axi_lite_arready;
-        randc   bit     [ 9             :   0]          s_axi_lite_araddr;
+        rand    bit     [ 9             :   0]          s_axi_lite_araddr;
         rand    bit                                     s_axi_lite_rvalid;
         rand    bit                                     s_axi_lite_rready;
         rand    bit     [ 31            :   0]          s_axi_lite_rdata;

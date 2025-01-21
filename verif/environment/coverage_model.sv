@@ -75,24 +75,20 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
              }
 
              CROSS_ARREADY_ARVALID : cross cp_arvalid, cp_arready {
-                bins valid_ready = binsof(cp_arvalid) && binsof(cp_arready);
-                ignore_bins invalid_bins = (binsof(cp_arvalid.arvalid_0));
+                ignore_bins ignore_0 = binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1);
              }
 
-             CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid {
-                bins valid_ready = binsof(cp_rready.rready_1) && binsof(cp_rvalid);
-                ignore_bins invalid_bins = (binsof(cp_rready.rready_0));
+             CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid{
+                ignore_bins ignore_0 = binsof(cp_rvalid.rvalid_1) && binsof(cp_rready.rready_0);
              }
+
              CROSS_ADDR_CTRL: cross cp_araddr, cp_arvalid, cp_arready {
-                bins valid = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready.arready_1);
+                bins valid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready);
+                bins invalid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0) && binsof(cp_arready);
                 ignore_bins ignore_0 = !((binsof(cp_araddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
-                ignore_bins ignore_1 = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0);
              }
 
-             CROSS_RDATA_CTRL: cross cp_rdata, cp_rvalid, cp_rready, cp_rresp {
-                bins            valid_rdata = binsof(cp_rdata) && binsof(cp_rvalid.rvalid_1) && binsof(cp_rready);
-                ignore_bins     ignore_0    = binsof(cp_rdata) && binsof(cp_rvalid.rvalid_0);
-             }
+             CROSS_RDATA_CTRL: cross cp_rvalid, cp_rready, cp_rresp;
 
         endgroup : cg_read_channel
 

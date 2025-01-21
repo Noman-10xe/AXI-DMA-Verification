@@ -867,6 +867,7 @@ class random_reg_test extends base_test;
         
         random_reg_sequence            rand_reg_write_seq;
         read_allreg_sequence           read_all_reg;
+        random_rw_seq                  rand_seq;
 
         function new(string name = "random_reg_test", uvm_component parent);
                 super.new(name, parent);
@@ -874,21 +875,26 @@ class random_reg_test extends base_test;
 
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
-                rand_reg_write_seq = random_reg_sequence::type_id::create("rand_reg_write_seq", this);
-                read_all_reg        = read_allreg_sequence::type_id::create("read_all_reg", this);
+                rand_reg_write_seq      = random_reg_sequence::type_id::create("rand_reg_write_seq", this);
+                read_all_reg            = read_allreg_sequence::type_id::create("read_all_reg", this);
+                rand_seq                = random_rw_seq::type_id::create("rand_seq", this);
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
                 
-                phase.raise_objection(this);
-                rand_reg_write_seq.RAL_Model = env.RAL_Model;
-                rand_reg_write_seq.start(env.axi_lite_agt.sequencer);
-                phase.drop_objection(this);
+                // phase.raise_objection(this);
+                // rand_reg_write_seq.RAL_Model = env.RAL_Model;
+                // rand_reg_write_seq.start(env.axi_lite_agt.sequencer);
+                // phase.drop_objection(this);
 
                 phase.raise_objection(this);
-                read_all_reg.RAL_Model = env.RAL_Model;
-                read_all_reg.start(env.axi_lite_agt.sequencer);
+                rand_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
+
+                // phase.raise_objection(this);
+                // read_all_reg.RAL_Model = env.RAL_Model;
+                // read_all_reg.start(env.axi_lite_agt.sequencer);
+                // phase.drop_objection(this);
 
         endtask: run_phase
         

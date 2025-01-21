@@ -16,6 +16,7 @@ class base_sequence extends uvm_sequence #(reg_transaction);
   // Required macro for sequences automation
   `uvm_object_utils(base_sequence)
   environment_config cfg;
+  reg_transaction item;
       
   // Constructor
   function new(string name="base_sequence");
@@ -637,6 +638,7 @@ class random_reg_sequence extends base_sequence;
   task body;
     uvm_status_e  status;
     bit [31:0]    data;
+    bit [31:0]    addr;
  
     ///////////  MM2S Registers ///////////////
     // Writing 1s
@@ -746,6 +748,7 @@ class random_reg_sequence extends base_sequence;
 endclass : random_reg_sequence
 
 
+// Read All Registers one by one
 class read_allreg_sequence extends base_sequence;
   `uvm_object_utils(read_allreg_sequence)
   
@@ -773,6 +776,34 @@ class read_allreg_sequence extends base_sequence;
 
    endtask
 endclass : read_allreg_sequence
+
+
+// Randomly Generates Read/Writes for Axi Lite
+class random_rw_seq extends base_sequence;
+  `uvm_object_utils(random_rw_seq)
+  
+  function new (string name = "random_rw_seq");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    bit [31:0]    addr;
+
+    item  = reg_transaction::type_id::create("item");
+    item.c_addr.constraint_mode(0);
+    item.c_read_transaction.constraint_mode(0);
+    item.c_write_transaction.constraint_mode(0);
+
+    repeat(100)  begin
+      start_item(item);
+        if(!item.randomize()) begin
+          `uvm_error(get_type_name(), "Randomization failed");
+        end
+      finish_item(item);
+    end
+
+   endtask
+endclass : random_rw_seq
 
 
 `endif
