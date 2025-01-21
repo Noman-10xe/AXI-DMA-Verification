@@ -4,9 +4,7 @@ RTL     := rtl
 TB      := verif
 SIM     := sim
 SHELL   := /bin/bash
-
-# Simulation Options
-SIM_OPT += +vcs+initreg+0 +UVM_VERBOSITY=UVM_MEDIUM
+TEST_NAME ?= reset_test
 
 # Script Paths
 SCRIPT_DIR := $(shell realpath ./rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.sim/sim_1/behav/xsim)
@@ -18,7 +16,7 @@ ELAB_DIR := $(OUT_DIR)/elaborate
 SIM_DIR := $(OUT_DIR)/simulate
 REGRESS_DIR := $(OUT_DIR)/regression
 LOG_DIR := $(OUT_DIR)/logs
-COVERAGE_DIR := $(OUT_DIR)/coverage
+COVERAGE_DIR := $(shell mkdir -p ./coverage && realpath ./coverage)
 
 # Ensure directories exist
 $(OUT_DIR) $(COMPILE_DIR) $(ELAB_DIR) $(SIM_DIR) $(REGRESS_DIR) $(LOG_DIR) $(COVERAGE_DIR):
@@ -41,32 +39,32 @@ elaborate: $(ELAB_DIR)
 
 # Simulation Target
 simulate: $(SIM_DIR)
-	@echo "Starting Simulation..."
-	@mkdir -p $(SIM_DIR)
-	@cd $(SCRIPT_DIR) && ./simulate.sh $(SIM_OPT) 2>&1 | tee $(SIM_DIR)/simulate.log
-	@cp $(SCRIPT_DIR)/dump.vcd $(SIM_DIR)/dump.vcd || echo "dump.vcd not found, skipping copy."
-	@xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -output_dir $(COVERAGE_DIR)/$(TEST_NAME)
-	@echo "Simulation completed. Logs available in $(SIM_DIR)/simulate.log."
+	@mkdir -p $(SIM_DIR)/$(TEST_NAME)
+	@echo "Running simulation for test: $(TEST_NAME)"
+	@cd $(SCRIPT_DIR) && ./simulate.sh +UVM_TESTNAME=$(TEST_NAME) | tee $(SIM_DIR)/$(TEST_NAME)/simulate.log
+	@cp $(SCRIPT_DIR)/dump.vcd $(SIM_DIR)/$(TEST_NAME)/dump.vcd || echo "dump.vcd not found for $(TEST_NAME), skipping copy."
+	@xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$(TEST_NAME)
+	@echo "Simulation complete for test: $(TEST_NAME)"
 
 # Regression Target
-regress: $(REGRESS_DIR) $(COVERAGE_DIR)
-	@echo "Starting Regression..."
+regress: $(REGRESS_DIR)
 	@mkdir -p $(REGRESS_DIR)
+	@echo "Starting regression..."
 	@for t in $(TESTS); do \
 		echo "Running test: $$t"; \
-		$(MAKE) simulate SIM_OPT="$(SIM_OPT) +UVM_TESTNAME=$$t" TEST_NAME=$$t; \
-		TEST_DIR=$(REGRESS_DIR)/$$t; \
-		mkdir -p $$TEST_DIR; \
-		mv $(SIM_DIR)/* $$TEST_DIR/; \
-		echo "Logs and VCD for $$t saved in $$TEST_DIR."; \
+		$(MAKE) simulate TEST_NAME=$$t +UVM_TESTNAME=$$t"; \
+		mkdir -p $(REGRESS_DIR)/$$t; \
+		mv $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
+		xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$$t; \
 	done
-	@xcrg -report_format html -dir $(COVERAGE_DIR) -output_dir $(COVERAGE_DIR)/combined_coverage
-	@echo "Regression completed. Combined coverage report available in $(COVERAGE_DIR)/combined_coverage."
+	# Merge all coverage data into a single report
+	@xcrg -merge_dir $(COVERAGE_DIR)/merged -report_format html -dir $(SCRIPT_DIR)/xsim.covdb
+	@echo "Regression complete. Merged coverage report available in $(COVERAGE_DIR)/merged."
 
 # Clean Target
 clean:
 	@echo "Cleaning simulation files but preserving logs and coverage..."
-	@rm -rf $(COMPILE_DIR) $(ELAB_DIR) $(SIM_DIR)
+	@rm -rf $(COMPILE_DIR) $(ELAB_DIR)
 	@echo "Logs and coverage preserved in $(LOG_DIR) and $(COVERAGE_DIR)."
 
 # Phony Targets
