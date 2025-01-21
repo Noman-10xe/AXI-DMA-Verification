@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2022.1 (lin64) Build 3526262 Mon Apr 18 15:47:01 MDT 2022
-| Date         : Thu Dec 19 10:33:12 2024
+| Date         : Mon Jan 20 14:30:54 2025
 | Host         : noman-10x running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_utilization -file axi_dma_0_utilization_synth.rpt -pb axi_dma_0_utilization_synth.pb
 | Design       : axi_dma_0
@@ -31,13 +31,13 @@ Table of Contents
 +----------------------------+------+-------+------------+-----------+-------+
 |          Site Type         | Used | Fixed | Prohibited | Available | Util% |
 +----------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*                | 1376 |     0 |          0 |     53200 |  2.59 |
-|   LUT as Logic             | 1218 |     0 |          0 |     53200 |  2.29 |
-|   LUT as Memory            |  158 |     0 |          0 |     17400 |  0.91 |
+| Slice LUTs*                | 1497 |     0 |          0 |     53200 |  2.81 |
+|   LUT as Logic             | 1336 |     0 |          0 |     53200 |  2.51 |
+|   LUT as Memory            |  161 |     0 |          0 |     17400 |  0.93 |
 |     LUT as Distributed RAM |    8 |     0 |            |           |       |
-|     LUT as Shift Register  |  150 |     0 |            |           |       |
-| Slice Registers            | 1857 |     0 |          0 |    106400 |  1.75 |
-|   Register as Flip Flop    | 1857 |     0 |          0 |    106400 |  1.75 |
+|     LUT as Shift Register  |  153 |     0 |            |           |       |
+| Slice Registers            | 1973 |     0 |          0 |    106400 |  1.85 |
+|   Register as Flip Flop    | 1973 |     0 |          0 |    106400 |  1.85 |
 |   Register as Latch        |    0 |     0 |          0 |    106400 |  0.00 |
 | F7 Muxes                   |    0 |     0 |          0 |     26600 |  0.00 |
 | F8 Muxes                   |    0 |     0 |          0 |     13300 |  0.00 |
@@ -60,7 +60,7 @@ Table of Contents
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
 | 76    |          Yes |         Set |            - |
-| 1781  |          Yes |       Reset |            - |
+| 1897  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -150,15 +150,15 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 1781 |        Flop & Latch |
-| LUT3     |  388 |                 LUT |
-| LUT6     |  336 |                 LUT |
-| LUT4     |  257 |                 LUT |
-| LUT5     |  218 |                 LUT |
-| LUT2     |  158 |                 LUT |
-| SRL16E   |  150 |  Distributed Memory |
+| FDRE     | 1897 |        Flop & Latch |
+| LUT3     |  398 |                 LUT |
+| LUT6     |  350 |                 LUT |
+| LUT4     |  294 |                 LUT |
+| LUT5     |  264 |                 LUT |
+| LUT2     |  175 |                 LUT |
+| SRL16E   |  153 |  Distributed Memory |
 | FDSE     |   76 |        Flop & Latch |
-| LUT1     |   65 |                 LUT |
+| LUT1     |   67 |                 LUT |
 | CARRY4   |   42 |          CarryLogic |
 | RAMD32   |   12 |  Distributed Memory |
 | RAMS32   |    4 |  Distributed Memory |

@@ -9,6 +9,7 @@
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 
 source axi_dma_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:07 . Memory (MB): peak = 2608.539 ; gain = 11.934 ; free physical = 939 ; free virtual = 7113
 Command: synth_design -top axi_dma_0 -part xa7z020clg484-1I -incremental_mode off -mode out_of_context
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xa7z020'
@@ -16,10 +17,10 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xa7z020
 INFO: [Device 21-403] Loading part xa7z020clg484-1I
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 432016
+INFO: [Synth 8-7075] Helper process launched with PID 16022
 WARNING: [Synth 8-9501] generate block is allowed only inside loop and conditional generate in SystemVerilog mode [/home/xe-user106/vivado/Vivado/2022.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:4023]
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 2607.570 ; gain = 0.000 ; free physical = 2739 ; free virtual = 8262
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 2608.539 ; gain = 0.000 ; free physical = 1173 ; free virtual = 6201
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'axi_dma_0' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/synth/axi_dma_0.vhd:128]
 	Parameter C_S_AXI_LITE_ADDR_WIDTH bound to: 10 - type: integer 
@@ -44,7 +45,7 @@ INFO: [Synth 8-638] synthesizing module 'axi_dma_0' [/home/xe-user106/10x-Engine
 	Parameter C_M_AXI_MM2S_ADDR_WIDTH bound to: 32 - type: integer 
 	Parameter C_M_AXI_MM2S_DATA_WIDTH bound to: 32 - type: integer 
 	Parameter C_M_AXIS_MM2S_TDATA_WIDTH bound to: 32 - type: integer 
-	Parameter C_INCLUDE_MM2S_DRE bound to: 0 - type: integer 
+	Parameter C_INCLUDE_MM2S_DRE bound to: 1 - type: integer 
 	Parameter C_INCLUDE_S2MM bound to: 1 - type: integer 
 	Parameter C_INCLUDE_S2MM_SF bound to: 1 - type: integer 
 	Parameter C_S2MM_BURST_SIZE bound to: 16 - type: integer 
@@ -194,6 +195,18 @@ INFO: [Synth 8-6155] done synthesizing module 'xpm_fifo_sync' (0#1) [/home/xe-us
 INFO: [Synth 8-256] done synthesizing module 'sync_fifo_fg' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/lib_fifo_v1_0_rfs.vhd:2250]
 INFO: [Synth 8-256] done synthesizing module 'axi_datamover_sfifo_autord' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:1295]
 INFO: [Synth 8-256] done synthesizing module 'axi_datamover_rd_sf' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:20208]
+INFO: [Synth 8-638] synthesizing module 'axi_datamover_mm2s_dre' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:30463]
+INFO: [Synth 8-226] default block is never used [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:35699]
+INFO: [Synth 8-638] synthesizing module 'axi_datamover_dre_mux2_1_x_n' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:29950]
+INFO: [Synth 8-226] default block is never used [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:29966]
+INFO: [Synth 8-256] done synthesizing module 'axi_datamover_dre_mux2_1_x_n' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:29950]
+INFO: [Synth 8-638] synthesizing module 'axi_datamover_dre_mux4_1_x_n' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:30097]
+INFO: [Synth 8-226] default block is never used [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:30113]
+INFO: [Synth 8-256] done synthesizing module 'axi_datamover_dre_mux4_1_x_n' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:30097]
+INFO: [Synth 8-226] default block is never used [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:35928]
+INFO: [Synth 8-226] default block is never used [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:35975]
+INFO: [Synth 8-226] default block is never used [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:36022]
+INFO: [Synth 8-256] done synthesizing module 'axi_datamover_mm2s_dre' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:30463]
 INFO: [Synth 8-638] synthesizing module 'axi_datamover_skid_buf' [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:19500]
 INFO: [Synth 8-256] done synthesizing module 'axi_datamover_skid_buf' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:19500]
 INFO: [Synth 8-256] done synthesizing module 'axi_datamover_mm2s_full_wrap' (0#1) [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:53572]
@@ -366,14 +379,14 @@ WARNING: [Synth 8-6014] Unused sequential element sig_input_reg_full_reg was rem
 WARNING: [Synth 8-6014] Unused sequential element sig_xfer_reg_full_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:8359]
 WARNING: [Synth 8-6014] Unused sequential element sig_next_tag_reg_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:10410]
 WARNING: [Synth 8-6014] Unused sequential element sig_next_cmd_cmplt_reg_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:10417]
-WARNING: [Synth 8-6014] Unused sequential element sig_next_dre_src_align_reg_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:12886]
-WARNING: [Synth 8-6014] Unused sequential element sig_next_dre_dest_align_reg_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:12887]
 WARNING: [Synth 8-6014] Unused sequential element sig_coelsc_reg_empty_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:13225]
 WARNING: [Synth 8-6014] Unused sequential element gen_rd_b.gen_doutb_pipe.enb_pipe_reg[0] was removed.  [/home/xe-user106/vivado/Vivado/2022.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv:3017]
 WARNING: [Synth 8-6014] Unused sequential element gdvld.data_valid_std_reg was removed.  [/home/xe-user106/vivado/Vivado/2022.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:537]
 WARNING: [Synth 8-6014] Unused sequential element gen_pntr_flags_cc.gae_cc_std.ram_aempty_i_reg was removed.  [/home/xe-user106/vivado/Vivado/2022.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:968]
 WARNING: [Synth 8-6014] Unused sequential element gen_fwft.empty_fwft_fb_reg was removed.  [/home/xe-user106/vivado/Vivado/2022.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:1390]
 WARNING: [Synth 8-6014] Unused sequential element hold_ff_q_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:1513]
+WARNING: [Synth 8-6014] Unused sequential element sig_flush_reg_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:30961]
+WARNING: [Synth 8-6014] Unused sequential element GEN_DELAY_REG[3].sig_delay_data_reg_reg[3] was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:31275]
 WARNING: [Synth 8-6014] Unused sequential element sig_inhibit_rdy_n_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:2014]
 WARNING: [Synth 8-6014] Unused sequential element sig_input_reg_full_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:26374]
 WARNING: [Synth 8-6014] Unused sequential element sig_psm_ld_calc2_reg was removed.  [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/hdl/axi_datamover_v5_1_vh_rfs.vhd:26578]
@@ -506,18 +519,18 @@ WARNING: [Synth 8-7129] Port addr2wsc_fifo_empty in module axi_datamover_wr_stat
 WARNING: [Synth 8-7129] Port data2wsc_last_error in module axi_datamover_wr_status_cntl is either unconnected or has no load
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:12 . Memory (MB): peak = 2607.570 ; gain = 0.000 ; free physical = 2837 ; free virtual = 8359
+Finished RTL Elaboration : Time (s): cpu = 00:00:13 ; elapsed = 00:00:15 . Memory (MB): peak = 2608.539 ; gain = 0.000 ; free physical = 1208 ; free virtual = 6242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:10 ; elapsed = 00:00:13 . Memory (MB): peak = 2607.570 ; gain = 0.000 ; free physical = 2837 ; free virtual = 8359
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:13 ; elapsed = 00:00:16 . Memory (MB): peak = 2608.539 ; gain = 0.000 ; free physical = 1215 ; free virtual = 6249
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:13 . Memory (MB): peak = 2607.570 ; gain = 0.000 ; free physical = 2837 ; free virtual = 8359
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:13 ; elapsed = 00:00:16 . Memory (MB): peak = 2608.539 ; gain = 0.000 ; free physical = 1215 ; free virtual = 6249
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.08 . Memory (MB): peak = 2607.570 ; gain = 0.000 ; free physical = 2830 ; free virtual = 8353
+Netlist sorting complete. Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.09 . Memory (MB): peak = 2608.539 ; gain = 0.000 ; free physical = 1194 ; free virtual = 6231
 INFO: [Netlist 29-17] Analyzing 12 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -539,22 +552,22 @@ Resolution: To avoid this warning, move constraints listed in [.Xil/axi_dma_0_pr
 INFO: [Project 1-1714] 3 XPM XDC files have been applied to the design.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2710.414 ; gain = 0.000 ; free physical = 2854 ; free virtual = 8377
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2712.383 ; gain = 0.000 ; free physical = 1155 ; free virtual = 6203
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 12 instances were transformed.
   FDR => FDRE: 12 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2710.414 ; gain = 0.000 ; free physical = 2854 ; free virtual = 8377
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.12 ; elapsed = 00:00:00.06 . Memory (MB): peak = 2712.383 ; gain = 0.000 ; free physical = 1155 ; free virtual = 6203
 INFO: [Designutils 20-5008] Incremental synthesis strategy off
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:17 ; elapsed = 00:00:20 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2913 ; free virtual = 8436
+Finished Constraint Validation : Time (s): cpu = 00:00:21 ; elapsed = 00:00:24 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1221 ; free virtual = 6268
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xa7z020clg484-1I
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:17 ; elapsed = 00:00:20 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2913 ; free virtual = 8436
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:21 ; elapsed = 00:00:24 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1221 ; free virtual = 6268
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -564,7 +577,7 @@ Applied set_property KEEP_HIERARCHY = SOFT for U0/I_PRMRY_DATAMOVER/\GEN_MM2S_FU
 Applied set_property KEEP_HIERARCHY = SOFT for U0/I_PRMRY_DATAMOVER/\GEN_S2MM_FULL.I_S2MM_FULL_WRAPPER /\GEN_ENABLE_INDET_BTT_SF.I_INDET_BTT /I_DATA_FIFO/\BLK_MEM.I_SYNC_FIFOGEN_FIFO /\xpm_fifo_instance.xpm_fifo_sync_inst . (constraint file  auto generated constraint).
 Applied set_property KEEP_HIERARCHY = SOFT for U0/I_PRMRY_DATAMOVER/\GEN_S2MM_FULL.I_S2MM_FULL_WRAPPER /\GEN_ENABLE_INDET_BTT_SF.I_INDET_BTT /I_XD_FIFO/\NON_BLK_MEM.I_SYNC_FIFOGEN_FIFO /\xpm_fifo_instance.xpm_fifo_sync_inst . (constraint file  auto generated constraint).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:20 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2913 ; free virtual = 8436
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:24 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1221 ; free virtual = 6267
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'smpl_cs_reg' in module 'axi_dma_smple_sm'
 INFO: [Synth 8-802] inferred FSM for state register 'sig_pcc_sm_state_reg' in module 'axi_datamover_pcc'
@@ -659,7 +672,7 @@ INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM 
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'gen_fwft.curr_fwft_state_reg' using encoding 'sequential' in module 'xpm_fifo_base__parameterized1'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:20 ; elapsed = 00:00:23 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2916 ; free virtual = 8442
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:24 ; elapsed = 00:00:27 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1236 ; free virtual = 6282
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -695,7 +708,7 @@ Detailed RTL Component Info :
 	               23 Bit    Registers := 2     
 	               16 Bit    Registers := 6     
 	               14 Bit    Registers := 12    
-	               10 Bit    Registers := 3     
+	               10 Bit    Registers := 14    
 	                9 Bit    Registers := 3     
 	                8 Bit    Registers := 17    
 	                7 Bit    Registers := 13    
@@ -703,8 +716,8 @@ Detailed RTL Component Info :
 	                5 Bit    Registers := 9     
 	                4 Bit    Registers := 56    
 	                3 Bit    Registers := 14    
-	                2 Bit    Registers := 17    
-	                1 Bit    Registers := 493   
+	                2 Bit    Registers := 22    
+	                1 Bit    Registers := 502   
 +---RAMs : 
 	               4K Bit	(128 X 39 bit)          RAMs := 1     
 	               4K Bit	(128 X 38 bit)          RAMs := 1     
@@ -719,6 +732,8 @@ Detailed RTL Component Info :
 	   4 Input   14 Bit        Muxes := 2     
 	   3 Input   14 Bit        Muxes := 1     
 	   2 Input   11 Bit        Muxes := 4     
+	   2 Input   10 Bit        Muxes := 5     
+	   4 Input   10 Bit        Muxes := 3     
 	   2 Input    8 Bit        Muxes := 22    
 	   8 Input    8 Bit        Muxes := 1     
 	   3 Input    8 Bit        Muxes := 1     
@@ -727,17 +742,20 @@ Detailed RTL Component Info :
 	   2 Input    5 Bit        Muxes := 4     
 	   2 Input    4 Bit        Muxes := 22    
 	   4 Input    4 Bit        Muxes := 8     
+	   5 Input    4 Bit        Muxes := 1     
 	   2 Input    3 Bit        Muxes := 19    
 	   3 Input    3 Bit        Muxes := 2     
 	   6 Input    3 Bit        Muxes := 2     
 	   5 Input    3 Bit        Muxes := 3     
-	   2 Input    2 Bit        Muxes := 111   
+	   2 Input    2 Bit        Muxes := 114   
 	   3 Input    2 Bit        Muxes := 2     
 	   4 Input    2 Bit        Muxes := 21    
-	   2 Input    1 Bit        Muxes := 198   
+	  16 Input    2 Bit        Muxes := 1     
+	   6 Input    2 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 214   
 	   3 Input    1 Bit        Muxes := 11    
 	   8 Input    1 Bit        Muxes := 3     
-	   4 Input    1 Bit        Muxes := 6     
+	   4 Input    1 Bit        Muxes := 9     
 	   7 Input    1 Bit        Muxes := 3     
 	   6 Input    1 Bit        Muxes := 7     
 ---------------------------------------------------------------------------------
@@ -762,7 +780,6 @@ INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
-INFO: [Synth 8-5784] Optimized 1 bits of RAM "gen_wr_a.gen_word_narrow.mem_reg" due to constant propagation. Old ram width 39 bits, new ram width 38 bits.
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
@@ -777,7 +794,7 @@ INFO: [Synth 8-3332] Sequential element (I_RST_MODULE/REG_HRD_RST_OUT/GENERATE_L
 INFO: [Synth 8-3332] Sequential element (I_RST_MODULE/REG_HRD_RST_OUT/GENERATE_LEVEL_P_S_CDC.SINGLE_BIT.CROSS_PLEVEL_IN2SCNDRY_s_level_out_d6) is unused and will be removed from module axi_dma.
 INFO: [Synth 8-3332] Sequential element (I_PRMRY_DATAMOVER/GEN_S2MM_FULL.I_S2MM_FULL_WRAPPER/GEN_INCLUDE_IBTTCC.I_S2MM_MSTR_IBTTCC/FSM_onehot_sig_csm_state_reg[3]) is unused and will be removed from module axi_dma.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:26 ; elapsed = 00:00:30 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2872 ; free virtual = 8407
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:32 ; elapsed = 00:00:36 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1179 ; free virtual = 6241
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
@@ -810,7 +827,7 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:31 ; elapsed = 00:00:35 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2792 ; free virtual = 8328
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:37 ; elapsed = 00:00:42 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1032 ; free virtual = 6105
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
@@ -820,7 +837,7 @@ INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 INFO: [Synth 8-5775] Found 'rw_addr_collision' attribute set to 'no' on SDP RAM gen_wr_a.gen_word_narrow.mem_reg. Setting write mode to NO_CHANGE 
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:37 ; elapsed = 00:00:41 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2736 ; free virtual = 8274
+Finished Timing Optimization : Time (s): cpu = 00:00:45 ; elapsed = 00:00:50 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 860 ; free virtual = 5934
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -849,7 +866,7 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:38 ; elapsed = 00:00:43 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2717 ; free virtual = 8255
+Finished Technology Mapping : Time (s): cpu = 00:00:46 ; elapsed = 00:00:51 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 832 ; free virtual = 5907
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -869,37 +886,37 @@ Finished Final Netlist Cleanup
 INFO: [Synth 8-3295] tying undriven pin I_AXI_DMA_REG_MODULE/strm_valid_int2_inferred:in0 to constant 0
 INFO: [Synth 8-3295] tying undriven pin I_AXI_DMA_REG_MODULE/strm_valid_int_cdc_to_inferred:in0 to constant 0
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:41 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2739 ; free virtual = 8278
+Finished IO Insertion : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 922 ; free virtual = 5995
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:41 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2739 ; free virtual = 8278
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 922 ; free virtual = 5995
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:42 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2735 ; free virtual = 8271
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 924 ; free virtual = 5996
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:42 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2735 ; free virtual = 8271
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 924 ; free virtual = 5996
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:42 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2735 ; free virtual = 8271
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 924 ; free virtual = 5996
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:42 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2735 ; free virtual = 8271
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 924 ; free virtual = 5996
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -910,8 +927,8 @@ Dynamic Shift Register Report:
 |Module Name | RTL Name                  | Length | Data Width | SRL16E | SRLC32E | Mux F7 | Mux F8 | Mux F9 | 
 +------------+---------------------------+--------+------------+--------+---------+--------+--------+--------+
 |dsrl        | INFERRED_GEN.data_reg[3]  | 59     | 59         | 59     | 0       | 0      | 0      | 0      | 
-|dsrl__1     | INFERRED_GEN.data_reg[3]  | 29     | 29         | 29     | 0       | 0      | 0      | 0      | 
-|dsrl__2     | INFERRED_GEN.data_reg[3]  | 8      | 8          | 8      | 0       | 0      | 0      | 0      | 
+|dsrl__1     | INFERRED_GEN.data_reg[3]  | 31     | 31         | 31     | 0       | 0      | 0      | 0      | 
+|dsrl__2     | INFERRED_GEN.data_reg[3]  | 12     | 12         | 12     | 0       | 0      | 0      | 0      | 
 |dsrl__3     | INFERRED_GEN.data_reg[5]  | 2      | 2          | 2      | 0       | 0      | 0      | 0      | 
 |dsrl__4     | INFERRED_GEN.data_reg[5]  | 21     | 21         | 21     | 0       | 0      | 0      | 0      | 
 |dsrl__5     | INFERRED_GEN.data_reg[3]  | 25     | 25         | 25     | 0       | 0      | 0      | 0      | 
@@ -937,45 +954,45 @@ Report Cell Usage:
 |      |Cell     |Count |
 +------+---------+------+
 |1     |CARRY4   |    42|
-|2     |LUT1     |    65|
-|3     |LUT2     |   158|
-|4     |LUT3     |   388|
-|5     |LUT4     |   257|
-|6     |LUT5     |   218|
-|7     |LUT6     |   336|
+|2     |LUT1     |    67|
+|3     |LUT2     |   175|
+|4     |LUT3     |   398|
+|5     |LUT4     |   294|
+|6     |LUT5     |   264|
+|7     |LUT6     |   350|
 |8     |RAM32M   |     2|
 |9     |RAMB36E1 |     2|
-|10    |SRL16E   |   150|
+|10    |SRL16E   |   153|
 |11    |FDR      |     8|
-|12    |FDRE     |  1773|
+|12    |FDRE     |  1889|
 |13    |FDSE     |    76|
 +------+---------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:42 ; elapsed = 00:00:46 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2734 ; free virtual = 8271
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 924 ; free virtual = 5996
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 235 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:39 ; elapsed = 00:00:44 . Memory (MB): peak = 2710.414 ; gain = 0.000 ; free physical = 2781 ; free virtual = 8317
-Synthesis Optimization Complete : Time (s): cpu = 00:00:42 ; elapsed = 00:00:47 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 2781 ; free virtual = 8317
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:48 ; elapsed = 00:00:53 . Memory (MB): peak = 2712.383 ; gain = 0.000 ; free physical = 961 ; free virtual = 6035
+Synthesis Optimization Complete : Time (s): cpu = 00:00:51 ; elapsed = 00:00:57 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 961 ; free virtual = 6035
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2710.414 ; gain = 0.000 ; free physical = 2884 ; free virtual = 8421
+Netlist sorting complete. Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.06 . Memory (MB): peak = 2712.383 ; gain = 0.000 ; free physical = 1057 ; free virtual = 6131
 INFO: [Netlist 29-17] Analyzing 54 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2710.414 ; gain = 0.000 ; free physical = 2835 ; free virtual = 8371
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2712.383 ; gain = 0.000 ; free physical = 989 ; free virtual = 6063
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 10 instances were transformed.
   FDR => FDRE: 8 instances
   RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 2 instances
 
-Synth Design complete, checksum: 13c8689e
+Synth Design complete, checksum: 907e6a49
 INFO: [Common 17-83] Releasing license: Synthesis
-308 Infos, 161 Warnings, 0 Critical Warnings and 0 Errors encountered.
+319 Infos, 161 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:50 ; elapsed = 00:00:52 . Memory (MB): peak = 2710.414 ; gain = 102.844 ; free physical = 3012 ; free virtual = 8549
+synth_design: Time (s): cpu = 00:01:03 ; elapsed = 00:01:04 . Memory (MB): peak = 2712.383 ; gain = 103.844 ; free physical = 1239 ; free virtual = 6314
 INFO: [Common 17-1381] The checkpoint '/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.runs/axi_dma_0_synth_1/axi_dma_0.dcp' has been generated.
-INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP axi_dma_0, cache-ID = ce37d6538d31a547
-INFO: [Coretcl 2-1174] Renamed 129 cell refs.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP axi_dma_0, cache-ID = 3e9973bb2dd22270
+INFO: [Coretcl 2-1174] Renamed 131 cell refs.
 INFO: [Common 17-1381] The checkpoint '/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.runs/axi_dma_0_synth_1/axi_dma_0.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file axi_dma_0_utilization_synth.rpt -pb axi_dma_0_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Thu Dec 19 10:33:12 2024...
+INFO: [Common 17-206] Exiting Vivado at Mon Jan 20 14:30:55 2025...

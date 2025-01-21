@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2024 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2025 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -388,7 +388,7 @@ BEGIN
       C_M_AXI_MM2S_ADDR_WIDTH => 32,
       C_M_AXI_MM2S_DATA_WIDTH => 32,
       C_M_AXIS_MM2S_TDATA_WIDTH => 32,
-      C_INCLUDE_MM2S_DRE => 0,
+      C_INCLUDE_MM2S_DRE => 1,
       C_INCLUDE_S2MM => 1,
       C_INCLUDE_S2MM_SF => 1,
       C_S2MM_BURST_SIZE => 16,

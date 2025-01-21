@@ -17,9 +17,11 @@ COMPILE_DIR := $(OUT_DIR)/compile
 ELAB_DIR := $(OUT_DIR)/elaborate
 SIM_DIR := $(OUT_DIR)/simulate
 REGRESS_DIR := $(OUT_DIR)/regression
+LOG_DIR := $(OUT_DIR)/logs
+COVERAGE_DIR := $(OUT_DIR)/coverage
 
 # Ensure directories exist
-$(OUT_DIR) $(COMPILE_DIR) $(ELAB_DIR) $(SIM_DIR) $(REGRESS_DIR):
+$(OUT_DIR) $(COMPILE_DIR) $(ELAB_DIR) $(SIM_DIR) $(REGRESS_DIR) $(LOG_DIR) $(COVERAGE_DIR):
 	@mkdir -p $@
 
 # Main Targets
@@ -43,25 +45,29 @@ simulate: $(SIM_DIR)
 	@mkdir -p $(SIM_DIR)
 	@cd $(SCRIPT_DIR) && ./simulate.sh $(SIM_OPT) 2>&1 | tee $(SIM_DIR)/simulate.log
 	@cp $(SCRIPT_DIR)/dump.vcd $(SIM_DIR)/dump.vcd || echo "dump.vcd not found, skipping copy."
+	@xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -output_dir $(COVERAGE_DIR)/$(TEST_NAME)
 	@echo "Simulation completed. Logs available in $(SIM_DIR)/simulate.log."
 
 # Regression Target
-regress: $(REGRESS_DIR)
+regress: $(REGRESS_DIR) $(COVERAGE_DIR)
 	@echo "Starting Regression..."
 	@mkdir -p $(REGRESS_DIR)
 	@for t in $(TESTS); do \
 		echo "Running test: $$t"; \
-		$(MAKE) simulate SIM_OPT="$(SIM_OPT) +UVM_TESTNAME=$$t"; \
+		$(MAKE) simulate SIM_OPT="$(SIM_OPT) +UVM_TESTNAME=$$t" TEST_NAME=$$t; \
 		TEST_DIR=$(REGRESS_DIR)/$$t; \
 		mkdir -p $$TEST_DIR; \
 		mv $(SIM_DIR)/* $$TEST_DIR/; \
 		echo "Logs and VCD for $$t saved in $$TEST_DIR."; \
 	done
-	@echo "Regression completed. Logs available in $(REGRESS_DIR)."
+	@xcrg -report_format html -dir $(COVERAGE_DIR) -output_dir $(COVERAGE_DIR)/combined_coverage
+	@echo "Regression completed. Combined coverage report available in $(COVERAGE_DIR)/combined_coverage."
 
 # Clean Target
 clean:
-	rm -rf $(OUT_DIR)
+	@echo "Cleaning simulation files but preserving logs and coverage..."
+	@rm -rf $(COMPILE_DIR) $(ELAB_DIR) $(SIM_DIR)
+	@echo "Logs and coverage preserved in $(LOG_DIR) and $(COVERAGE_DIR)."
 
 # Phony Targets
 .PHONY: main compile elaborate simulate regress clean
