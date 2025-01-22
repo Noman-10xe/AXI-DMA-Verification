@@ -158,35 +158,35 @@ endclocking : ioWriteDriver
   
 //     ($onehot(awvalid) && $onehot(awready) |-> !$isunknown(awaddr)))
 // 		else
-// 		  $error({$psprintf("err_awaddr %s went to X or Z during address write phase when awvalid=1", `gfn)});
+// 		  `uvm_error({$psprintf("err_awaddr %s went to X or Z during address write phase when awvalid=1", `gfn)});
 
 // // write data must not be X or Z during data write phase
 // assertWriteDataUnknown:assert property (
   
 //     ($onehot(wvalid) && $onehot(wready) |-> !$isunknown(wdata)))
 // 		else
-// 		  $error({$psprintf("err_wdata %s went to X or Z during data write phase when wvalid=1", `gfn)});
+// 		  `uvm_error({$psprintf("err_wdata %s went to X or Z during data write phase when wvalid=1", `gfn)});
 
 // // write resp must not be X or Z during resp write phase
 // assertWriteRespUnKnown:assert property (
   
 //     ($onehot(bvalid) && $onehot(bready) |-> !$isunknown(bresp)))
 //     else
-//       $error({$psprintf("err_bresp %s went to X or Z during response write phase when bvalid=1", `gfn)});
+//       `uvm_error({$psprintf("err_bresp %s went to X or Z during response write phase when bvalid=1", `gfn)});
 
 // // read address must not be X or Z during address read phase
 // assertReadAddrUnKnown:assert property (
   
 //     ($onehot(arvalid) && $onehot(arready) |-> !$isunknown(araddr)))
 //     else
-//       $error({$psprintf("err_araddr %s went to X or Z during address read phase when arvalid=1", `gfn)});
+//       `uvm_error({$psprintf("err_araddr %s went to X or Z during address read phase when arvalid=1", `gfn)});
 
 // // read data must not be X or Z during read data phase
 // assertReadDataUnKnown:assert property (
   
 //     ($onehot(rvalid) && $onehot(rready) |-> !$isunknown(rdata)))
 //     else
-//       $error({$psprintf("err_ardata %s went to X or Z during data read phase when rvalid=1", `gfn)});
+//       `uvm_error({$psprintf("err_ardata %s went to X or Z during data read phase when rvalid=1", `gfn)});
 
 // // assert each pin has value not unknown
 

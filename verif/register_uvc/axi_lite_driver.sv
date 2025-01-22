@@ -62,10 +62,11 @@ task read();
                 wait(`DRIV.s_axi_lite_arready);
                 `DRIV.s_axi_lite_arvalid        <= 1'b0;
 
-                `DRIV.s_axi_lite_rready <= 1'b0;
+                `DRIV.s_axi_lite_rready <= 1'b1;
+                if (item.s_axi_lite_rready) `DRIV.s_axi_lite_rready <= 1'b0;
                 wait(`DRIV.s_axi_lite_rvalid);
                 @(posedge vif.axi_aclk);
-                `DRIV.s_axi_lite_rready <= 1;
+                `DRIV.s_axi_lite_rready <= item.s_axi_lite_rready;
 
                 item.s_axi_lite_rdata   <= `DRIV.s_axi_lite_rdata;
                 item.s_axi_lite_rresp   <= `DRIV.s_axi_lite_rresp;

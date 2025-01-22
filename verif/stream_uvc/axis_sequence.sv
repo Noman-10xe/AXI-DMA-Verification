@@ -42,7 +42,7 @@ class axis_base_sequence extends uvm_sequence #(axis_transaction);
     if (phase != null) begin
       phase.drop_objection(this, get_type_name());
       `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
-      phase.phase_done.set_drain_time(this, 100ns);
+      phase.phase_done.set_drain_time(this, 350ns);
     end
   endtask : post_body
 

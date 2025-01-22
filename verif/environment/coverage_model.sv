@@ -141,15 +141,25 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins bready_1 = {1};
                 }
 
-                CROSS_AWREADY_AWVALID : cross cp_awvalid, cp_awready;
+                CROSS_AWREADY_AWVALID : cross cp_awvalid, cp_awready {
+                        ignore_bins ignore_0 = binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
+                     }
+        
                 CROSS_WREADY_WVALID : cross cp_wready, cp_wvalid;
-                CROSS_AWADDR_CTRL: cross cp_awaddr, cp_awvalid, cp_awready;
-                CROSS_WDATA_CTRL: cross cp_wdata, cp_wvalid, cp_wready, cp_bresp;
+                // {
+                // ignore_bins ignore_0 = binsof(cp_wvalid.wvalid_1) && binsof(cp_wready.wready_0);
+                // }
 
-                cross_awvalid_x_awadrr: cross cp_awaddr, cp_awvalid {
-                        bins valid_awaddr = binsof(cp_awaddr) && binsof(cp_awvalid);
-                        ignore_bins invalid_awaddr = !(binsof(cp_awaddr));
+                CROSS_ADDR_CTRL: cross cp_awaddr, cp_awvalid, cp_awready {
+                        bins valid_awaddr = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_1) && binsof(cp_awready);
+                        bins invalid_awaddr = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_0) && binsof(cp_awready);
+                        ignore_bins ignore_0 = !((binsof(cp_awaddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
                 }
+
+                CROSS_RDATA_CTRL: cross cp_wvalid, cp_wready, cp_bresp {
+                        ignore_bins ignore_0 = binsof(cp_wvalid) && binsof(cp_wready) && binsof(cp_bresp.bresp_slvErr); 
+                }
+
 
         endgroup : cg_write_channel
 

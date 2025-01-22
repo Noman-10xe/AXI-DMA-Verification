@@ -42,11 +42,14 @@ elaborate: $(ELAB_DIR)
 simulate: $(SIM_DIR)
 	@mkdir -p $(SIM_DIR)/$(TEST_NAME)
 	@echo "Running simulation for test: $(TEST_NAME)"
-	@cd $(SCRIPT_DIR) && TEST_NAME=$(TEST_NAME) ./simulate.sh -testplusarg UVM_TESTNAME=$(TEST_NAME) | tee $(SIM_DIR)/$(TEST_NAME)/simulate.log
+	@cd $(SCRIPT_DIR) && TEST_NAME=$(TEST_NAME) ./sim.sh -testplusarg UVM_TESTNAME=$(TEST_NAME) | tee $(SIM_DIR)/$(TEST_NAME)/simulate.log
 	@cp $(SCRIPT_DIR)/dump.vcd $(SIM_DIR)/$(TEST_NAME)/dump.vcd || echo "dump.vcd not found for $(TEST_NAME), skipping copy."
-	@xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$(TEST_NAME)
+	@cp -r $(SCRIPT_DIR)/xsim.covdb $(SIM_DIR)/$(TEST_NAME)/xsim.covdb || echo "xsim.covdb not found for $(TEST_NAME), skipping copy."
+	@cp -r $(SCRIPT_DIR)/axi_dma_tb_top_behav.wdb $(SIM_DIR)/$(TEST_NAME) || echo "Waveform.wdb File not found for $(TEST_NAME), skipping copy."
+	@cp -r $(SCRIPT_DIR)/xsim.dir $(SIM_DIR)/$(TEST_NAME)/ || echo "xsim.dir not found for $(TEST_NAME), skipping copy."
+	@xcrg -report_format html -dir $(SIM_DIR)/$(TEST_NAME)/xsim.covdb -report_dir $(COVERAGE_DIR)/$(TEST_NAME)
 	@echo "Simulation complete for test: $(TEST_NAME)"
-
+	
 # Regression Target
 regress: $(REGRESS_DIR)
 	@mkdir -p $(REGRESS_DIR)
@@ -55,12 +58,18 @@ regress: $(REGRESS_DIR)
 		echo "Running test: $$t"; \
 		$(MAKE) simulate TEST_NAME=$$t; \
 		mkdir -p $(REGRESS_DIR)/$$t; \
-		mv $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
-		xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$$t; \
+		cp -r $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
 	done
-        # Merge all coverage data into a single report
-	@xcrg -merge_dir $(COVERAGE_DIR)/merged -report_format html -dir $(SCRIPT_DIR)/xsim.covdb
-	@echo "Regression complete. Merged coverage report available in $(COVERAGE_DIR)/merged."
+	# Merge all individual coverage databases into a single merged report
+	@mkdir -p $(COVERAGE_DIR)/merged
+	@echo "Merging coverage data..."
+	@cd $(COVERAGE_DIR)/merged && @merge_cmd="xcrg"; \
+	for t in $(TESTS); do \
+		merge_cmd="$$merge_cmd -merge_dir $(REGRESS_DIR)/$$t/xsim.covdb"; \
+	done; \
+	$$merge_cmd -merge_db_name merged_coverage -report_format html -report_dir $(COVERAGE_DIR)/merged_report || echo "Error merging coverage data."
+	@echo "Regression complete. Merged coverage report available in $(COVERAGE_DIR)/merged_report."
+
 
 # Clean Target
 clean:

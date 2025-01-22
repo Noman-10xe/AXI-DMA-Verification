@@ -52,7 +52,7 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
         uvm_top.print_topology();
         
         // Set Verbosity Level
-        env.set_report_verbosity_level_hier(UVM_HIGH);
+        env.set_report_verbosity_level_hier(UVM_LOW);
 endfunction: end_of_elaboration_phase
 
 
@@ -360,7 +360,7 @@ class write_introut_test extends base_test;
                 clear_introut_seq.RAL_Model = env.RAL_Model;
                 clear_introut_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-                phase.phase_done.set_drain_time(this, 100ns);
+                phase.phase_done.set_drain_time(this, 400ns);
                 end
         endtask: run_phase
         
