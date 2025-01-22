@@ -78,9 +78,7 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                 ignore_bins ignore_0 = binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1);
              }
 
-             CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid{
-                ignore_bins ignore_0 = binsof(cp_rvalid.rvalid_1) && binsof(cp_rready.rready_0);
-             }
+             CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid;
 
              CROSS_ADDR_CTRL: cross cp_araddr, cp_arvalid, cp_arready {
                 bins valid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready);
@@ -130,7 +128,9 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                 }
                 cp_bresp : coverpoint tr.s_axi_lite_bresp {
                         bins bresp_okay         = {2'b00};
+                        bins bresp_exOkay       = {2'b01};
                         bins bresp_slvErr       = {2'b10};
+                        bins bresp_DecErr       = {2'b11};
                 }
                 cp_bvalid : coverpoint tr.s_axi_lite_bvalid {
                         bins bvalid_0 = {0};
@@ -145,10 +145,9 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         ignore_bins ignore_0 = binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
                      }
         
-                CROSS_WREADY_WVALID : cross cp_wready, cp_wvalid;
-                // {
-                // ignore_bins ignore_0 = binsof(cp_wvalid.wvalid_1) && binsof(cp_wready.wready_0);
-                // }
+                CROSS_WREADY_WVALID : cross cp_wready, cp_wvalid {
+                        ignore_bins ignore_0 = binsof(cp_wvalid.wvalid_0) && binsof(cp_wready.wready_1);
+                }
 
                 CROSS_ADDR_CTRL: cross cp_awaddr, cp_awvalid, cp_awready {
                         bins valid_awaddr = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_1) && binsof(cp_awready);
@@ -156,10 +155,11 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         ignore_bins ignore_0 = !((binsof(cp_awaddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
                 }
 
-                CROSS_RDATA_CTRL: cross cp_wvalid, cp_wready, cp_bresp {
-                        ignore_bins ignore_0 = binsof(cp_wvalid) && binsof(cp_wready) && binsof(cp_bresp.bresp_slvErr); 
+                CROSS_BRESP_CTRL: cross cp_bvalid, cp_bready, cp_bresp {
+                        ignore_bins ignore_0 = binsof(cp_bvalid) && binsof(cp_bready) && binsof(cp_bresp.bresp_slvErr);
+                        ignore_bins ignore_1 = binsof(cp_bvalid) && binsof(cp_bready) && binsof(cp_bresp.bresp_exOkay); 
+                        ignore_bins ignore_2 = binsof(cp_bvalid) && binsof(cp_bready) && binsof(cp_bresp.bresp_DecErr);
                 }
-
 
         endgroup : cg_write_channel
 

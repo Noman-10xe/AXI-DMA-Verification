@@ -18,7 +18,6 @@ class axis_transaction extends uvm_sequence_item;
         rand bit                                                        tvalid;
         rand bit                                                        tready;
         rand bit                                                        tlast;
-        int packet_length = 0;
 
 	// Constructor
 	function new ( string name = "axis_transaction" );

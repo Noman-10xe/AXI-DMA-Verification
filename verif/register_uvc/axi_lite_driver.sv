@@ -53,25 +53,23 @@ endtask: main_phase
 task read();
 
         @(posedge vif.axi_aclk);
-        `DRIV.s_axi_lite_arvalid        <= item.s_axi_lite_arvalid;
-        `DRIV.s_axi_lite_araddr         <= item.s_axi_lite_araddr;
+        `DRIV.s_axi_lite_arvalid                <= item.s_axi_lite_arvalid;
+        `DRIV.s_axi_lite_araddr                 <= item.s_axi_lite_araddr;
         
         // Read Address Phase
         if (item.s_axi_lite_arvalid) begin
-                
+                `DRIV.s_axi_lite_rready         <= item.s_axi_lite_rready;
                 wait(`DRIV.s_axi_lite_arready);
                 `DRIV.s_axi_lite_arvalid        <= 1'b0;
 
-                `DRIV.s_axi_lite_rready <= 1'b1;
-                if (item.s_axi_lite_rready) `DRIV.s_axi_lite_rready <= 1'b0;
+                `DRIV.s_axi_lite_rready         <= item.s_axi_lite_rready;
                 wait(`DRIV.s_axi_lite_rvalid);
-                @(posedge vif.axi_aclk);
-                `DRIV.s_axi_lite_rready <= item.s_axi_lite_rready;
+                `DRIV.s_axi_lite_rready         <= 1'b1;
 
-                item.s_axi_lite_rdata   <= `DRIV.s_axi_lite_rdata;
-                item.s_axi_lite_rresp   <= `DRIV.s_axi_lite_rresp;
-                @(posedge vif.axi_aclk);
-                `DRIV.s_axi_lite_rready <= 1'b0;
+                item.s_axi_lite_rdata           <= `DRIV.s_axi_lite_rdata;
+                item.s_axi_lite_rresp           <= `DRIV.s_axi_lite_rresp;
+                vif.wait_clks(1);
+                `DRIV.s_axi_lite_rready         <= 1'b0;
         end
 endtask : read
 
@@ -86,20 +84,23 @@ task write();
 
                 // Write Data Phase
                 @(posedge vif.axi_aclk);
-                `DRIV.s_axi_lite_wvalid         <= item.s_axi_lite_wvalid;
-                `DRIV.s_axi_lite_wdata          <= item.s_axi_lite_wdata;
-                
+                `DRIV.s_axi_lite_wvalid                 <= item.s_axi_lite_wvalid;
+                `DRIV.s_axi_lite_wdata                  <= item.s_axi_lite_wdata;
                 
                 if (item.s_axi_lite_wvalid) begin
+                        `DRIV.s_axi_lite_bready         <= item.s_axi_lite_bready;
                         wait(`DRIV.s_axi_lite_wready);
                         `DRIV.s_axi_lite_wvalid         <= 1'b0;
-                        `DRIV.s_axi_lite_awvalid         <= 1'b0;
+                        `DRIV.s_axi_lite_awvalid        <= 1'b0;
 
                         // Response Phase
-                        @(posedge vif.axi_aclk);
-                        `DRIV.s_axi_lite_bready         <= 1'b0;
+                        `DRIV.s_axi_lite_bready         <= item.s_axi_lite_bready;
                         wait(`DRIV.s_axi_lite_bvalid);
                         `DRIV.s_axi_lite_bready         <= 1'b1;
+                        item.s_axi_lite_bresp           <= `DRIV.s_axi_lite_bresp;
+                        
+                        vif.wait_clks(1);
+                        `DRIV.s_axi_lite_bready         <= 1'b0;
                 end
         end
 

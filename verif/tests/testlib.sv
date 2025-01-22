@@ -331,6 +331,8 @@ class write_introut_test extends base_test;
                 length_seq                      = s2mm_length_sequence::type_id::create("length_seq", this);
                 env_cfg.scoreboard_read         = 0;
                 env_cfg.DST_ADDR                = 'h20;
+                env_cfg.DATA_LENGTH             = 32;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -340,6 +342,10 @@ class write_introut_test extends base_test;
                 s2mm_short.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
+                axis_write_seq.set_starting_phase(phase);
+                axis_write_seq.start(env.axis_wr_agt.sequencer);
+
+                #700ns;
                 repeat(10) begin
 
                 env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
@@ -350,7 +356,6 @@ class write_introut_test extends base_test;
                 length_seq.RAL_Model = env.RAL_Model;
                 length_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-        
 
                 axis_write_seq.set_starting_phase(phase);
                 axis_write_seq.start(env.axis_wr_agt.sequencer);
@@ -362,6 +367,7 @@ class write_introut_test extends base_test;
                 phase.drop_objection(this);
                 phase.phase_done.set_drain_time(this, 400ns);
                 end
+                
         endtask: run_phase
         
 endclass : write_introut_test

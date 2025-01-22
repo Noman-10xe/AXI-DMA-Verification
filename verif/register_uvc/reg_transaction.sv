@@ -66,16 +66,13 @@ class reg_transaction extends uvm_sequence_item;
         constraint c_read_transaction {
                 s_axi_lite_arvalid      == 1'b1;
                 s_axi_lite_rready       == 1'b1;
-                s_axi_lite_awvalid      == 1'b0;
-                s_axi_lite_wvalid       == 1'b0;
         }
 
         // Write Transaction
         constraint c_write_transaction {
                 s_axi_lite_awvalid      == 1'b1;
                 s_axi_lite_wvalid       == 1'b1;
-                s_axi_lite_arvalid      == 1'b0;
-                s_axi_lite_rready       == 1'b0;
+                s_axi_lite_bready       == 1'b1;
         }
 
 endclass : reg_transaction
