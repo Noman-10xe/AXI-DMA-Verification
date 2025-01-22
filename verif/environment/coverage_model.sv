@@ -128,9 +128,6 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                 }
                 cp_bresp : coverpoint tr.s_axi_lite_bresp {
                         bins bresp_okay         = {2'b00};
-                        bins bresp_exOkay       = {2'b01};
-                        bins bresp_slvErr       = {2'b10};
-                        bins bresp_DecErr       = {2'b11};
                 }
                 cp_bvalid : coverpoint tr.s_axi_lite_bvalid {
                         bins bvalid_0 = {0};
@@ -143,7 +140,7 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
 
                 CROSS_AWREADY_AWVALID : cross cp_awvalid, cp_awready {
                         ignore_bins ignore_0 = binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
-                     }
+                }
         
                 CROSS_WREADY_WVALID : cross cp_wready, cp_wvalid {
                         ignore_bins ignore_0 = binsof(cp_wvalid.wvalid_0) && binsof(cp_wready.wready_1);
@@ -155,14 +152,40 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         ignore_bins ignore_0 = !((binsof(cp_awaddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
                 }
 
-                CROSS_BRESP_CTRL: cross cp_bvalid, cp_bready, cp_bresp {
-                        ignore_bins ignore_0 = binsof(cp_bvalid) && binsof(cp_bready) && binsof(cp_bresp.bresp_slvErr);
-                        ignore_bins ignore_1 = binsof(cp_bvalid) && binsof(cp_bready) && binsof(cp_bresp.bresp_exOkay); 
-                        ignore_bins ignore_2 = binsof(cp_bvalid) && binsof(cp_bready) && binsof(cp_bresp.bresp_DecErr);
-                }
+                CROSS_BRESP_CTRL: cross cp_bvalid, cp_bready, cp_bresp;
 
         endgroup : cg_write_channel
 
 endclass: axi_lite_coverage
+
+
+////////////////////////////////////////////////////////////////////
+//                 AXI-Stream READ Coverage                       //
+////////////////////////////////////////////////////////////////////
+class axis_read_coverage extends uvm_subscriber #(axis_transaction);
+        `uvm_component_utils(axis_read_coverage);
+
+             axis_transaction tr;
+     
+             //  Constructor: new
+             function new(string name = "axis_read_coverage", uvm_component parent);
+                super.new(name, parent);
+                // TODO: cg_write_channel     = new();
+             endfunction: new
+     
+             // write methods implementation
+             virtual function void write(axis_transaction t);
+                  `uvm_info(`gfn, "Recieved AXI Lite transaction in Coverage Model", UVM_NONE)
+                  tr = t;
+                //   TODO: cg_read_channel.sample();
+             endfunction : write
+             
+             // AXI-Stream Read Covergroup
+             covergroup axis_read;
+                // TODO : Add Coverpoints
+             endgroup : axis_read
+     
+endclass: axis_read_coverage
+
 
 `endif

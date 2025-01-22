@@ -63,7 +63,7 @@ regress: $(REGRESS_DIR)
 	# Merge all individual coverage databases into a single merged report
 	@mkdir -p $(COVERAGE_DIR)/merged
 	@echo "Merging coverage data..."
-	@cd $(COVERAGE_DIR)/merged && @merge_cmd="xcrg"; \
+	@merge_cmd="xcrg"; \
 	for t in $(TESTS); do \
 		merge_cmd="$$merge_cmd -merge_dir $(REGRESS_DIR)/$$t/xsim.covdb"; \
 	done; \

@@ -274,6 +274,8 @@ class read_introut_test extends base_test;
                 length_seq                      = mm2s_length_sequence::type_id::create("length_seq", this);
                 env_cfg.scoreboard_write        = 0;
                 env_cfg.SRC_ADDR                = 'h20;
+                env_cfg.DATA_LENGTH             = 32;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -282,6 +284,10 @@ class read_introut_test extends base_test;
                 mm2s_short.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+
+                #300ns;
                 repeat(10) begin
                 env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
                 env_cfg.num_trans               = env_cfg.calculate_txns();
@@ -367,7 +373,7 @@ class write_introut_test extends base_test;
                 phase.drop_objection(this);
                 phase.phase_done.set_drain_time(this, 400ns);
                 end
-                
+
         endtask: run_phase
         
 endclass : write_introut_test
