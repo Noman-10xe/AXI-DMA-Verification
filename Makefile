@@ -1,10 +1,11 @@
 # Environment Variables
-TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test slave_error_test decode_error_test buffer_overflow_test
+TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test slave_error_test decode_error_test buffer_overflow_test random_reg_test
 RTL     := rtl
 TB      := verif
 SIM     := sim
 SHELL   := /bin/bash
-TEST_NAME ?=
+TEST_NAME ?= reset_test
+export TEST_NAME
 
 # Script Paths
 SCRIPT_DIR := $(shell realpath ./rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.sim/sim_1/behav/xsim)
@@ -39,15 +40,9 @@ elaborate: $(ELAB_DIR)
 
 # Simulation Target
 simulate: $(SIM_DIR)
-	@if [ -z "$(TEST_NAME)" ]; then TEST_NAME=reset_test; fi
 	@mkdir -p $(SIM_DIR)/$(TEST_NAME)
 	@echo "Running simulation for test: $(TEST_NAME)"
-	xsim axi_dma_tb_top_behav \
-	    -key {Behavioral:sim_1:Functional:axi_dma_tb_top} \
-	    -tclbatch axi_dma_tb_top.tcl \
-	    -view /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_tb_top_behav.wcfg \
-	    -log $(SIM_DIR)/$(TEST_NAME)/simulate.log \
-	    -testplusarg UVM_TESTNAME=$(TEST_NAME)
+	@cd $(SCRIPT_DIR) && TEST_NAME=$(TEST_NAME) ./simulate.sh -testplusarg UVM_TESTNAME=$(TEST_NAME) | tee $(SIM_DIR)/$(TEST_NAME)/simulate.log
 	@cp $(SCRIPT_DIR)/dump.vcd $(SIM_DIR)/$(TEST_NAME)/dump.vcd || echo "dump.vcd not found for $(TEST_NAME), skipping copy."
 	@xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$(TEST_NAME)
 	@echo "Simulation complete for test: $(TEST_NAME)"
@@ -63,7 +58,7 @@ regress: $(REGRESS_DIR)
 		mv $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
 		xcrg -report_format html -dir $(SCRIPT_DIR)/xsim.covdb -report_dir $(COVERAGE_DIR)/$$t; \
 	done
-	# Merge all coverage data into a single report
+        # Merge all coverage data into a single report
 	@xcrg -merge_dir $(COVERAGE_DIR)/merged -report_format html -dir $(SCRIPT_DIR)/xsim.covdb
 	@echo "Regression complete. Merged coverage report available in $(COVERAGE_DIR)/merged."
 

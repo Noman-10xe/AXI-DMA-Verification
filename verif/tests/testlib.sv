@@ -882,19 +882,19 @@ class random_reg_test extends base_test;
                 
         task run_phase(uvm_phase phase);
                 
-                // phase.raise_objection(this);
-                // rand_reg_write_seq.RAL_Model = env.RAL_Model;
-                // rand_reg_write_seq.start(env.axi_lite_agt.sequencer);
-                // phase.drop_objection(this);
+                phase.raise_objection(this);
+                rand_reg_write_seq.RAL_Model = env.RAL_Model;
+                rand_reg_write_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                phase.raise_objection(this);
+                read_all_reg.RAL_Model = env.RAL_Model;
+                read_all_reg.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
 
                 phase.raise_objection(this);
                 rand_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-
-                // phase.raise_objection(this);
-                // read_all_reg.RAL_Model = env.RAL_Model;
-                // read_all_reg.start(env.axi_lite_agt.sequencer);
-                // phase.drop_objection(this);
 
         endtask: run_phase
         
