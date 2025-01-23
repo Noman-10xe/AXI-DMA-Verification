@@ -26,6 +26,7 @@ class environment extends uvm_env;
         // Coverage
         axi_lite_coverage       axi_lite_cov;
         axis_read_coverage      axis_read_cov;
+        axis_write_coverage     axis_write_cov;
 
         `uvm_component_utils(environment) 
         
@@ -74,6 +75,7 @@ function void environment::build_phase(uvm_phase phase);
         if (env_cfg.has_functional_cov) begin
                 axi_lite_cov    = axi_lite_coverage::type_id::create("axi_lite_cov", this);
                 axis_read_cov   = axis_read_coverage::type_id::create("axis_read_cov", this);
+                axis_write_cov  = axis_write_coverage::type_id::create("axis_write_cov", this);
         end
 
 endfunction: build_phase
@@ -85,8 +87,8 @@ function void environment::connect_phase(uvm_phase phase);
         RAL_Model.default_map.set_sequencer(axi_lite_agt.sequencer, adapter);
         RAL_Model.default_map.set_base_addr(0);
 
-        vseqr.axis_read_sequencer = axis_r_agt.sequencer;
-        vseqr.axis_read_sequencer = axis_wr_agt.sequencer;
+        // vseqr.axis_read_sequencer = axis_r_agt.sequencer;
+        // vseqr.axis_read_sequencer = axis_wr_agt.sequencer;
 
         ///////////////////////////////////////////////////////////////
         //              Connect Analysis Ports to Scoreboard         //
@@ -110,9 +112,9 @@ function void environment::connect_phase(uvm_phase phase);
         if (env_cfg.has_functional_cov) begin
                 
                 // // Stream Write Agent
-                // if (env_cfg.has_axis_write_agent) begin
-                //         axis_wr_agt.monitor.s2mm_write.connect(func_cov.axis_write_export);
-                // end
+                if (env_cfg.has_axis_write_agent) begin
+                        axis_wr_agt.monitor.s2mm_write.connect(axis_write_cov.analysis_export);
+                end
 
                 // Stream Read Agent
                 if (env_cfg.has_axis_read_agent) begin

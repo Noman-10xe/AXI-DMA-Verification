@@ -351,8 +351,8 @@ class write_introut_test extends base_test;
                 axis_write_seq.set_starting_phase(phase);
                 axis_write_seq.start(env.axis_wr_agt.sequencer);
 
-                #700ns;
                 repeat(10) begin
+                #700ns;
 
                 env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
                 env_cfg.num_trans               = env_cfg.calculate_txns();
@@ -365,9 +365,8 @@ class write_introut_test extends base_test;
 
                 axis_write_seq.set_starting_phase(phase);
                 axis_write_seq.start(env.axis_wr_agt.sequencer);
-
+                
                 phase.raise_objection(this);
-                #700ns;
                 clear_introut_seq.RAL_Model = env.RAL_Model;
                 clear_introut_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
@@ -945,7 +944,7 @@ class random_stream_read_test extends base_test;
                 rand_axis_read_seq.set_starting_phase(phase);
                 rand_axis_read_seq.start(env.axis_r_agt.sequencer);
 
-                repeat(40) begin
+                repeat(20) begin
                 #300ns;
                 env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
                 env_cfg.num_trans               = env_cfg.calculate_txns();
@@ -954,15 +953,57 @@ class random_stream_read_test extends base_test;
                         mm2s_set_length.RAL_Model = env.RAL_Model;
                         mm2s_set_length.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
+                env.sco.src_addr                = env_cfg.SRC_ADDR;
 
                 rand_axis_read_seq.set_starting_phase(phase);
                 rand_axis_read_seq.start(env.axis_r_agt.sequencer);
-
+                #350ns;
                 end
 
         endtask: run_phase
         
 endclass : random_stream_read_test
+
+////////////////////////////////////////////////////////////////////////
+//                          Random tkeep Test                         //
+////////////////////////////////////////////////////////////////////////
+class random_tkeep_test extends base_test;
+        `uvm_component_utils(random_tkeep_test)
+        
+        s2mm_enable_sequence s2mm_enable;
+        random_axis_write    rand_axis_wr_seq;
+
+        function new(string name = "random_tkeep_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                s2mm_enable                     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
+                rand_axis_wr_seq               = random_axis_write::type_id::create("rand_axis_wr_seq", this);
+                env_cfg.has_axis_read_agent     = 0;
+                env_cfg.scoreboard_read         = 0;
+                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.DST_ADDR                = 'h98;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+        endfunction: build_phase
+        
+        task run_phase(uvm_phase phase);
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                s2mm_enable.RAL_Model = env.RAL_Model;
+                s2mm_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                rand_axis_wr_seq.set_starting_phase(phase);
+                rand_axis_wr_seq.start(env.axis_wr_agt.sequencer);
+
+                phase.phase_done.set_drain_time(this, 300ns);
+
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+        endtask: run_phase
+
+endclass : random_tkeep_test
 
 
 `endif

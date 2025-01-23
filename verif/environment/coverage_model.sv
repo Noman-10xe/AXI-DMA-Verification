@@ -187,7 +187,7 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
                 }       
                 cp_tkeep        : coverpoint tr.tkeep  {
                         bins tkeep[]            = {'h1, 'h3, 'h7, 'hf};
-                        ignore_bins ignore[]    = {'h0, 'h2, 'h4, 'h5, 'h6, 'h8, 'h9, 'h10, 'h11, 'h12, 'h13, 'h14 };
+                        ignore_bins ignore[]    = {'h0, 'h2, 'h4, 'h5, 'h6, 'h8, 'h9, 'ha, 'hb, 'hc, 'hd, 'he };
                 }
                 cp_tvalid       : coverpoint tr.tvalid {
                         bins tvalid_0 = {0};
@@ -211,6 +211,60 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
              endgroup : cg_axis_read
      
 endclass: axis_read_coverage
+
+
+////////////////////////////////////////////////////////////////////
+//                AXI-Stream Write Coverage                       //
+////////////////////////////////////////////////////////////////////
+class axis_write_coverage extends uvm_subscriber #(axis_transaction);
+        `uvm_component_utils(axis_write_coverage);
+
+             axis_transaction tr;
+     
+             //  Constructor: new
+             function new(string name = "axis_write_coverage", uvm_component parent);
+                super.new(name, parent);
+                cg_axis_write = new();
+             endfunction: new
+     
+             // write methods implementation
+             virtual function void write(axis_transaction t);
+                  `uvm_info(`gfn, "Recieved AXIS READ transaction in Coverage Model", UVM_HIGH)
+                  tr = t;
+                  cg_axis_write.sample();
+             endfunction : write
+             
+             // AXI-Stream Read Covergroup
+             covergroup cg_axis_write;
+                cp_tdata        : coverpoint tr.tdata  {
+                        bins wdata_bin = {['h0:'hFFFFFFFF]};
+                }       
+                cp_tkeep        : coverpoint tr.tkeep  {
+                        bins tkeep[]            = {'h1, 'h3, 'h7, 'hf};
+                        ignore_bins ignore[]    = {'h0, 'h2, 'h4, 'h5, 'h6, 'h8, 'h9, 'ha, 'hb, 'hc, 'hd, 'he };
+                }
+                cp_tvalid       : coverpoint tr.tvalid {
+                        bins tvalid_0 = {0};
+                        bins tvalid_1 = {1};
+                }       
+                cp_tready       : coverpoint tr.tready {
+                        bins tready_0 = {0};
+                        bins tready_1 = {1};
+                }       
+                cp_tlast        : coverpoint tr.tlast  {
+                        bins tlast_0 = {0};
+                        bins tlast_1 = {1};
+                }
+
+                CROSS_TDATA_TKEEP       : cross cp_tdata, cp_tkeep;
+                CROSS_TVALID_TREADY     : cross cp_tvalid, cp_tready;
+                CROSS_TVALID_TLAST      : cross cp_tvalid, cp_tlast {
+                        ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tlast.tlast_1);
+                }
+
+             endgroup : cg_axis_write
+     
+endclass: axis_write_coverage
 
 
 `endif

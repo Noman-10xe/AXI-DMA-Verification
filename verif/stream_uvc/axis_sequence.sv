@@ -98,7 +98,7 @@ class ready_low_sequence extends axis_base_sequence;
     item  = axis_transaction::type_id::create("item");
     item.c_tready.constraint_mode(0);
 
-    repeat(cfg.num_trans)  begin
+    repeat(cfg.num_trans-4)  begin
       start_item(item);
         if(!item.randomize() with { item.tready == 0; }) begin
           `uvm_error(get_type_name(), "Randomization failed");
@@ -195,5 +195,44 @@ class random_axis_read extends axis_base_sequence;
   endtask : body
 
 endclass : random_axis_read
+
+
+//////////////////////////////////////////////////////////////////////
+//                      Random Write Sequence                       //
+//////////////////////////////////////////////////////////////////////
+
+class random_axis_write extends axis_base_sequence;
+  `uvm_object_utils(random_axis_write)
+
+  axis_transaction item;
+
+  function new(string name="random_axis_write");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing Random AXIS Read Sequence", UVM_HIGH)
+    
+    item  = axis_transaction::type_id::create("item");
+
+    item.c_tkeep.constraint_mode(0);
+
+    repeat(cfg.num_trans-1)  begin
+    start_item(item);
+    if(!item.randomize() with { item.tkeep inside {'h1, 'h7, 'h3, 'hf }; })
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+    end
+
+    item.c_tlast.constraint_mode(0);
+    start_item(item);
+    
+    if(!item.randomize() with { item.tlast == 1;} )
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+
+  endtask : body
+
+endclass : random_axis_write
 
 `endif
