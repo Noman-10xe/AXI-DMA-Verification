@@ -1,5 +1,5 @@
 # Environment Variables
-TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test slave_error_test decode_error_test buffer_overflow_test random_reg_test
+TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test slave_error_test decode_error_test buffer_overflow_test random_reg_test random_stream_read_test
 RTL     := rtl
 TB      := verif
 SIM     := sim
@@ -61,21 +61,15 @@ regress: $(REGRESS_DIR)
 		cp -r $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
 	done
 	# Merge all individual coverage databases into a single merged report
-	@mkdir -p $(COVERAGE_DIR)/merged
 	@echo "Merging coverage data..."
-	@merge_cmd="xcrg"; \
-	for t in $(TESTS); do \
-		merge_cmd="$$merge_cmd -merge_dir $(REGRESS_DIR)/$$t/xsim.covdb"; \
-	done; \
-	$$merge_cmd -merge_db_name merged_coverage -report_format html -report_dir $(COVERAGE_DIR)/merged_report || echo "Error merging coverage data."
+	xcrg -report_format html -dir $(REGRESS_DIR) -report_dir $(COVERAGE_DIR)/merged_report || echo "Error merging coverage data."
 	@echo "Regression complete. Merged coverage report available in $(COVERAGE_DIR)/merged_report."
 
 
 # Clean Target
 clean:
-	@echo "Cleaning simulation files but preserving logs and coverage..."
+	@echo "Cleaning simulation files..."
 	@rm -rf $(OUT_DIR) $(COVERAGE_DIR) xcrg.log xsim.covdb
-	@echo "Logs and coverage preserved in $(LOG_DIR) and $(COVERAGE_DIR)."
 
 # Phony Targets
 .PHONY: main compile elaborate simulate regress clean

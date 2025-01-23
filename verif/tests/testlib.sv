@@ -913,4 +913,56 @@ class random_reg_test extends base_test;
 endclass : random_reg_test
 
 
+class random_stream_read_test extends base_test;
+        `uvm_component_utils(random_stream_read_test)
+        
+        random_axis_read            rand_axis_read_seq;
+        mm2s_custom_sequence        mm2s_enable_seq;
+        mm2s_length_sequence        mm2s_set_length;
+
+        function new(string name = "random_stream_read_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                rand_axis_read_seq              = random_axis_read::type_id::create("rand_axis_read_seq", this);
+                mm2s_enable_seq                 = mm2s_custom_sequence::type_id::create("mm2s_enable_seq", this);
+                mm2s_set_length                 = mm2s_length_sequence::type_id::create("mm2s_set_length", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.SRC_ADDR                = 'h89;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+        endfunction: build_phase
+                
+        task run_phase(uvm_phase phase);
+                
+                phase.raise_objection(this);
+                mm2s_enable_seq.RAL_Model = env.RAL_Model;
+                mm2s_enable_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                rand_axis_read_seq.set_starting_phase(phase);
+                rand_axis_read_seq.start(env.axis_r_agt.sequencer);
+
+                repeat(40) begin
+                #300ns;
+                env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+
+                phase.raise_objection(this);
+                        mm2s_set_length.RAL_Model = env.RAL_Model;
+                        mm2s_set_length.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                rand_axis_read_seq.set_starting_phase(phase);
+                rand_axis_read_seq.start(env.axis_r_agt.sequencer);
+
+                end
+
+        endtask: run_phase
+        
+endclass : random_stream_read_test
+
+
 `endif

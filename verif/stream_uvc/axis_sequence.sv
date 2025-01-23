@@ -62,7 +62,7 @@ class axis_read extends axis_base_sequence;
   endfunction : new
 
   task body();
-    `uvm_info(get_type_name(), "Executing AXIS Read Sequence", UVM_LOW)
+    `uvm_info(get_type_name(), "Executing AXIS Read Sequence", UVM_HIGH)
     
     item  =axis_transaction::type_id::create("item");
 
@@ -93,7 +93,7 @@ class ready_low_sequence extends axis_base_sequence;
   endfunction : new
 
   task body();
-    `uvm_info(get_type_name(), "Executing AXIS Ready Low Sequence", UVM_LOW)
+    `uvm_info(get_type_name(), "Executing AXIS Ready Low Sequence", UVM_HIGH)
     
     item  = axis_transaction::type_id::create("item");
     item.c_tready.constraint_mode(0);
@@ -131,7 +131,7 @@ class axis_wr extends axis_base_sequence;
   endfunction : new
 
   task body();
-    `uvm_info(get_type_name(), "Executing AXIS Write Sequence", UVM_LOW)
+    `uvm_info(get_type_name(), "Executing AXIS Write Sequence", UVM_HIGH)
     
     item  = axis_transaction::type_id::create("item");
     
@@ -166,5 +166,34 @@ class axis_wr extends axis_base_sequence;
   endtask : post_body
 
 endclass : axis_wr
+
+//////////////////////////////////////////////////////////////////////
+//                       Random Read Sequence                       //
+//////////////////////////////////////////////////////////////////////
+
+class random_axis_read extends axis_base_sequence;
+  `uvm_object_utils(random_axis_read)
+
+  axis_transaction item;
+
+  function new(string name="random_axis_read");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing Random AXIS Read Sequence", UVM_HIGH)
+    
+    item  = axis_transaction::type_id::create("item");
+
+    item.c_tready.constraint_mode(0);
+    repeat(cfg.num_trans)  begin
+    start_item(item);
+    if(!item.randomize())
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+    end
+  endtask : body
+
+endclass : random_axis_read
 
 `endif
