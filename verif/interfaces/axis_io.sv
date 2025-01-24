@@ -102,25 +102,56 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     ioReadDriver.m_axis_mm2s_tready   <= 1'b1;
   endtask : reset
 
-
-  property handshake;
-    @(posedge axi_aclk)
-    m_axis_mm2s_tvalid |-> m_axis_mm2s_tready;
-  endproperty
-
-  assert property (handshake);
-
   ///////////////////////////////////////////////////////////////
   //
   // Wait Clocks
   //
   task automatic wait_clks(input int num);
-        repeat (num) @(posedge axi_aclk);
+    repeat (num) @(posedge axi_aclk);
   endtask
   ///////////////////////////////////////////////////////////////
   task automatic wait_neg_clks(input int num);
-        repeat (num) @(negedge axi_aclk);
+      repeat (num) @(negedge axi_aclk);
   endtask
+
+  /////////////////////////////////////////////////////////////
+  //                        Assertions                       //
+  /////////////////////////////////////////////////////////////
+
+  // MM2S HANDSHAKE Property
+  property mm2s_handshake;
+  @(posedge axi_aclk) m_axis_mm2s_tvalid |-> ##[0:4] m_axis_mm2s_tready;
+  endproperty
+
+  // MM2S Introut Check
+  property mm2s_introut_check;
+    @(posedge axi_aclk)
+    (m_axis_mm2s_tvalid && m_axis_mm2s_tready && m_axis_mm2s_tlast) |-> ##1 mm2s_introut;
+  endproperty
+
+  // S2MM HANDSHAKE Property
+  property s2mm_handshake;
+    @(posedge axi_aclk) s_axis_s2mm_tvalid |-> ##[0:4] s_axis_s2mm_tready;
+  endproperty
+  
+  // S2MM Introut Check
+  property s2mm_introut_check;
+    @(posedge axi_aclk)
+    (s_axis_s2mm_tvalid && s_axis_s2mm_tready && s_axis_s2mm_tlast) |-> ##[30:37] s2mm_introut;
+  endproperty
+
+  // Assert Properties
+  assert property (mm2s_handshake) else
+  `uvm_error("MM2S Handshake", "Assertion Failed");
+
+  assert property (mm2s_introut_check)
+  else `uvm_error("mm2s_introut_check", "mm2s_introut did not assert after tlast");
+
+  assert property (s2mm_handshake) else
+  `uvm_error("S2MM Handshake", "Assertion Failed");
+
+  assert property (s2mm_introut_check)
+  else `uvm_error("s2mm_introut_check", "s2mm_introut did not assert after tlast");
 
 endinterface : axis_io
 

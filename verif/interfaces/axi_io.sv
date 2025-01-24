@@ -149,48 +149,98 @@ endclocking : ioWriteDriver
         repeat (num) @(negedge axi_aclk);
   endtask
 
+  /////////////////////////////////////////////////////////////
+  //                        Assertions                       //
+  /////////////////////////////////////////////////////////////
 
-// always @(negedge axi_aclk)
-// begin
-
-// // write address must not be X or Z during address write phase
-// assertWriteAddrUnknown:assert property (
+  // Property: Ensure AWADDR is not X or Z during address write phase
+  property write_address_not_unknown;
+    @(posedge axi_aclk) ($onehot(awvalid) && $onehot(awready) |-> !$isunknown(awaddr));
+  endproperty
   
-//     ($onehot(awvalid) && $onehot(awready) |-> !$isunknown(awaddr)))
-// 		else
-// 		  `uvm_error({$psprintf("err_awaddr %s went to X or Z during address write phase when awvalid=1", `gfn)});
-
-// // write data must not be X or Z during data write phase
-// assertWriteDataUnknown:assert property (
+  // Property: Ensure WDATA is not X or Z during data write phase
+  property write_data_not_unknown;
+    @(posedge axi_aclk) ($onehot(wvalid) && $onehot(wready) |-> !$isunknown(wdata));
+  endproperty
   
-//     ($onehot(wvalid) && $onehot(wready) |-> !$isunknown(wdata)))
-// 		else
-// 		  `uvm_error({$psprintf("err_wdata %s went to X or Z during data write phase when wvalid=1", `gfn)});
-
-// // write resp must not be X or Z during resp write phase
-// assertWriteRespUnKnown:assert property (
+  // Property: Ensure BRESP is not X or Z during response write phase
+  property write_response_not_unknown;
+    @(posedge axi_aclk) ($onehot(bvalid) && $onehot(bready) |-> !$isunknown(bresp));
+  endproperty
   
-//     ($onehot(bvalid) && $onehot(bready) |-> !$isunknown(bresp)))
-//     else
-//       `uvm_error({$psprintf("err_bresp %s went to X or Z during response write phase when bvalid=1", `gfn)});
-
-// // read address must not be X or Z during address read phase
-// assertReadAddrUnKnown:assert property (
+  // Property: Ensure ARADDR is not X or Z during address read phase
+  property read_address_not_unknown;
+    @(posedge axi_aclk) ($onehot(arvalid) && $onehot(arready) |-> !$isunknown(araddr));
+  endproperty
   
-//     ($onehot(arvalid) && $onehot(arready) |-> !$isunknown(araddr)))
-//     else
-//       `uvm_error({$psprintf("err_araddr %s went to X or Z during address read phase when arvalid=1", `gfn)});
+  // Property: Ensure RDATA is not X or Z during read data phase
+  property read_data_not_unknown;
+    @(posedge axi_aclk) ($onehot(rvalid) && $onehot(rready) |-> !$isunknown(rdata));
+  endproperty
 
-// // read data must not be X or Z during read data phase
-// assertReadDataUnKnown:assert property (
+  // Property: ARREADY should be asserted within 16 cycles when ARVALID is high
+  property read_handshake;
+    @(posedge axi_aclk) $onehot(arvalid) |-> ##[0:16] arready;
+  endproperty
+
+  // Property: AWREADY should be asserted within a few cycles when AWVALID is high
+  property write_handshake;
+    @(posedge axi_aclk) awvalid |-> ##[0:15] awready;
+  endproperty
   
-//     ($onehot(rvalid) && $onehot(rready) |-> !$isunknown(rdata)))
-//     else
-//       `uvm_error({$psprintf("err_ardata %s went to X or Z during data read phase when rvalid=1", `gfn)});
-
-// // assert each pin has value not unknown
-
-// end
+  // Property: Burst length for ARLEN and AWLEN should not exceed 15
+  property burst_length_check;
+    @(posedge axi_aclk) (arvalid | awvalid) |-> (arlen <= 8'hF && awlen <= 8'hF);
+  endproperty
+  
+  // Property: RLAST should be asserted at the end of the read burst
+  property read_last_check;
+    @(posedge axi_aclk) (rvalid && rready) |-> ##[0:$] rlast;
+  endproperty
+  
+  // Property: WLAST should be asserted at the end of the write burst
+  property write_last_check;
+    @(posedge axi_aclk) (wvalid && wready) |-> ##[0:$] wlast;
+  endproperty
+  
+  // Property: All valid signals should be de-asserted during reset
+  property reset_signal_check;
+    @(posedge axi_aclk) !axi_resetn |-> 
+    (arvalid == 0 && awvalid == 0 && wvalid == 0 && rvalid == 0 && bvalid == 0);
+  endproperty  
+  
+  assert property (write_address_not_unknown)
+  else `uvm_error("WRITE_ADDRESS_UNKNOWN", "AWADDR went to X or Z during address write phase when AWVALID=1");
+  
+  assert property (write_data_not_unknown)
+  else `uvm_error("WRITE_DATA_UNKNOWN", "WDATA went to X or Z during data write phase when WVALID=1");
+  
+  assert property (write_response_not_unknown)
+  else `uvm_error("WRITE_RESPONSE_UNKNOWN", "BRESP went to X or Z during response write phase when BVALID=1");
+  
+  assert property (read_address_not_unknown)
+  else `uvm_error("READ_ADDRESS_UNKNOWN", "ARADDR went to X or Z during address read phase when ARVALID=1");
+  
+  assert property (read_data_not_unknown)
+  else `uvm_error("READ_DATA_UNKNOWN", "RDATA went to X or Z during data read phase when RVALID=1");
+  
+  assert property (reset_signal_check)
+  else `uvm_error("RESET_CHECK", "Signals not reset properly during reset phase.");
+  
+  assert property (read_handshake)
+  else `uvm_error("READ_HANDSHAKE", "ARREADY should be asserted within 16 cycles when ARVALID is high.");
+  
+  assert property (write_handshake)
+  else `uvm_error("WRITE_HANDSHAKE", "AWREADY should be asserted within 3 cycles when AWVALID is high.");
+  
+  assert property (burst_length_check)
+  else `uvm_error("BURST_LENGTH", "Burst length out of bounds. ARLEN or AWLEN exceeds 15.");
+  
+  assert property (read_last_check)
+  else `uvm_error("READ_LAST", "RLAST not asserted at the end of the read burst.");
+  
+  assert property (write_last_check)
+  else `uvm_error("WRITE_LAST", "WLAST not asserted at the end of the write burst.");
 
 endinterface : axi_io
 
