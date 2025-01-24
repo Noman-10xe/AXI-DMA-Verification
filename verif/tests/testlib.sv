@@ -138,7 +138,7 @@ class s2mm_enable_test extends base_test;
                 axis_wr_seq                     = axis_wr::type_id::create("axis_wr_seq", this);
                 env_cfg.has_axis_read_agent     = 0;
                 env_cfg.scoreboard_read         = 0;
-                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.DATA_LENGTH             = 968;
                 env_cfg.DST_ADDR                = 'h0;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
@@ -408,6 +408,7 @@ class rs_test extends base_test;
                 env_cfg.DATA_LENGTH             = 240;
                 env_cfg.SRC_ADDR                = 'h14;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.rs_test                 = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -423,13 +424,14 @@ class rs_test extends base_test;
                                 axis_read_seq.start(env.axis_r_agt.sequencer);
                         end
                         begin
-                                // Comment This block in order to check if the subsequest transfer happens when the R/S bit is not set to 0.
-                                #400ns;
-                                phase.raise_objection(this);
-                                stop_mm2s_seq.RAL_Model = env.RAL_Model;
-                                stop_mm2s_seq.start(env.axi_lite_agt.sequencer);
-                                phase.drop_objection(this);
-                                phase.phase_done.set_drain_time(this, 100ns);
+                                if (env_cfg.rs_test) begin
+                                        #400ns;
+                                        phase.raise_objection(this);
+                                        stop_mm2s_seq.RAL_Model = env.RAL_Model;
+                                        stop_mm2s_seq.start(env.axi_lite_agt.sequencer);
+                                        phase.drop_objection(this);
+                                        phase.phase_done.set_drain_time(this, 100ns);
+                                end
                         end
                 join
 
@@ -456,7 +458,10 @@ class rs_test extends base_test;
                                 axis_read_seq.start(env.axis_r_agt.sequencer);
                         end
                 join_any
+                
+                if (env_cfg.rs_test) begin
                 phase.drop_objection(this);
+                end
 
         endtask: run_phase
         
@@ -911,6 +916,12 @@ class random_reg_test extends base_test;
         
 endclass : random_reg_test
 
+////////////////////////////////////////////////////////////////////////
+// Test Name:   Random Stream Read Test                               //
+// Description: The test will provide random values for tready to     //
+// check for different scenarios.                                     //
+// Dated: Jan 23, 2025                                                //
+////////////////////////////////////////////////////////////////////////
 
 class random_stream_read_test extends base_test;
         `uvm_component_utils(random_stream_read_test)
@@ -965,7 +976,10 @@ class random_stream_read_test extends base_test;
 endclass : random_stream_read_test
 
 ////////////////////////////////////////////////////////////////////////
-//                          Random tkeep Test                         //
+// Test Name:   Random Tkeep Test                                     //
+// Description: The test will provide random values for tready to     //
+// check for different scenarios.                                     //
+// Dated: Jan 23, 2025                                                //
 ////////////////////////////////////////////////////////////////////////
 class random_tkeep_test extends base_test;
         `uvm_component_utils(random_tkeep_test)
@@ -1005,5 +1019,65 @@ class random_tkeep_test extends base_test;
 
 endclass : random_tkeep_test
 
+
+/////////////// Testing Purposes
+
+class mm2s_introut_test extends base_test;
+        `uvm_component_utils(mm2s_introut_test)
+        
+        mm2s_custom_sequence            mm2s_short;
+        axis_read                       axis_read_seq;
+        clear_mm2s_introut_sequence     clear_introut_seq;
+        mm2s_length_sequence            length_seq;
+
+        function new(string name = "mm2s_introut_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                mm2s_short                      = mm2s_custom_sequence::type_id::create("mm2s_short", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                clear_introut_seq               = clear_mm2s_introut_sequence::type_id::create("clear_introut_seq", this);
+                length_seq                      = mm2s_length_sequence::type_id::create("length_seq", this);
+                env_cfg.scoreboard_write        = 0;
+                env_cfg.SRC_ADDR                = 'h20;
+                env_cfg.DATA_LENGTH             = 32;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+        endfunction: build_phase
+                
+        task run_phase(uvm_phase phase);
+                phase.raise_objection(this);
+                mm2s_short.RAL_Model = env.RAL_Model;
+                mm2s_short.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+
+                // #300ns;
+                // repeat(10) begin
+                // env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
+                // env_cfg.num_trans               = env_cfg.calculate_txns();
+                // env.sco.src_addr                = env_cfg.SRC_ADDR;
+// 
+                // phase.raise_objection(this);
+                // length_seq.RAL_Model = env.RAL_Model;
+                // length_seq.start(env.axi_lite_agt.sequencer);
+                // phase.drop_objection(this);
+// 
+                // axis_read_seq.set_starting_phase(phase);
+                // axis_read_seq.start(env.axis_r_agt.sequencer);
+// 
+                // phase.raise_objection(this);
+                // clear_introut_seq.RAL_Model = env.RAL_Model;
+                // clear_introut_seq.start(env.axi_lite_agt.sequencer);
+                // phase.drop_objection(this);
+                // phase.phase_done.set_drain_time(this, 100ns);
+                // end
+
+        endtask: run_phase
+        
+endclass : mm2s_introut_test
 
 `endif

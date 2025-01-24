@@ -20,6 +20,7 @@ class environment_config extends uvm_object;
         bit has_functional_cov   = 1; // switch to collect coverage
         bit scoreboard_read      = 1; // Switch to Enable/Disable Read Queues
         bit scoreboard_write     = 1; // Switch to Enable/Disable Write Queues
+        bit rs_test;                  // Switch to Enable/Disable rs_test
         
         // Source Address for Read
         bit [ 31:0 ] SRC_ADDR = 32'h1E;

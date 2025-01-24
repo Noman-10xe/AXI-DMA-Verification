@@ -84,7 +84,7 @@ module axi_dma_tb_top;
   //         DUT Instantiation       //
   /////////////////////////////////////
   `include "instantiation.sv"
-     
+       
 endmodule : axi_dma_tb_top
 
 `endif

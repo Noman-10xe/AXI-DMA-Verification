@@ -61,15 +61,17 @@ task axis_read_monitor::collect_transactions();
                 item.tvalid     = `READ_MON.m_axis_mm2s_tvalid;
                 item.tready     = `READ_MON.m_axis_mm2s_tready;
                 item.tlast      = `READ_MON.m_axis_mm2s_tlast;
+                item.introut    = `READ_MON.mm2s_introut;
 
                 // Print transaction
                 `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
                 `uvm_info("", $sformatf("//                      MM2S READ Monitor                            //"), UVM_LOW)
                 `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_LOW)
+                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_HIGH)
                 
                 // Boradcast to Scoreboard
                 mm2s_read.write(item);
+                
 end
 endtask: collect_transactions
 

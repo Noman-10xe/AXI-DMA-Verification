@@ -59,12 +59,13 @@ task axis_write_monitor::collect_transactions();
                 item.tvalid     = `WRITE_MON.s_axis_s2mm_tvalid;
                 item.tready     = `WRITE_MON.s_axis_s2mm_tready;
                 item.tlast      = `WRITE_MON.s_axis_s2mm_tlast;
+                item.introut    = `WRITE_MON.s2mm_introut;
                         
                 // Print transaction
                 `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
                 `uvm_info("", $sformatf("//                      S2MM WRITE Monitor                            //"), UVM_LOW)
                 `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)
-                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_LOW)
+                `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Write Slave :\n%s",item.sprint()), UVM_HIGH)
                 s2mm_write.write(item);
         end
 endtask: collect_transactions

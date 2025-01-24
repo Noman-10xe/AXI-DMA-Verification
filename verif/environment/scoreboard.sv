@@ -24,6 +24,11 @@ class scoreboard extends uvm_scoreboard;
    // Read and Write Queues for Comparison
    axis_transaction read_queue[$];
    axis_transaction write_queue[$];
+   
+   virtual axis_io vif;
+   
+   bit mm2s_prev_tlast = 0;
+   int count = 0;
 
    // Environment configuration Handle
    environment_config env_cfg;
@@ -59,6 +64,9 @@ class scoreboard extends uvm_scoreboard;
       if (!uvm_config_db#(environment_config)::get(this, get_full_name(), "env_cfg", env_cfg))
         `uvm_fatal("NOCONFIG",{"Environment Configurations must be set for: ",get_full_name()});
 
+      if (!uvm_config_db#(virtual axis_io)::get(this, get_full_name(), "axis_intf", vif))
+        `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
+
       // Assign Addresses for Scoreboard Reference Memory R/W
       src_addr = env_cfg.SRC_ADDR;
       dst_addr = env_cfg.DST_ADDR;
@@ -69,19 +77,46 @@ class scoreboard extends uvm_scoreboard;
    virtual function void write_mm2s_read (axis_transaction item);
 
       if ( item.tvalid && item.tready ) begin
-         `uvm_info(get_type_name(), $sformatf("Received AXIs Read Transaction"), UVM_NONE);
-         
+         `uvm_info(get_type_name(), $sformatf("Received AXIs Read Transaction"), UVM_HIGH);
+
          // Add transaction to read queue
          read_queue.push_back(item);
       end
+      
+      if (mm2s_prev_tlast) begin
+
+         if (item.introut != 1) begin
+            `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", item.introut, 1));
+         end
+         else begin
+            `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
+         end
+      end
+
+      mm2s_prev_tlast = item.tlast;
+      
    endfunction : write_mm2s_read
 
    virtual function void write_s2mm_write (axis_transaction item);
 
       // Add valid transaction to write queue
       if ( item.tvalid && item.tready ) begin
-         `uvm_info(get_type_name(), $sformatf("Received AXIs Write Transaction"), UVM_NONE);
+         `uvm_info(get_type_name(), $sformatf("Received AXIs Write Transaction"), UVM_HIGH);
          write_queue.push_back(item);
+      end
+
+      if (item.tlast) begin
+
+         if ( count == 37 ) begin
+            if (item.introut != 1) begin
+               `uvm_error(`gfn, $sformatf("s2mm_introut comparison failed. Act = %0d, Exp = %0d", item.introut, 1));
+            end
+            else begin
+               `uvm_info(`gfn, "s2mm_introut comparison Passed.", UVM_NONE);
+               count = 0;
+            end
+         end
+         count++;
       end
 
    endfunction : write_s2mm_write
@@ -94,8 +129,9 @@ class scoreboard extends uvm_scoreboard;
          fork
             begin
                if ( env_cfg.scoreboard_read ) begin
+                  // MM2S Read Comparison
                   wait(read_queue.size > 0);
-                  if (read_queue.size > 0) begin
+                  if ( read_queue.size > 0 ) begin
                      read_item       = read_queue.pop_front();
                      memory.compare(src_addr, read_item.tdata, read_item.tkeep);
                      src_addr = src_addr + calculate_offset(read_item.tkeep);
@@ -109,14 +145,14 @@ class scoreboard extends uvm_scoreboard;
                   wait(write_queue.size > 0);
                      if (write_queue.size > 0 ) begin
                         write_item     = write_queue.pop_front();
-                        `uvm_info("Scoreboard :: Run Phase", $sformatf("\n%s", write_item.sprint), UVM_DEBUG);
                         memory.write(dst_addr, write_item.tdata, write_item.tkeep);
                         dst_addr = dst_addr + calculate_offset(write_item.tkeep);
-                     end
-                     written_bytes   = dst_addr;
+                        written_bytes   = dst_addr;
+                  end
                end
             end
          join
+
          `uvm_info("DBG", $sformatf("Written Bytes = %0d", written_bytes), UVM_DEBUG);
       end
       
@@ -147,6 +183,15 @@ class scoreboard extends uvm_scoreboard;
       end
       return offset;
    endfunction
+
+   task check_mm2s_introut(axis_transaction mm2s_irq_item);
+      
+   endtask : check_mm2s_introut
+
+   task check_s2mm_introut(axis_transaction s2mm_irq_item);
+   
+   endtask : check_s2mm_introut
+
 
 endclass: scoreboard
 

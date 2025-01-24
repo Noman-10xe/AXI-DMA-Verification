@@ -28,12 +28,14 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
   logic                                 m_axis_mm2s_tvalid;
   logic                                 m_axis_mm2s_tready;
   logic                                 m_axis_mm2s_tlast;
+  logic                                 mm2s_introut;
   //    AXI4-Stream slave
   logic [ DATA_WIDTH-1  :       0 ]     s_axis_s2mm_tdata;
   logic [ 3             :       0 ]     s_axis_s2mm_tkeep;
   logic                                 s_axis_s2mm_tvalid;
   logic                                 s_axis_s2mm_tready;
   logic                                 s_axis_s2mm_tlast;
+  logic                                 s2mm_introut;
 
   ////////////////////////////////////////////////////////////////////////////////////////
   //                             Clocking Blocks                                        //
@@ -48,6 +50,7 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     input       m_axis_mm2s_tvalid;
     output      m_axis_mm2s_tready;
     input       m_axis_mm2s_tlast;
+    input       mm2s_introut;
 
   endclocking : ioReadDriver
 
@@ -59,6 +62,7 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     input       m_axis_mm2s_tvalid;
     input       m_axis_mm2s_tready;
     input       m_axis_mm2s_tlast;
+    input       mm2s_introut;
 
   endclocking : ioReadMonitor
 
@@ -72,6 +76,7 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     output      s_axis_s2mm_tvalid;
     input       s_axis_s2mm_tready;
     output      s_axis_s2mm_tlast;
+    input       s2mm_introut;
 
   endclocking : ioWriteDriver
 
@@ -83,6 +88,7 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     input       s_axis_s2mm_tvalid;
     input       s_axis_s2mm_tready;
     input       s_axis_s2mm_tlast;
+    input       s2mm_introut;
 
   endclocking : ioWriteMonitor
 
@@ -95,6 +101,14 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
     wait(axi_resetn);
     ioReadDriver.m_axis_mm2s_tready   <= 1'b1;
   endtask : reset
+
+
+  property handshake;
+    @(posedge axi_aclk)
+    m_axis_mm2s_tvalid |-> m_axis_mm2s_tready;
+  endproperty
+
+  assert property (handshake);
 
   ///////////////////////////////////////////////////////////////
   //
