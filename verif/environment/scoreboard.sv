@@ -25,8 +25,6 @@ class scoreboard extends uvm_scoreboard;
    axis_transaction read_queue[$];
    axis_transaction write_queue[$];
    
-   virtual axis_io vif;
-   
    bit mm2s_prev_tlast = 0;
    int count = 0;
 
@@ -63,9 +61,6 @@ class scoreboard extends uvm_scoreboard;
       // Get env_cfg
       if (!uvm_config_db#(environment_config)::get(this, get_full_name(), "env_cfg", env_cfg))
         `uvm_fatal("NOCONFIG",{"Environment Configurations must be set for: ",get_full_name()});
-
-      if (!uvm_config_db#(virtual axis_io)::get(this, get_full_name(), "axis_intf", vif))
-        `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
 
       // Assign Addresses for Scoreboard Reference Memory R/W
       src_addr = env_cfg.SRC_ADDR;
@@ -183,15 +178,6 @@ class scoreboard extends uvm_scoreboard;
       end
       return offset;
    endfunction
-
-   task check_mm2s_introut(axis_transaction mm2s_irq_item);
-      
-   endtask : check_mm2s_introut
-
-   task check_s2mm_introut(axis_transaction s2mm_irq_item);
-   
-   endtask : check_s2mm_introut
-
 
 endclass: scoreboard
 

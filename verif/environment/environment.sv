@@ -20,10 +20,10 @@ class environment extends uvm_env;
         axis_write_agent        axis_wr_agt;
         axi_monitor             axi_cov_mon;
         scoreboard              sco;
-        environment_config      env_cfg;
+        environment_config      env_cfg; 
         virtual_sequencer       vseqr;
 
-        // Coverage
+        // Coverage 
         axi_lite_coverage       axi_lite_cov;
         axis_read_coverage      axis_read_cov;
         axis_write_coverage     axis_write_cov;

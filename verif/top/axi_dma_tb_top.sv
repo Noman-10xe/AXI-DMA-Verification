@@ -44,7 +44,7 @@ module axi_dma_tb_top;
   //      Axi-Lite Interface for Register Read/Writes       //
   ////////////////////////////////////////////////////////////
   s_axi_lite_io axi_lite_intf ( .axi_aclk(axi_aclk),
-                                .axi_resetn(axi_resetn)
+                                .axi_resetn(axi_resetn) 
                               );
 
   ////////////////////////////////////////////////////////////

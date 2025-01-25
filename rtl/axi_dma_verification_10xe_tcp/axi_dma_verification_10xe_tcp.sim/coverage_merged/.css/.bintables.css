@@ -1,0 +1,146 @@
+.bintable1 {
+  background-color: #ffcccc;
+  color: #000;
+  cursor: pointer;
+  padding: 4px;
+  border: none;
+  width: auto;
+  overflow: auto;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  font-family : "Times New Roman";
+}
+
+.bintableactive1, .bintable1:hover {
+  background-color: #ffb3b3;
+}
+
+.bintableactive1 {
+background-color: #ffcccc;
+}
+
+.bintable1:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 5px;
+    color: white;
+    float: right;
+    margin-top: 2px;
+    padding-left: 24px;
+}
+
+.bintableactive1:after {
+    padding-left: 24px;
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+
+
+.bintablecontent1 {
+  padding: 0 0;
+  overflow: auto;
+  background-color: white;
+  max-height: 0;
+  transition: max-height 0.4s ease-out;
+} 
+
+
+
+
+
+.bintable2 {
+  background-color: #ccffcc;
+  color: #000;
+  cursor: pointer;
+  padding: 4px;
+  border: none;
+  width: auto;
+  overflow: auto;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  font-family : "Times New Roman";
+}
+
+.bintableactive2, .bintable2:hover {
+  background-color: #99ff99;
+}
+
+.bintableactive2 {
+background-color: #ccffcc;
+}
+
+.bintable2:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 5px;
+    color: white;
+    float: right;
+    margin-top: 2px;
+    padding-left: 36px;
+}
+
+.bintableactive2:after {
+    padding-left: 36px;
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+
+
+.bintablecontent2 {
+  padding: 0 0;
+  overflow: auto;
+  background-color: white;
+  max-height: 0;
+  transition: max-height 0.4s ease-out;
+}
+
+
+
+
+
+.bintable3 {
+  background-color: #ffe6ff;
+  color: #000;
+  cursor: pointer;
+  padding: 4px;
+  border: none;
+  width: auto;
+  overflow: auto;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  font-family : "Times New Roman";
+}
+
+.bintableactive3, .bintable3:hover {
+  background-color: #ffccff;
+}
+
+.bintableactive3 {
+background-color: #ffe6ff;
+}
+
+.bintable3:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 5px;
+    color: white;
+    float: right;
+    margin-top: 2px;
+    padding-left: 36px;
+}
+
+.bintableactive3:after {
+    padding-left: 36px;
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+
+
+.bintablecontent3 {
+  padding: 0 0;
+  overflow: auto;
+  background-color: white;
+  max-height: 0;
+  transition: max-height 0.4s ease-out;
+}
+

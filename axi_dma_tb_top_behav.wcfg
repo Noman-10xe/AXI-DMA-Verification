@@ -19,13 +19,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2,968.344 ns"></ZoomStartTime>
-      <ZoomEndTime time="10,283.345 ns"></ZoomEndTime>
-      <Cursor1Time time="5,278.344 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="78.840001 us"></ZoomEndTime>
+      <Cursor1Time time="5.278344 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="295"></NameColumnWidth>
-      <ValueColumnWidth column_width="116"></ValueColumnWidth>
+      <ValueColumnWidth column_width="112"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="9" />
    <wvobject type="logic" fp_name="/axi_dma_tb_top/clk_rst_if/axi_aclk">
@@ -39,6 +39,7 @@
    <wvobject type="group" fp_name="group145">
       <obj_property name="label">AXI LITE</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/axi_dma_tb_top/axi_lite_intf/s_axi_lite_awvalid">
          <obj_property name="ElementShortName">s_axi_lite_awvalid</obj_property>
          <obj_property name="ObjectShortName">s_axi_lite_awvalid</obj_property>
@@ -139,6 +140,7 @@
    <wvobject type="group" fp_name="group172">
       <obj_property name="label">AXI READ</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/axi_dma_tb_top/axi_intf/arvalid">
          <obj_property name="ElementShortName">arvalid</obj_property>
          <obj_property name="ObjectShortName">arvalid</obj_property>
@@ -199,6 +201,7 @@
    <wvobject type="group" fp_name="group156">
       <obj_property name="label">Stream Read</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/axi_dma_tb_top/axis_intf/m_axis_mm2s_tvalid">
          <obj_property name="ElementShortName">m_axis_mm2s_tvalid</obj_property>
          <obj_property name="ObjectShortName">m_axis_mm2s_tvalid</obj_property>
@@ -233,6 +236,7 @@
    <wvobject type="group" fp_name="group157">
       <obj_property name="label">Stream Write</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/axi_dma_tb_top/axis_intf/s_axis_s2mm_tvalid">
          <obj_property name="ElementShortName">s_axis_s2mm_tvalid</obj_property>
          <obj_property name="ObjectShortName">s_axis_s2mm_tvalid</obj_property>

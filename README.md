@@ -36,7 +36,7 @@ Key features verified in this project include:
 ## Testbench Architecture
 
 ### Overview
-The **testbench architecture** is designed to validate the functionality and performance of the AXI DMA IP comprehensively. The top-level module, `axi_dma_10xe_tb_top`, orchestrates all testbench components and interfaces.
+The **testbench architecture** is designed to validate the functionality and performance of the AXI DMA IP comprehensively. The top-level module, `axi_dma_tb_top`, orchestrates all testbench components and interfaces.
 
 ### Components
 1. **Interfaces**  
@@ -50,46 +50,39 @@ The **testbench architecture** is designed to validate the functionality and per
 3. **Test Class**  
    - Encapsulates the environment and supports multiple test scenarios.  
 
-4. **Environment Class**  
-   - Includes sub-components such as:  
-     - **Register_UVC:** Manages AXI-Lite transactions.  
-     - **RAL_Model:** Provides a high-level abstraction for register access.  
-     - **Scoreboard:** Compares expected vs. actual results for data integrity.  
-     - **Stream_UVC:** Verifies AXI-Stream read/write channels.
-     ## Test Workflow
-
 ### High-Level Overview
-The test workflow begins by invoking `run_test("base_test")` in the top-level module `tb_top`. This triggers:
+The test workflow begins by invoking `run_test("test")` in the top-level module `tb_top`. This triggers:
 1. **DUT Configuration:** Control and status registers are configured.  
 2. **Sequence Execution:** Sequences drive transactions on the AXI-Stream interfaces.  
 3. **Monitoring and Scoreboarding:** Transactions are observed and validated.  
 4. **Termination:** Objections are dropped, signaling the test's end.  
 
+#### Testbench Architecture Diagram
+![Testbench Architecture](./docs/jpgs/TCP_Diagrams-Verification-Architecture.jpg)
+
 ### Detailed Workflow
 1. **Initialization:**  
    - Environment and UVM components are initialized.  
    - Interfaces are configured using `uvm_config_db`.  
+   - During the build_phase of the test, 
+   - A dynamic configuration object (env_cfg) is modified to test specific scenarios. For instance: To enable MM2S_Read operation, the SRC_ADDR and the number of bytes to read must be specified. The scoreboard's write operation is disabled to avoid entering an infinite loop.
+   - The testbench configuration is derived from this env_cfg file, ensuring all components are tailored for the scenario being verified.
 
 2. **Run Phase:**  
    - DUT configuration, sequence execution, monitoring, and scoreboarding are performed.  
 
 3. **Termination:**  
    - Simulation objections are dropped, and results are reported.  
-
 ---
-
 ## Test Plan
 The test plan includes a comprehensive set of scenarios to validate the DMA's functionality and compliance with specifications. Key tests include:
 - **Read/Write Operations:** Validate AXI-Lite read/write behavior.    
 - **Interrupt Handling:** Ensure proper response to DMA-generated interrupts.  
-
 ---
 
-## Verification Challenges
-1. Synchronizing AXI and AXI-Stream interfaces.  
-2. Validating burst transfers across packet boundaries.  
-
----
+#### Testcase Legend
+## Below is a list of possible testcases that can be executed to validate the AXI DMA IP:
+![Testcase Legend](./docs/jpgs/TCP_Diagrams-Testcase_Legend.jpg)
 
 ## How to Run the Tests
 1. **Compile:**  
