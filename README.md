@@ -81,7 +81,7 @@ The test plan includes a comprehensive set of scenarios to validate the DMA's fu
 ---
 
 #### Testcase Legend
-## Below is a list of possible testcases that can be executed to validate the AXI DMA IP:
+Below is a list of possible testcases that can be executed to validate the AXI DMA IP:
 ![Testcase Legend](./docs/jpgs/TCP_Diagrams-Testcase_Legend.jpg)
 
 ## How to Run the Tests
