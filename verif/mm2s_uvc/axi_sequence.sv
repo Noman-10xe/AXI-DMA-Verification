@@ -46,7 +46,6 @@ class axi_base_sequence extends uvm_sequence #(axi_transaction);
     if (phase != null) begin
       phase.drop_objection(this, get_type_name());
       `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
-      phase.phase_done.set_drain_time(this, 350ns);
     end
   endtask : post_body
 
@@ -108,7 +107,7 @@ class axi_slave_error_sequence extends axi_base_sequence;
         start_item(rsp);
         rsp.rdata   = 'hdeadbeef;   // Provide valid data
         rsp.rvalid  = 1'b1;         // Mark the data as valid
-        rsp.rresp   = 2'b10;        // Slave Error response (example)
+        rsp.rresp   = 2'b10;        // Slave Error response
         // Finish the response item (hand over to the driver)
         finish_item(rsp);
       end
@@ -118,5 +117,45 @@ class axi_slave_error_sequence extends axi_base_sequence;
   endtask : body
 
 endclass : axi_slave_error_sequence
+
+//////////////////////////////////////////////////////////////////////
+//                 Axi Decode Error Sequence                        //
+//////////////////////////////////////////////////////////////////////
+
+class axi_decode_error_sequence extends axi_base_sequence;
+  `uvm_object_utils(axi_decode_error_sequence)
+  
+  axi_transaction req;
+  axi_transaction rsp;
+  int i = 0;
+
+  function new(string name="axi_decode_error_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXI Decode Error Sequence", UVM_LOW)
+    req = axi_transaction::type_id::create("req");
+    rsp = axi_transaction::type_id::create("rsp");
+  
+    repeat (ceil_val) begin
+      start_item(req);
+      finish_item(req);
+
+      repeat (req.arlen + 1) begin
+        // Create and randomize the response item
+        start_item(rsp);
+        rsp.rdata   = 'hdeadbeef;   // Provide valid data
+        rsp.rvalid  = 1'b1;         // Mark the data as valid
+        rsp.rresp   = 2'b11;        // Decode Error response
+        // Finish the response item (hand over to the driver)
+        finish_item(rsp);
+      end
+
+    end  
+
+  endtask : body
+
+endclass : axi_decode_error_sequence
 
 `endif

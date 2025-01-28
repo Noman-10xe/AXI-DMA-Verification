@@ -80,6 +80,14 @@ module axi_dma_tb_top;
     $dumpvars;
   end
 
+  initial begin
+    `ifdef ERROR_RESPONSE_TEST
+        $display("Running ERROR_RESPONSE_TEST test");
+    `else
+        $display("Running default test");
+    `endif
+  end
+
   /////////////////////////////////////
   //         DUT Instantiation       //
   /////////////////////////////////////

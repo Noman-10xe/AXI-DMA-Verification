@@ -18,7 +18,10 @@ class environment extends uvm_env;
         axi_lite_adapter        adapter;
         axis_read_agent         axis_r_agt;
         axis_write_agent        axis_wr_agt;
+        
+        `ifdef ERROR_RESPONSE_TEST
         mm2s_agent              axi_r_agt;
+        `endif
 
         // axi_monitor             axi_cov_mon;
         scoreboard              sco;
@@ -48,7 +51,9 @@ function void environment::build_phase(uvm_phase phase);
         RAL_Model.build();
         adapter         = axi_lite_adapter::type_id::create("adapter", this);
         // axi_cov_mon	= axi_monitor::type_id::create("axi_cov_mon", this);
+        `ifdef ERROR_RESPONSE_TEST
         axi_r_agt       = mm2s_agent::type_id::create("axi_r_agt", this);
+        `endif
           
         // Environment Configuration
         if (!uvm_config_db#(environment_config)::get(this, get_full_name(), "env_cfg", env_cfg))

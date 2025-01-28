@@ -702,8 +702,10 @@ class slave_error_test extends base_test;
 
                 fork 
                         begin
+                                `ifdef ERROR_RESPONSE_TEST
                                 axi_slvErr_seq.set_starting_phase(phase);
                                 axi_slvErr_seq.start(env.axi_r_agt.sequencer);
+                                `endif
                         end
                         begin
                                 axis_read_seq.set_starting_phase(phase);
@@ -733,9 +735,10 @@ endclass : slave_error_test
 class decode_error_test extends base_test;
         `uvm_component_utils(decode_error_test)
         
-        read_status_sequence    read_status;
-        mm2s_DecErr_sequence    DecErr_seq;
-        axis_read               axis_read_seq;
+        read_status_sequence            read_status;
+        mm2s_DecErr_sequence            DecErr_seq;
+        axis_read                       axis_read_seq;
+        axi_decode_error_sequence       axi_decErr_seq;
 
         function new(string name = "decode_error_test", uvm_component parent);
                 super.new(name, parent);
@@ -746,9 +749,11 @@ class decode_error_test extends base_test;
                 read_status                     = read_status_sequence::type_id::create("read_status", this);
                 DecErr_seq                      = mm2s_DecErr_sequence::type_id::create("DecErr_seq", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                axi_decErr_seq                  = axi_decode_error_sequence::type_id::create("axi_decErr_seq", this);
                 env_cfg.scoreboard_write        = 0;
-                env_cfg.DATA_LENGTH             = 540;
-                env_cfg.SRC_ADDR                = 'h3fff;
+                env_cfg.has_axis_write_agent    = 0;
+                env_cfg.DATA_LENGTH             = 128;
+                env_cfg.SRC_ADDR                = 'h100;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
@@ -759,18 +764,24 @@ class decode_error_test extends base_test;
                 DecErr_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
-                force axi_dma_tb_top.axi_intf.rresp = 2'b11;
-
-                axis_read_seq.set_starting_phase(phase);
-                axis_read_seq.start(env.axis_r_agt.sequencer);
+                fork
+                        begin            
+                                `ifdef ERROR_RESPONSE_TEST
+                                axi_decErr_seq.set_starting_phase(phase);
+                                axi_decErr_seq.start(env.axi_r_agt.sequencer);
+                                `endif   
+                        end
+                        begin
+                                axis_read_seq.set_starting_phase(phase);
+                                axis_read_seq.start(env.axis_r_agt.sequencer);
+                        end
+                join
 
                 // Read After the Transfer to check if the Error Interrupt was Generated
                 phase.raise_objection(this);
                 read_status.RAL_Model = env.RAL_Model;
                 read_status.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-
-                release axi_dma_tb_top.axi_intf.rresp;
 
         endtask: run_phase
         
