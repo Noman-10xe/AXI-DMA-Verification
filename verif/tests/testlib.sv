@@ -52,13 +52,17 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
         uvm_top.print_topology();
         
         // Set Verbosity Level
-        env.set_report_verbosity_level_hier(UVM_LOW);
+        env.set_report_verbosity_level_hier(UVM_HIGH);
 endfunction: end_of_elaboration_phase
 
 
-////////////////////////////////////////////////////////////////////////
-//                            Reset Test                              //
-////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   Reset Test                                              //
+// Description: The test reads the control and status registers after   //
+// reset to validate reset feature of the core.                         //
+// Dated: Jan 10, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+
 class reset_test extends base_test;
         `uvm_component_utils(reset_test)
 
@@ -87,9 +91,15 @@ task reset_test::run_phase(uvm_phase phase);
         phase.phase_done.set_drain_time(this, 300ns);
 endtask: run_phase
 
-////////////////////////////////////////////////////////////////////////
-//                              MM2S Enable Test                      //
-////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   MM2S Enable Test                                        //
+// Description: The test enables the MM2S Read Operation by             //
+// configuring control Register.                                        //
+// Dated: Jan 11, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+
 class mm2s_enable_test extends base_test;
         `uvm_component_utils(mm2s_enable_test)
         
@@ -119,9 +129,13 @@ class mm2s_enable_test extends base_test;
 endclass : mm2s_enable_test
 
 
-////////////////////////////////////////////////////////////////////////
-//                              S2MM Enable Test                      //
-////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   S2MM Enable Test                                        //
+// Description: The test enables the S2MM Write Operation by            //
+// configuring control Register.                                        //
+// Dated: Jan 11, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+
 class s2mm_enable_test extends base_test;
         `uvm_component_utils(s2mm_enable_test)
         
@@ -161,9 +175,13 @@ class s2mm_enable_test extends base_test;
 endclass : s2mm_enable_test
 
 
-////////////////////////////////////////////////////////////////////////
-//                      AXI4 to AXI-Stream Read Test                  //
-////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   Read Test                                               //
+// Description: The test will read multiple bytes from memory           // 
+// and cross-chceks the operation in scoreboard.                        //
+// Dated: Jan 11, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+
 class read_test extends base_test;
         `uvm_component_utils(read_test)
         
@@ -179,7 +197,7 @@ class read_test extends base_test;
                 mm2s_enable                     = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
                 env_cfg.scoreboard_write        = 0;
-                env_cfg.DATA_LENGTH             = 512;
+                env_cfg.DATA_LENGTH             = 12;
                 env_cfg.SRC_ADDR                = 'h20;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
@@ -200,9 +218,13 @@ class read_test extends base_test;
 
 endclass : read_test
 
-////////////////////////////////////////////////////////////////////////
-//                      Read After Write (RAW) Test                   //
-////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   Read After Write (RAW) Test                             //
+// Description: The test will write multiple bytes to a certain memory  //
+// location and then reads the same bytes from the memory and           // 
+// cross-chceks the write operation in scoreboard.                      //
+// Dated: Jan 12, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
 
 class raw_test extends base_test;
         `uvm_component_utils(raw_test)
@@ -222,9 +244,9 @@ class raw_test extends base_test;
                 axis_write_seq          = axis_wr::type_id::create("axis_write_seq", this);
                 mm2s_enable             = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
                 axis_read_seq           = axis_read::type_id::create("axis_read_seq", this);
-                env_cfg.SRC_ADDR        = 'h00;
-                env_cfg.DST_ADDR        = 'h00;
-                env_cfg.DATA_LENGTH     = 5120;
+                env_cfg.SRC_ADDR        = 'h10;
+                env_cfg.DST_ADDR        = 'h10;
+                env_cfg.DATA_LENGTH     = 32;
                 env_cfg.num_trans       = env_cfg.calculate_txns();
         endfunction: build_phase
                 
@@ -251,7 +273,10 @@ class raw_test extends base_test;
 endclass : raw_test
 
 ////////////////////////////////////////////////////////////////////////
-//                       Read Introut Test                            //
+// Test Name:   Read Introut Test                                     //
+// Description: The test will run random MM2S Read operations to      //
+// incidacte interrupts generation on transfer completion.            //
+// Dated: Jan 12, 2025                                                //
 ////////////////////////////////////////////////////////////////////////
 
 class read_introut_test extends base_test;
@@ -314,8 +339,12 @@ endclass : read_introut_test
 
 
 ////////////////////////////////////////////////////////////////////////
-//                      Write Introut Test                            //
+// Test Name:   Write Introut Test                                    //
+// Description: The test will run random S2MM Write operations to     //
+// incidacte interrupts generation on transfer completion.            //
+// Dated: Jan 12, 2025                                                //
 ////////////////////////////////////////////////////////////////////////
+
 
 class write_introut_test extends base_test;
         `uvm_component_utils(write_introut_test)
@@ -641,9 +670,11 @@ endclass : idle_state_test
 class slave_error_test extends base_test;
         `uvm_component_utils(slave_error_test)
         
-        read_status_sequence    read_status;
-        mm2s_SlvErr_sequence    SlvErr_seq;
-        axis_read               axis_read_seq;
+        read_status_sequence            read_status;
+        mm2s_SlvErr_sequence            SlvErr_seq;
+        axis_read                       axis_read_seq;
+        axi_slave_error_sequence        axi_slvErr_seq;
+
 
         function new(string name = "slave_error_test", uvm_component parent);
                 super.new(name, parent);
@@ -654,9 +685,11 @@ class slave_error_test extends base_test;
                 read_status                     = read_status_sequence::type_id::create("read_status", this);
                 SlvErr_seq                      = mm2s_SlvErr_sequence::type_id::create("SlvErr_seq", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                axi_slvErr_seq                  = axi_slave_error_sequence::type_id::create("axi_slvErr_seq", this);
                 env_cfg.scoreboard_write        = 0;
-                env_cfg.DATA_LENGTH             = 433;
-                env_cfg.SRC_ADDR                = 'h16;
+                env_cfg.has_axis_write_agent    = 0;
+                env_cfg.DATA_LENGTH             = 128;
+                env_cfg.SRC_ADDR                = 'h100;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
 
@@ -667,10 +700,16 @@ class slave_error_test extends base_test;
                 SlvErr_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
-                force axi_dma_tb_top.axi_intf.rresp = 2'b10;
-
-                axis_read_seq.set_starting_phase(phase);
-                axis_read_seq.start(env.axis_r_agt.sequencer);
+                fork 
+                        begin
+                                axi_slvErr_seq.set_starting_phase(phase);
+                                axi_slvErr_seq.start(env.axi_r_agt.sequencer);
+                        end
+                        begin
+                                axis_read_seq.set_starting_phase(phase);
+                                axis_read_seq.start(env.axis_r_agt.sequencer);
+                        end
+                join
 
                 // Read After the Transfer to check if the Error Interrupt was Generated
                 phase.raise_objection(this);
@@ -678,7 +717,6 @@ class slave_error_test extends base_test;
                 read_status.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
 
-                release axi_dma_tb_top.axi_intf.rresp;
 
         endtask: run_phase
         
@@ -761,8 +799,8 @@ class boundary_test extends base_test;
                 boundary_test_seq               = mm2s_boundary_sequence::type_id::create("boundary_test_seq", this);
                 axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
                 env_cfg.scoreboard_write        = 0;
-                env_cfg.SRC_ADDR                = 'hFFC;
-                env_cfg.DATA_LENGTH             = 8208;
+                env_cfg.SRC_ADDR                = 'hFF9;
+                env_cfg.DATA_LENGTH             = 32;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
         endfunction: build_phase
                 
@@ -1022,62 +1060,27 @@ endclass : random_tkeep_test
 
 /////////////// Testing Purposes
 
-class mm2s_introut_test extends base_test;
-        `uvm_component_utils(mm2s_introut_test)
+class testing_test extends base_test;
+        `uvm_component_utils(testing_test)
         
-        mm2s_custom_sequence            mm2s_short;
-        axis_read                       axis_read_seq;
-        clear_mm2s_introut_sequence     clear_introut_seq;
-        mm2s_length_sequence            length_seq;
+        testing_seq test_seq;
 
-        function new(string name = "mm2s_introut_test", uvm_component parent);
+        function new(string name = "testing_test", uvm_component parent);
                 super.new(name, parent);
         endfunction : new
 
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
-                mm2s_short                      = mm2s_custom_sequence::type_id::create("mm2s_short", this);
-                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
-                clear_introut_seq               = clear_mm2s_introut_sequence::type_id::create("clear_introut_seq", this);
-                length_seq                      = mm2s_length_sequence::type_id::create("length_seq", this);
-                env_cfg.scoreboard_write        = 0;
-                env_cfg.SRC_ADDR                = 'h20;
-                env_cfg.DATA_LENGTH             = 32;
-                env_cfg.num_trans               = env_cfg.calculate_txns();
+                test_seq = testing_seq::type_id::create("test_seq");
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
                 phase.raise_objection(this);
-                mm2s_short.RAL_Model = env.RAL_Model;
-                mm2s_short.start(env.axi_lite_agt.sequencer);
+                test_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-
-                axis_read_seq.set_starting_phase(phase);
-                axis_read_seq.start(env.axis_r_agt.sequencer);
-
-                // #300ns;
-                // repeat(10) begin
-                // env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
-                // env_cfg.num_trans               = env_cfg.calculate_txns();
-                // env.sco.src_addr                = env_cfg.SRC_ADDR;
-// 
-                // phase.raise_objection(this);
-                // length_seq.RAL_Model = env.RAL_Model;
-                // length_seq.start(env.axi_lite_agt.sequencer);
-                // phase.drop_objection(this);
-// 
-                // axis_read_seq.set_starting_phase(phase);
-                // axis_read_seq.start(env.axis_r_agt.sequencer);
-// 
-                // phase.raise_objection(this);
-                // clear_introut_seq.RAL_Model = env.RAL_Model;
-                // clear_introut_seq.start(env.axi_lite_agt.sequencer);
-                // phase.drop_objection(this);
-                // phase.phase_done.set_drain_time(this, 100ns);
-                // end
 
         endtask: run_phase
         
-endclass : mm2s_introut_test
+endclass : testing_test
 
 `endif

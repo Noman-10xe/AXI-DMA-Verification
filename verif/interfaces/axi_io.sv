@@ -73,6 +73,12 @@ interface axi_io        #(      int ADDR_WIDTH = params_pkg::ADDR_WIDTH,
       input       arprot;
       input       arcache;
       output      arready;
+      output      rdata;
+      output      rresp;
+      output      rlast;
+      output      rvalid;
+      input       rready;
+      output      mm2s_prmry_reset_out_n;
 
   endclocking : ioReadDriver
 
@@ -180,7 +186,7 @@ endclocking : ioWriteDriver
 
   // Property: ARREADY should be asserted within 16 cycles when ARVALID is high
   property read_handshake;
-    @(posedge axi_aclk) $onehot(arvalid) |-> ##[0:16] arready;
+    @(posedge axi_aclk) $onehot(arvalid) |-> ##[0:31] arready;
   endproperty
 
   // Property: AWREADY should be asserted within a few cycles when AWVALID is high

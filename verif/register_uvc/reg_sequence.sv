@@ -236,7 +236,7 @@ class mm2s_SlvErr_sequence extends base_sequence;
     bit [31:0]    data;
     bit [31:0]    expected;
     
-    /* To Enable Err_IrqEn: data = 32'h14003;
+    /* To Enable Err_IrqEn: data = 32'h14001;
      */
 
     data = 32'h14001;
@@ -277,7 +277,7 @@ class mm2s_DecErr_sequence extends base_sequence;
     bit [31:0]    data;
     bit [31:0]    expected;
 
-    /* To Enable Err_IrqEn: data = 32'h14003;
+    /* To Enable Err_IrqEn: data = 32'h14001;
      */
 
     data = 32'h14001;
@@ -805,5 +805,33 @@ class random_rw_seq extends base_sequence;
    endtask
 endclass : random_rw_seq
 
+
+// Testing Axi Lite
+class testing_seq extends base_sequence;
+  `uvm_object_utils(testing_seq)
+  
+  function new (string name = "testing_seq");
+    super.new(name);  
+  endfunction
+  
+  task body;
+    bit [31:0]    addr;
+
+    item  = reg_transaction::type_id::create("item");
+    item.c_addr.constraint_mode(0);
+    item.c_read_transaction.constraint_mode(0);
+    item.c_write_transaction.constraint_mode(0);
+
+    repeat(10)  begin
+      start_item(item);
+        if(!item.randomize() with { item.s_axi_lite_araddr == 'h2C;
+                                    item.s_axi_lite_awaddr == 'h2C; }) begin
+          `uvm_error(get_type_name(), "Randomization failed");
+        end
+      finish_item(item);
+    end
+
+   endtask
+endclass : testing_seq
 
 `endif

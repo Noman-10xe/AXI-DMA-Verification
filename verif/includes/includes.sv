@@ -37,7 +37,6 @@ import uvm_pkg::*;
 `include "../stream_uvc/axis_write_driver.sv"
 `include "../stream_uvc/axis_write_monitor.sv"
 `include "../stream_uvc/axis_write_agent.sv"
-`include "../stream_uvc/virtual_sequencer.sv"
 
 // Registration Abstraction Layer (RAL Model)
 `include "../ral_model/registers/mm2s_dmacr.sv"
@@ -54,8 +53,18 @@ import uvm_pkg::*;
 `include "../ral_model/axi_lite_adapter.sv"
 
 // AXI Components
-`include "../axi_coverage_monitor/axi_transaction.sv"
-`include "../axi_coverage_monitor/axi_monitor.sv"
+// `include "../axi_coverage_monitor/axi_transaction.sv"
+// `include "../axi_coverage_monitor/axi_monitor.sv"
+`include "../mm2s_uvc/axi_transaction.sv"
+`include "../mm2s_uvc/axi_sequence.sv"
+`include "../mm2s_uvc/mm2s_driver.sv"
+`include "../mm2s_uvc/mm2s_monitor.sv"
+`include "../mm2s_uvc/axi_read_agent.sv"
+
+// S2MM
+`include "../s2mm_uvc/s2mm_driver.sv"
+`include "../s2mm_uvc/s2mm_monitor.sv"
+`include "../s2mm_uvc/s2mm_agent.sv"
 
 // Coverage Model
 `include "../environment/coverage_model.sv"
@@ -68,7 +77,6 @@ import mem_model_pkg::*;
 
 // Environment and Test Library
 `include "../environment/environment.sv"
-`include "../tests/virtual_sequence.sv"
 `include "../tests/testlib.sv"
 
 `endif

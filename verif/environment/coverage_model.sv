@@ -82,7 +82,7 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
 
              CROSS_ADDR_CTRL: cross cp_araddr, cp_arvalid, cp_arready {
                 bins valid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready);
-                bins invalid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0) && binsof(cp_arready);
+                bins invalid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0) && binsof(cp_arready); // arread -> 1
                 ignore_bins ignore_0 = !((binsof(cp_araddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
              }
 

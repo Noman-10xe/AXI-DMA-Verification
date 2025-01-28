@@ -63,7 +63,7 @@ module axi_dma_tb_top;
 
   initial begin
     fork
-    run_test("write_introut_test");
+    run_test("slave_error_test");
     clk_rst_if.gen_clock(20);
     clk_rst_if.gen_reset(16);
     join
