@@ -78,18 +78,22 @@ class scoreboard extends uvm_scoreboard;
          read_queue.push_back(item);
       end
       
-      if (mm2s_prev_tlast) begin
+      // Enable Checker if the Interrupt was configured
+      if (env_cfg.irq_EN) begin
+         if (mm2s_prev_tlast) begin
 
-         if (item.introut != 1) begin
-            `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", item.introut, 1));
-         end
-         else begin
-            `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
+            if (item.introut != 1) begin
+               `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", item.introut, 1));
+            end
+            else begin
+               `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
+            end
          end
       end
 
+      // Update Previous Value of tlast
       mm2s_prev_tlast = item.tlast;
-      
+   
    endfunction : write_mm2s_read
 
    virtual function void write_s2mm_write (axis_transaction item);

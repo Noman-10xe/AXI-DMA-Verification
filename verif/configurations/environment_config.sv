@@ -21,8 +21,9 @@ class environment_config extends uvm_object;
         bit scoreboard_read      = 1; // Switch to Enable/Disable Read Queues
         bit scoreboard_write     = 1; // Switch to Enable/Disable Write Queues
         bit rs_test;                  // Switch to Enable/Disable rs_test
+        bit irq_EN;                   // Switch to enable interrupt Generation
         
-        // Source Address for Read
+        // Source Address for Reads
         bit [ 31:0 ] SRC_ADDR = 32'h1E;
 
         // Destination Address for Write Operation

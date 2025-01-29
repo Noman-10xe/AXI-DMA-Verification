@@ -130,7 +130,13 @@ class mm2s_enable_sequence extends base_sequence;
     bit [31:0]    data;
     bit [31:0]    mv;     // Mirrored value
   
+    if (cfg.irq_EN) begin
     data = 32'h11001;
+    end
+    else begin
+    data = 32'h10001;
+    end
+
     RAL_Model.MM2S_DMACR.write(status, data);
     mv = RAL_Model.MM2S_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, mv, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, mv));
@@ -168,8 +174,13 @@ class mm2s_custom_sequence extends base_sequence;
   
     /* To Enable Err_IrqEn: data = 32'h14003;
      */
+    if (cfg.irq_EN) begin
+      data = 32'h11001;
+    end
+    else begin
+      data = 32'h10001;
+    end
 
-    data = 32'h11001;
     RAL_Model.MM2S_DMACR.write(status, data);
 
     data = cfg.SRC_ADDR;
@@ -199,7 +210,13 @@ class mm2s_boundary_sequence extends base_sequence;
     bit [31:0]    data;
     bit [31:0]    expected;
 
-    data = 32'h11001;
+    if (cfg.irq_EN) begin
+      data = 32'h11001;
+    end
+    else begin
+      data = 32'h10001;
+    end
+
     RAL_Model.MM2S_DMACR.write(status, data);
     expected = RAL_Model.MM2S_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
@@ -239,7 +256,13 @@ class mm2s_SlvErr_sequence extends base_sequence;
     /* To Enable Err_IrqEn: data = 32'h14001;
      */
 
-    data = 32'h14001;
+    if (cfg.irq_EN) begin
+      data = 32'h14001;
+    end
+    else begin
+      data = 32'h10001;
+    end
+
     RAL_Model.MM2S_DMACR.write(status, data);
     expected = RAL_Model.MM2S_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
@@ -279,8 +302,13 @@ class mm2s_DecErr_sequence extends base_sequence;
 
     /* To Enable Err_IrqEn: data = 32'h14001;
      */
+    if (cfg.irq_EN) begin
+      data = 32'h14001;
+    end
+    else begin
+      data = 32'h10001;
+    end
 
-    data = 32'h14001;
     RAL_Model.MM2S_DMACR.write(status, data);
     expected = RAL_Model.MM2S_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
@@ -319,7 +347,13 @@ class s2mm_enable_sequence extends base_sequence;
     bit [31:0]    data;
     bit [31:0]    expected;     // Expected
   
-    data = 32'h11001;
+    if (cfg.irq_EN) begin
+      data = 32'h11001;
+    end
+    else begin
+      data = 32'h10001;
+    end
+
     RAL_Model.S2MM_DMACR.write(status, data);
     expected = RAL_Model.S2MM_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
@@ -355,7 +389,13 @@ class s2mm_custom_sequence extends base_sequence;
     bit [31:0]    data;
     bit [31:0]    expected;
  
-    data = 32'h11001;
+    if (cfg.irq_EN) begin
+      data = 32'h11001;
+    end
+    else begin
+      data = 32'h10001;
+    end
+    
     RAL_Model.S2MM_DMACR.write(status, data);
     expected = RAL_Model.S2MM_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));

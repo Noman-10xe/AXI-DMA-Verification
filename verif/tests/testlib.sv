@@ -114,6 +114,7 @@ class mm2s_enable_test extends base_test;
                 mm2s_enable             = mm2s_enable_sequence::type_id::create("mm2s_enable", this);
                 env_cfg.DATA_LENGTH     = 'h80;
                 env_cfg.SRC_ADDR        = 'h00;
+                env_cfg.irq_EN          = 1;
         endfunction: build_phase
         
         task run_phase(uvm_phase phase);
@@ -155,6 +156,7 @@ class s2mm_enable_test extends base_test;
                 env_cfg.DATA_LENGTH             = 968;
                 env_cfg.DST_ADDR                = 'h0;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
         
         task run_phase(uvm_phase phase);
@@ -200,6 +202,7 @@ class read_test extends base_test;
                 env_cfg.DATA_LENGTH             = 12;
                 env_cfg.SRC_ADDR                = 'h20;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
         
         task run_phase(uvm_phase phase);
@@ -248,6 +251,7 @@ class raw_test extends base_test;
                 env_cfg.DST_ADDR        = 'h10;
                 env_cfg.DATA_LENGTH     = 32;
                 env_cfg.num_trans       = env_cfg.calculate_txns();
+                env_cfg.irq_EN          = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -301,6 +305,7 @@ class read_introut_test extends base_test;
                 env_cfg.SRC_ADDR                = 'h20;
                 env_cfg.DATA_LENGTH             = 32;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -368,6 +373,7 @@ class write_introut_test extends base_test;
                 env_cfg.DST_ADDR                = 'h20;
                 env_cfg.DATA_LENGTH             = 32;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -438,6 +444,7 @@ class rs_test extends base_test;
                 env_cfg.SRC_ADDR                = 'h14;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
                 env_cfg.rs_test                 = 1;
+                env_cfg.irq_EN                  = 0;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -526,6 +533,7 @@ class soft_reset_test extends base_test;
                 env_cfg.DATA_LENGTH             = 140;
                 env_cfg.SRC_ADDR                = 'h8;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -626,6 +634,7 @@ class idle_state_test extends base_test;
                 env_cfg.DATA_LENGTH             = 190;
                 env_cfg.SRC_ADDR                = 'h12;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -691,6 +700,7 @@ class slave_error_test extends base_test;
                 env_cfg.DATA_LENGTH             = 128;
                 env_cfg.SRC_ADDR                = 'h100;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
 
         task run_phase(uvm_phase phase);
@@ -755,6 +765,7 @@ class decode_error_test extends base_test;
                 env_cfg.DATA_LENGTH             = 128;
                 env_cfg.SRC_ADDR                = 'h100;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -813,6 +824,7 @@ class boundary_test extends base_test;
                 env_cfg.SRC_ADDR                = 'hFF9;
                 env_cfg.DATA_LENGTH             = 32;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -855,6 +867,7 @@ class data_realignment_test extends base_test;
                 env_cfg.DATA_LENGTH             = 163;
                 env_cfg.SRC_ADDR                = 'h33;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -899,7 +912,7 @@ class buffer_overflow_test extends base_test;
                 env_cfg.DATA_LENGTH             = 640;
                 env_cfg.SRC_ADDR                = 'h00;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
-
+                env_cfg.irq_EN                  = 0;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -992,6 +1005,7 @@ class random_stream_read_test extends base_test;
                 env_cfg.DATA_LENGTH             = 256;
                 env_cfg.SRC_ADDR                = 'h89;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 0;
         endfunction: build_phase
                 
         task run_phase(uvm_phase phase);
@@ -1049,6 +1063,7 @@ class random_tkeep_test extends base_test;
                 env_cfg.DATA_LENGTH             = 256;
                 env_cfg.DST_ADDR                = 'h98;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 0;
         endfunction: build_phase
         
         task run_phase(uvm_phase phase);

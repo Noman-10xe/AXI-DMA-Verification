@@ -1,11 +1,20 @@
 # Environment Variables
-TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test slave_error_test decode_error_test buffer_overflow_test random_reg_test random_stream_read_test random_tkeep_test
+TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test buffer_overflow_test random_reg_test random_stream_read_test random_tkeep_test slave_error_test decode_error_test
 RTL     := rtl
 TB      := verif
 SIM     := sim
 SHELL   := /bin/bash
 TEST_NAME ?= reset_test
 export TEST_NAME
+DEFINE ?= DEFAULT
+export DEFINE
+
+ifeq ($(TEST_NAME), slave_error_test)
+    DEFINE := ERROR_RESPONSE_TEST
+endif
+ifeq ($(TEST_NAME), decode_error_test)
+    DEFINE := ERROR_RESPONSE_TEST
+endif
 
 # Script Paths
 SCRIPT_DIR := $(shell realpath ./rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.sim/sim_1/behav/xsim)
@@ -54,9 +63,27 @@ simulate: $(SIM_DIR)
 regress: $(REGRESS_DIR)
 	@mkdir -p $(REGRESS_DIR)
 	@echo "Starting regression..."
+	# Step 1: Compile & Elaborate ONCE for DEFAULT tests
+	@echo "Compiling & Elaborating for DEFAULT tests..."
+	$(MAKE) compile DEFINE=DEFAULT
+	$(MAKE) elaborate DEFINE=DEFAULT
+	# Run simulations for all tests EXCEPT slave_error_test & decode_error_test
 	@for t in $(TESTS); do \
-		echo "Running test: $$t"; \
-		$(MAKE) simulate TEST_NAME=$$t; \
+		if [ "$$t" != "slave_error_test" ] && [ "$$t" != "decode_error_test" ]; then \
+			echo "Simulating test: $$t"; \
+			$(MAKE) simulate TEST_NAME=$$t DEFINE=DEFAULT; \
+			mkdir -p $(REGRESS_DIR)/$$t; \
+			cp -r $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
+		fi; \
+	done
+	# Step 2: Compile & Elaborate ONCE for ERROR_RESPONSE_TEST tests
+	@echo "Compiling & Elaborating for ERROR_RESPONSE_TEST tests..."
+	$(MAKE) compile DEFINE=ERROR_RESPONSE_TEST
+	$(MAKE) elaborate DEFINE=ERROR_RESPONSE_TEST
+	# Run simulations for slave_error_test & decode_error_test
+	@for t in slave_error_test decode_error_test; do \
+		echo "Simulating test: $$t"; \
+		$(MAKE) simulate TEST_NAME=$$t DEFINE=ERROR_RESPONSE_TEST; \
 		mkdir -p $(REGRESS_DIR)/$$t; \
 		cp -r $(SIM_DIR)/$$t/* $(REGRESS_DIR)/$$t/; \
 	done
@@ -64,7 +91,6 @@ regress: $(REGRESS_DIR)
 	@echo "Merging coverage data..."
 	xcrg -report_format html -dir $(REGRESS_DIR) -report_dir $(COVERAGE_DIR)/merged_report || echo "Error merging coverage data."
 	@echo "Regression complete. Merged coverage report available in $(COVERAGE_DIR)/merged_report."
-
 
 # Clean Target
 clean:
