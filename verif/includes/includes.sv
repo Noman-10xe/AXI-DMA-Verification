@@ -53,7 +53,6 @@ import uvm_pkg::*;
 `include "../ral_model/axi_lite_adapter.sv"
 
 // AXI Components
-`include "../axi_coverage_monitor/axi_transaction.sv"
 `include "../mm2s_uvc/axi_transaction.sv"
 `include "../mm2s_uvc/axi_sequence.sv"
 `include "../mm2s_uvc/mm2s_driver.sv"

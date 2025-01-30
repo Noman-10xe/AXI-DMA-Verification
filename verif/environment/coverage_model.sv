@@ -188,7 +188,8 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
              //  Constructor: new
              function new(string name = "axis_read_coverage", uvm_component parent);
                 super.new(name, parent);
-                cg_axis_read = new();
+                cg_axis_read    = new();
+                cg_mm2s_introut = new();
              endfunction: new
      
              // write methods implementation
@@ -196,6 +197,7 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
                   `uvm_info(`gfn, "Recieved AXIS READ transaction in Coverage Model", UVM_HIGH)
                   tr = t;
                   cg_axis_read.sample();
+                  cg_mm2s_introut.sample();
              endfunction : write
              
              // AXI-Stream Read Covergroup
@@ -231,6 +233,16 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
                 }
 
              endgroup : cg_axis_read
+
+             // MM2S Interrupt Coverage
+             covergroup cg_mm2s_introut;
+                cp_mm2s_introut :       coverpoint tr.introut {
+                        bins mm2s_introut_0 = {0};
+                        bins mm2s_introut_1 = {1};
+                }
+             endgroup : cg_mm2s_introut
+
+
      
 endclass: axis_read_coverage
 
@@ -292,5 +304,36 @@ class axis_write_coverage extends uvm_subscriber #(axis_transaction);
      
 endclass: axis_write_coverage
 
+
+////////////////////////////////////////////////////////////////////
+//                    s2mm_introut coverage                       //
+////////////////////////////////////////////////////////////////////
+class s2mm_introut_coverage extends uvm_subscriber #(axi_transaction);
+        `uvm_component_utils(s2mm_introut_coverage);
+
+             axi_transaction tr;
+     
+             //  Constructor: new
+             function new(string name = "s2mm_introut_coverage", uvm_component parent);
+                super.new(name, parent);
+                cg_s2mm_introut = new();
+             endfunction: new
+     
+             // write methods implementation
+             virtual function void write(axi_transaction t);
+                  `uvm_info(`gfn, "Recieved AXI transaction in Coverage Model", UVM_HIGH)
+                  tr = t;
+                  cg_s2mm_introut.sample();
+             endfunction : write
+             
+             // S2MM Interrupt Coverage
+             covergroup cg_s2mm_introut;
+                cp_s2mm_introut :       coverpoint tr.s2mm_introut {
+                        bins s2mm_introut_0 = {0};
+                        bins s2mm_introut_1 = {1};
+                }
+             endgroup : cg_s2mm_introut
+     
+endclass: s2mm_introut_coverage
 
 `endif

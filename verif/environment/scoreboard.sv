@@ -43,8 +43,14 @@ class scoreboard extends uvm_scoreboard;
    static int received_bvalid_count = 0;
    int expected_bvalid_count;
    int remainder, remain_bytes;
-   static int last_bvalid_id;  // Stores the transaction ID of last bvalid
-   static int trans_count_since_last_bvalid = 0; // Tracks transactions since last BVALID
+   bit all_bvalids_received;        // Flag for last bvalid
+   bit transfer_in_progress;        // Indicates active transfer
+   bit error_occurred;              // Track if an error occurred
+   bit waiting_for_interrupt;       // Waiting for interrupt after BVALIDs complete
+   bit irq_EN_snapshot;             // Snapshot of irq_EN at transfer start
+   
+   // Capture configuration at transfer start
+   int current_data_length;
 
    // Local Memory Model
    mem_model memory;
@@ -106,6 +112,7 @@ class scoreboard extends uvm_scoreboard;
    
    endfunction : write_mm2s_read
 
+   // Stream Write Transaction
    virtual function void write_s2mm_write (axis_transaction item);
 
       // Add valid transaction to write queue
@@ -117,67 +124,98 @@ class scoreboard extends uvm_scoreboard;
    endfunction : write_s2mm_write
 
    function void write_axi(axi_transaction item);
-      
-      // Log received transaction details
-      `uvm_info(get_type_name(), $sformatf("AXI Transaction Received in Scoreboard:\n%s", item.sprint()), UVM_HIGH)
-   
-      // Compute expected number of BVALIDs
-      remainder = env_cfg.SRC_ADDR % 'h40;                              // Find misalignment from 64-byte boundary
-      remain_bytes = 64 - remainder;                                    // Bytes remaining to reach next 64-byte boundary
-   
-      if (env_cfg.DATA_LENGTH <= 64) begin
-         if (remainder == 0) 
-            expected_bvalid_count = 1;                                  // Fully aligned, single BVALID
-         else 
-            expected_bvalid_count = 2;                                  // Misaligned, requires an extra BVALID
+
+      // Detect new transfer (e.g., AWVALID assertion)
+      if (item.awvalid && !transfer_in_progress) begin
+        // Check for missing interrupt from previous transfer
+        if (waiting_for_interrupt && irq_EN_snapshot) begin
+          `uvm_error(get_type_name(), "Interrupt not received after BVALIDs completed!")
+        end
+        reset_state();
+        capture_config();
+        transfer_in_progress = 1;
+        `uvm_info(get_type_name(), $sformatf("New transfer started (DATA_LENGTH=%0d)", 
+                  current_data_length), UVM_DEBUG)
+      end
+  
+      // Track BVALIDs during active transfer
+      if (transfer_in_progress) begin
+        if (item.bvalid && item.bready) begin
+          received_bvalid_count++;
+          `uvm_info(get_type_name(), $sformatf("BVALID: %0d/%0d", 
+                    received_bvalid_count, expected_bvalid_count), UVM_DEBUG)
+  
+          // Check for BVALID completion
+          if (received_bvalid_count == expected_bvalid_count) begin
+            all_bvalids_received = 1;
+            transfer_in_progress = 0;  // BVALIDs done, wait for interrupt
+            if (irq_EN_snapshot) waiting_for_interrupt = 1;
+            `uvm_info(get_type_name(), "All BVALIDs received", UVM_MEDIUM)
+          end
+        end
+      end
+  
+      // Handle interrupt assertion
+      if (item.s2mm_introut) begin
+        
+        // Interrupt after BVALIDs complete
+        if (waiting_for_interrupt) begin
+          if (received_bvalid_count != expected_bvalid_count) begin
+            `uvm_error(get_type_name(), $sformatf("FAIL: s2mm_introut asserted with a BVALID mismatch! Exp: %0d Got: %0d",
+                      expected_bvalid_count, received_bvalid_count))
+          end
+          else if ( received_bvalid_count == expected_bvalid_count )begin
+            `uvm_info(get_type_name(), "PASS: s2mm_introut asserted correctly", UVM_MEDIUM)
+          end
+          reset_state();
+        end
+      end
+  
+    endfunction : write_axi
+  
+    // Reset all state variables
+    function void reset_state();
+      transfer_in_progress = 0;
+      waiting_for_interrupt = 0;
+      received_bvalid_count = 0;
+      all_bvalids_received = 0;
+    endfunction
+  
+    // Capture configuration at transfer start
+    function void capture_config();
+      current_data_length = env_cfg.DATA_LENGTH;
+      dst_addr = env_cfg.DST_ADDR;
+      irq_EN_snapshot = env_cfg.irq_EN;
+      calculate_expected_bvalids();
+    endfunction
+  
+    // Calculate expected BVALIDs
+    function void calculate_expected_bvalids();
+      int remainder = dst_addr % 'h40; // Assuming dst_addr is the start address
+      int first_burst_bytes;
+    
+      if (current_data_length <= 64) begin
+        expected_bvalid_count = (remainder == 0) ? 1 : 2;
       end else begin
-         expected_bvalid_count = env_cfg.DATA_LENGTH / 64;              // Number of full 64-byte bursts
-         if (remainder != 0) expected_bvalid_count++;                   // Account for misalignment
-         if ((env_cfg.DATA_LENGTH % 64) != 0) expected_bvalid_count++;  // Account for remaining bytes
+        // Handle initial misalignment
+        if (remainder != 0) begin
+          first_burst_bytes = 64 - remainder;
+          // Case: Entire transfer fits in first two bursts
+          if (current_data_length <= first_burst_bytes) begin
+            expected_bvalid_count = 2;
+          end 
+          // Case: Multiple bursts after initial misalignment
+          else begin
+            int remaining_data = current_data_length - first_burst_bytes;
+            expected_bvalid_count = 1 + (remaining_data / 64) + ((remaining_data % 64 != 0) ? 1 : 0);
+          end
+        end else begin
+          // No misalignment, simple calculation
+          expected_bvalid_count = (current_data_length / 64) + ((current_data_length % 64 != 0) ? 1 : 0);
+        end
       end
-   
-      // Debugging Statements
-      `uvm_info(get_type_name(), $sformatf("Debug: Remainder = %0d, Remaining Bytes = %0d", remainder, remain_bytes), UVM_DEBUG)
-      `uvm_info(get_type_name(), $sformatf("Debug: Expected BVALID Count = %0d", expected_bvalid_count), UVM_DEBUG)
-   
-      // Track received BVALIDs **only when both bvalid & bready are high
-      if (item.bvalid && item.bready) begin
-         received_bvalid_count++;
-         `uvm_info(get_type_name(), $sformatf("Debug: Received BVALID Count = %0d", received_bvalid_count), UVM_DEBUG)
+    endfunction
 
-         // Detect LAST BVALID transaction
-         if (received_bvalid_count == expected_bvalid_count) begin
-            `uvm_info(get_type_name(), "Debug: Last BVALID transaction detected. Will check for interrupt after 6 transactions.", UVM_DEBUG)
-            last_bvalid_id = received_bvalid_count;  // Store transaction count at last BVALID
-         end
-      end
-
-      // Increment transaction counter only after last BVALID is detected
-      if (last_bvalid_id > 0) begin
-         trans_count_since_last_bvalid++;
-      end
-
-      // Interrupt should be checked exactly 6 transactions after last BVALID
-      if ((last_bvalid_id > 0) && (trans_count_since_last_bvalid == 8)) begin
-         `uvm_info(get_type_name(), $sformatf("Debug: Checking introut after 8 transactions. Trans Count: %0d", trans_count_since_last_bvalid), UVM_DEBUG)
-
-         if (env_cfg.irq_EN) begin
-            
-            if (item.s2mm_introut != 1) begin
-               `uvm_error(get_type_name(), "ERROR: s2mm_introut comparison Failed.")
-            end else begin
-               `uvm_info(get_type_name(), "PASS: s2mm_introut comparison Passed.", UVM_NONE)
-            end
-
-            // Reset tracking variables after interrupt check
-            last_bvalid_id = 0;
-            trans_count_since_last_bvalid = 0;
-            received_bvalid_count = 0;
-         end
-      
-      end
-
-   endfunction : write_axi
 
    task run_phase(uvm_phase phase);
       axis_transaction read_item;

@@ -52,7 +52,7 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
         uvm_top.print_topology();
         
         // Set Verbosity Level
-        env.set_report_verbosity_level_hier(UVM_LOW);
+        env.set_report_verbosity_level_hier(UVM_DEBUG);
 endfunction: end_of_elaboration_phase
 
 
@@ -370,7 +370,7 @@ class write_introut_test extends base_test;
                 clear_introut_seq               = clear_s2mm_introut_sequence::type_id::create("clear_introut_seq", this);
                 length_seq                      = s2mm_length_sequence::type_id::create("length_seq", this);
                 env_cfg.scoreboard_read         = 0;
-                env_cfg.DST_ADDR                = 'h28;
+                env_cfg.DST_ADDR                = 'h20;
                 env_cfg.DATA_LENGTH             = 100;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
                 env_cfg.irq_EN                  = 1;
@@ -385,9 +385,14 @@ class write_introut_test extends base_test;
 
                 axis_write_seq.set_starting_phase(phase);
                 axis_write_seq.start(env.axis_wr_agt.sequencer);
-
-                repeat(10) begin
                 #700ns;
+
+                phase.raise_objection(this);
+                clear_introut_seq.RAL_Model = env.RAL_Model;
+                clear_introut_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+
+                repeat(5) begin
 
                 env_cfg.DATA_LENGTH     = $urandom_range(256, 0);
                 env_cfg.num_trans       = env_cfg.calculate_txns();
@@ -400,12 +405,14 @@ class write_introut_test extends base_test;
 
                 axis_write_seq.set_starting_phase(phase);
                 axis_write_seq.start(env.axis_wr_agt.sequencer);
+                #700ns;
                 
                 phase.raise_objection(this);
                 clear_introut_seq.RAL_Model = env.RAL_Model;
                 clear_introut_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
-                phase.phase_done.set_drain_time(this, 400ns);
+                phase.phase_done.set_drain_time(this, 200ns);
+
                 end
 
         endtask: run_phase
