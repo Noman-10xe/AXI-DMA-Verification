@@ -53,13 +53,13 @@ import uvm_pkg::*;
 `include "../ral_model/axi_lite_adapter.sv"
 
 // AXI Components
-// `include "../axi_coverage_monitor/axi_transaction.sv"
-// `include "../axi_coverage_monitor/axi_monitor.sv"
+`include "../axi_coverage_monitor/axi_transaction.sv"
 `include "../mm2s_uvc/axi_transaction.sv"
 `include "../mm2s_uvc/axi_sequence.sv"
 `include "../mm2s_uvc/mm2s_driver.sv"
 `include "../mm2s_uvc/mm2s_monitor.sv"
 `include "../mm2s_uvc/axi_read_agent.sv"
+`include "../axi_coverage_monitor/axi_monitor.sv"
 
 // S2MM
 `include "../s2mm_uvc/s2mm_driver.sv"

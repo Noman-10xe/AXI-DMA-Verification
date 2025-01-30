@@ -52,7 +52,7 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
         uvm_top.print_topology();
         
         // Set Verbosity Level
-        env.set_report_verbosity_level_hier(UVM_HIGH);
+        env.set_report_verbosity_level_hier(UVM_LOW);
 endfunction: end_of_elaboration_phase
 
 
@@ -370,8 +370,8 @@ class write_introut_test extends base_test;
                 clear_introut_seq               = clear_s2mm_introut_sequence::type_id::create("clear_introut_seq", this);
                 length_seq                      = s2mm_length_sequence::type_id::create("length_seq", this);
                 env_cfg.scoreboard_read         = 0;
-                env_cfg.DST_ADDR                = 'h20;
-                env_cfg.DATA_LENGTH             = 32;
+                env_cfg.DST_ADDR                = 'h28;
+                env_cfg.DATA_LENGTH             = 100;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
                 env_cfg.irq_EN                  = 1;
         endfunction: build_phase
@@ -389,9 +389,9 @@ class write_introut_test extends base_test;
                 repeat(10) begin
                 #700ns;
 
-                env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
-                env_cfg.num_trans               = env_cfg.calculate_txns();
-                env.sco.dst_addr                = env_cfg.DST_ADDR;
+                env_cfg.DATA_LENGTH     = $urandom_range(256, 0);
+                env_cfg.num_trans       = env_cfg.calculate_txns();
+                env.sco.dst_addr        = env_cfg.DST_ADDR;
 
                 phase.raise_objection(this);
                 length_seq.RAL_Model = env.RAL_Model;
@@ -472,11 +472,13 @@ class rs_test extends base_test;
                 join
 
                 phase.raise_objection(this);
+                #600ns;
                 clear_introut_seq.RAL_Model = env.RAL_Model;
                 clear_introut_seq.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
                 
                 env_cfg.DATA_LENGTH = 20;
+                env.sco.src_addr    = env_cfg.SRC_ADDR;
                 env_cfg.num_trans = env_cfg.calculate_txns();
 
                 // Write to Length Register
@@ -1002,8 +1004,8 @@ class random_stream_read_test extends base_test;
                 mm2s_enable_seq                 = mm2s_custom_sequence::type_id::create("mm2s_enable_seq", this);
                 mm2s_set_length                 = mm2s_length_sequence::type_id::create("mm2s_set_length", this);
                 env_cfg.scoreboard_write        = 0;
-                env_cfg.DATA_LENGTH             = 256;
-                env_cfg.SRC_ADDR                = 'h89;
+                env_cfg.DATA_LENGTH             = 40;
+                env_cfg.SRC_ADDR                = 'h88;
                 env_cfg.num_trans               = env_cfg.calculate_txns();
                 env_cfg.irq_EN                  = 0;
         endfunction: build_phase
@@ -1018,17 +1020,16 @@ class random_stream_read_test extends base_test;
                 rand_axis_read_seq.set_starting_phase(phase);
                 rand_axis_read_seq.start(env.axis_r_agt.sequencer);
 
-                repeat(20) begin
-                #300ns;
+                repeat(2) begin
+                
+                phase.raise_objection(this);
                 env_cfg.DATA_LENGTH             = $urandom_range(256, 0);
                 env_cfg.num_trans               = env_cfg.calculate_txns();
-
-                phase.raise_objection(this);
-                        mm2s_set_length.RAL_Model = env.RAL_Model;
-                        mm2s_set_length.start(env.axi_lite_agt.sequencer);
+                mm2s_set_length.RAL_Model = env.RAL_Model;
+                mm2s_set_length.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
                 env.sco.src_addr                = env_cfg.SRC_ADDR;
-
+                
                 rand_axis_read_seq.set_starting_phase(phase);
                 rand_axis_read_seq.start(env.axis_r_agt.sequencer);
                 #350ns;

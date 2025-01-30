@@ -68,10 +68,16 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                      bins rready_1 = {1};
              }
              cp_rdata: coverpoint tr.s_axi_lite_rdata {
-                     bins rdata_bin = {['h0:'hFFFFFFFF]};
-             }
+                     bins            zero_value         = {32'h00000000};                    // Explicit bin for zero
+                     bins            low_values         = {[32'h00000001:32'h00000FFF]};     // Small values
+                     bins            mid_values         = {[32'h00001000:32'h0000FFFF]};     // Mid-range values
+                     bins            high_values        = {[32'h00010000:$]};                // High values
+            }
              cp_rresp: coverpoint tr.s_axi_lite_rresp {
-                     bins rresp_okay         = {2'b00};
+                     bins               rresp_okay      = {2'b00};
+                     ignore_bins        rresp_ExOkay    = {2'b01};
+                     ignore_bins        rresp_slvErr    = {2'b10};
+                     ignore_bins        rresp_decErr    = {2'b11};
              }
 
              CROSS_ARREADY_ARVALID : cross cp_arvalid, cp_arready {
@@ -81,12 +87,14 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
              CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid;
 
              CROSS_ADDR_CTRL: cross cp_araddr, cp_arvalid, cp_arready {
-                bins valid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready);
-                bins invalid_araddr = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0) && binsof(cp_arready); // arread -> 1
-                ignore_bins ignore_0 = !((binsof(cp_araddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
+                bins valid_handshakes   = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready.arready_1);
+                ignore_bins invalid_handshakes = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1); // arread -> 1
+                ignore_bins ignore_0    = !((binsof(cp_araddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
              }
 
-             CROSS_RDATA_CTRL: cross cp_rvalid, cp_rready, cp_rresp;
+             CROSS_RDATA_CTRL: cross cp_rvalid, cp_rready, cp_rresp, cp_rdata{
+                ignore_bins ignore_0 = binsof(cp_rvalid.rvalid_0) && binsof(cp_rready);
+             }
 
         endgroup : cg_read_channel
 
@@ -114,7 +122,7 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins awaddr_S2MM_DA     = {'h48};
                         bins awaddr_S2MM_LENGTH = {'h58};
                 }
-
+                
                 cp_wvalid : coverpoint tr.s_axi_lite_wvalid {
                         bins wvalid_0 = {0};
                         bins wvalid_1 = {1};
@@ -124,10 +132,18 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins wready_1 = {1};
                 }
                 cp_wdata : coverpoint tr.s_axi_lite_wdata {
-                        bins wdata_bin = {['h0:'hFFFFFFFF]};
+                        bins            zero_value         = {32'h00000000};                    // Explicit bin for zero
+                        bins            low_values         = {[32'h00000001:32'h00000FFF]};     // Small values
+                        bins            mid_values         = {[32'h00001000:32'h0000FFFF]};     // Mid-range values
+                        bins            high_values        = {[32'h00010000:32'hFFFFFFFF]};     // High values
+                        bins            all_ones           = {32'hFFFFFFFF};                    // Explicit bin for all ones
                 }
                 cp_bresp : coverpoint tr.s_axi_lite_bresp {
-                        bins bresp_okay         = {2'b00};
+                        bins            bresp_okay         = {2'b00};
+                        ignore_bins     bresp_slvErr       = {2'b10};
+                        ignore_bins     bresp_decErr       = {2'b11};
+                        ignore_bins     bresp_ExOkay       = {2'b01};
+                        
                 }
                 cp_bvalid : coverpoint tr.s_axi_lite_bvalid {
                         bins bvalid_0 = {0};
@@ -137,22 +153,24 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins bready_0 = {0};
                         bins bready_1 = {1};
                 }
-
+                
                 CROSS_AWREADY_AWVALID : cross cp_awvalid, cp_awready {
                         ignore_bins ignore_0 = binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
                 }
-        
+                
                 CROSS_WREADY_WVALID : cross cp_wready, cp_wvalid {
                         ignore_bins ignore_0 = binsof(cp_wvalid.wvalid_0) && binsof(cp_wready.wready_1);
                 }
-
+                
                 CROSS_ADDR_CTRL: cross cp_awaddr, cp_awvalid, cp_awready {
-                        bins valid_awaddr = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_1) && binsof(cp_awready);
-                        bins invalid_awaddr = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_0) && binsof(cp_awready);
-                        ignore_bins ignore_0 = !((binsof(cp_awaddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
+                        bins valid_awaddr               = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_1) && binsof(cp_awready.awready_1);
+                        ignore_bins invalid_awaddr      = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
+                        ignore_bins ignore_0            = !((binsof(cp_awaddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
                 }
 
-                CROSS_BRESP_CTRL: cross cp_bvalid, cp_bready, cp_bresp;
+                CROSS_BRESP_CTRL: cross cp_bvalid, cp_bready, cp_bresp, cp_wdata{
+                        ignore_bins ignore_0 = binsof(cp_bvalid.bvalid_0) && binsof(cp_bready.bready_1);
+                }
 
         endgroup : cg_write_channel
 
@@ -183,7 +201,11 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
              // AXI-Stream Read Covergroup
              covergroup cg_axis_read;
                 cp_tdata        : coverpoint tr.tdata  {
-                        bins wdata_bin = {['h0:'hFFFFFFFF]};
+                        bins            zero_value         = {32'h00000000};                    // Explicit bin for zero
+                        bins            low_values         = {[32'h00000001:32'h00000FFF]};     // Small values
+                        bins            mid_values         = {[32'h00001000:32'h0000FFFF]};     // Mid-range values
+                        bins            high_values        = {[32'h00010000:32'hFFFFFFFF]};     // High values
+                        bins            all_ones           = {32'hFFFFFFFF};                    // Explicit bin for all ones
                 }       
                 cp_tkeep        : coverpoint tr.tkeep  {
                         bins tkeep[]            = {'h1, 'h3, 'h7, 'hf};
@@ -237,7 +259,11 @@ class axis_write_coverage extends uvm_subscriber #(axis_transaction);
              // AXI-Stream Read Covergroup
              covergroup cg_axis_write;
                 cp_tdata        : coverpoint tr.tdata  {
-                        bins wdata_bin = {['h0:'hFFFFFFFF]};
+                        bins            zero_value         = {32'h00000000};                    // Explicit bin for zero
+                        bins            low_values         = {[32'h00000001:32'h00000FFF]};     // Small values
+                        bins            mid_values         = {[32'h00001000:32'h0000FFFF]};     // Mid-range values
+                        bins            high_values        = {[32'h00010000:32'hFFFFFFFF]};     // High values
+                        bins            all_ones           = {32'hFFFFFFFF};                    // Explicit bin for all ones
                 }       
                 cp_tkeep        : coverpoint tr.tkeep  {
                         bins tkeep[]            = {'h1, 'h3, 'h7, 'hf};

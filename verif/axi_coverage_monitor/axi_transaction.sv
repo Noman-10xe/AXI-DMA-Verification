@@ -51,6 +51,7 @@ class axi_transaction extends uvm_sequence_item;
         rand bit         [ 1                            :       0 ]     bresp;
         rand bit                                                        bvalid;
         rand bit                                                        bready;
+        rand bit                                                        s2mm_introut;
 
 	// Constructor
 	function new ( string name = "axi_transaction" );
@@ -87,6 +88,7 @@ class axi_transaction extends uvm_sequence_item;
                 `uvm_field_int      (bvalid,            UVM_DEFAULT)
                 `uvm_field_int      (bready,            UVM_DEFAULT)
                 `uvm_field_int      (bresp,             UVM_DEFAULT)
+                `uvm_field_int      (s2mm_introut,      UVM_DEFAULT)
   	`uvm_object_utils_end
   	
 endclass : axi_transaction

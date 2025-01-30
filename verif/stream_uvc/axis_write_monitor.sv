@@ -59,7 +59,6 @@ task axis_write_monitor::collect_transactions();
                 item.tvalid     = `WRITE_MON.s_axis_s2mm_tvalid;
                 item.tready     = `WRITE_MON.s_axis_s2mm_tready;
                 item.tlast      = `WRITE_MON.s_axis_s2mm_tlast;
-                item.introut    = `WRITE_MON.s2mm_introut;
                         
                 // Print transaction
                 `uvm_info("", $sformatf("///////////////////////////////////////////////////////////////////////"), UVM_LOW)

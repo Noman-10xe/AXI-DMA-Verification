@@ -86,7 +86,7 @@ axi_dma_0 DUT (
   .s_axis_s2mm_tlast              (   axis_intf.s_axis_s2mm_tlast       ),
   ///////////////////////       Interrupts          // ///////////////////
   .mm2s_introut                   (   axis_intf.mm2s_introut            ),
-  .s2mm_introut                   (   axis_intf.s2mm_introut            ),
+  .s2mm_introut                   (   axi_intf.s2mm_introut             ),
   .axi_dma_tstvec                 (                                     )
   );
 

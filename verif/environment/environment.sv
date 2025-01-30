@@ -23,7 +23,7 @@ class environment extends uvm_env;
         mm2s_agent              axi_r_agt;
         `endif
 
-        // axi_monitor             axi_cov_mon;
+        axi_monitor             axi_mon;
         scoreboard              sco;
         environment_config      env_cfg;
 
@@ -50,7 +50,8 @@ function void environment::build_phase(uvm_phase phase);
         RAL_Model	= reg_block::type_id::create("RAL_Model", this);
         RAL_Model.build();
         adapter         = axi_lite_adapter::type_id::create("adapter", this);
-        // axi_cov_mon	= axi_monitor::type_id::create("axi_cov_mon", this);
+        axi_mon	        = axi_monitor::type_id::create("axi_mon", this);
+
         `ifdef ERROR_RESPONSE_TEST
         axi_r_agt       = mm2s_agent::type_id::create("axi_r_agt", this);
         `endif
@@ -106,6 +107,9 @@ function void environment::connect_phase(uvm_phase phase);
                 if (env_cfg.has_axis_write_agent) begin
                 axis_wr_agt.monitor.s2mm_write.connect(sco.write_export);
                 end
+
+                // AXI Monitor
+                axi_mon.ap.connect(sco.axi_export);
         end
 
         ///////////////////////////////////////////////////////////////
@@ -126,9 +130,6 @@ function void environment::connect_phase(uvm_phase phase);
 
                 // Axi Lite Agent
                 axi_lite_agt.monitor.ap.connect(axi_lite_cov.analysis_export);
-
-                // // AXI Monitor
-                // axi_cov_mon.ap.connect(func_cov.axi_export);
         end
 
 endfunction: connect_phase
