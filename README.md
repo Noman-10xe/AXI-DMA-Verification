@@ -58,7 +58,7 @@ The test workflow begins by invoking `run_test("test")` in the top-level module 
 4. **Termination:** Objections are dropped, signaling the test's end.  
 
 #### Testbench Architecture Diagram
-![Testbench Architecture](./docs/jpgs/TCP_Diagrams-Verification-Architecture.jpg)
+![Testbench Architecture](docs/jpgs/TCP_Diagrams-Verification-Architecture.jpg)
 
 ### Detailed Workflow
 1. **Initialization:**  
