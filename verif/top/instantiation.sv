@@ -87,7 +87,7 @@ axi_dma_0 DUT (
   ///////////////////////       Interrupts          // ///////////////////
   .mm2s_introut                   (   axis_intf.mm2s_introut            ),
   .s2mm_introut                   (   axi_intf.s2mm_introut             ),
-  .axi_dma_tstvec                 (                                     )
+  .axi_dma_tstvec                 (                                     ) // Internal Debugging Signal, Not Required
   );
 
 

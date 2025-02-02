@@ -60,11 +60,6 @@ import uvm_pkg::*;
 `include "../mm2s_uvc/axi_read_agent.sv"
 `include "../axi_coverage_monitor/axi_monitor.sv"
 
-// S2MM
-`include "../s2mm_uvc/s2mm_driver.sv"
-`include "../s2mm_uvc/s2mm_monitor.sv"
-`include "../s2mm_uvc/s2mm_agent.sv"
-
 // Coverage Model
 `include "../environment/coverage_model.sv"
 

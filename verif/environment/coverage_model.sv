@@ -87,13 +87,12 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
              CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid;
 
              CROSS_ADDR_CTRL: cross cp_araddr, cp_arvalid, cp_arready {
-                bins valid_handshakes   = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_1) && binsof(cp_arready.arready_1);
-                ignore_bins invalid_handshakes = binsof(cp_araddr) && binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1); // arread -> 1
+                ignore_bins invalid     = binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1);
                 ignore_bins ignore_0    = !((binsof(cp_araddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
              }
 
              CROSS_RDATA_CTRL: cross cp_rvalid, cp_rready, cp_rresp, cp_rdata{
-                ignore_bins ignore_0 = binsof(cp_rvalid.rvalid_0) && binsof(cp_rready);
+                ignore_bins ignore_0 = binsof(cp_rvalid.rvalid_0) && (binsof(cp_rdata.mid_values) || binsof(cp_rdata.low_values));
              }
 
         endgroup : cg_read_channel
@@ -135,8 +134,7 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins            zero_value         = {32'h00000000};                    // Explicit bin for zero
                         bins            low_values         = {[32'h00000001:32'h00000FFF]};     // Small values
                         bins            mid_values         = {[32'h00001000:32'h0000FFFF]};     // Mid-range values
-                        bins            high_values        = {[32'h00010000:32'hFFFFFFFF]};     // High values
-                        bins            all_ones           = {32'hFFFFFFFF};                    // Explicit bin for all ones
+                        bins            high_values        = {[32'h00010000:$]};                // High values
                 }
                 cp_bresp : coverpoint tr.s_axi_lite_bresp {
                         bins            bresp_okay         = {2'b00};
@@ -206,11 +204,13 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
                         bins            zero_value         = {32'h00000000};                    // Explicit bin for zero
                         bins            low_values         = {[32'h00000001:32'h00000FFF]};     // Small values
                         bins            mid_values         = {[32'h00001000:32'h0000FFFF]};     // Mid-range values
-                        bins            high_values        = {[32'h00010000:32'hFFFFFFFF]};     // High values
-                        bins            all_ones           = {32'hFFFFFFFF};                    // Explicit bin for all ones
+                        bins            high_values        = {[32'h00010000:$]};                // High values
                 }       
                 cp_tkeep        : coverpoint tr.tkeep  {
-                        bins tkeep[]            = {'h1, 'h3, 'h7, 'hf};
+                        bins tkeep_1            = {'h1 };
+                        bins tkeep_3            = {'h3 };
+                        bins tkeep_7            = {'h7 };
+                        bins tkeep_15           = {'hf };
                         ignore_bins ignore[]    = {'h0, 'h2, 'h4, 'h5, 'h6, 'h8, 'h9, 'ha, 'hb, 'hc, 'hd, 'he };
                 }
                 cp_tvalid       : coverpoint tr.tvalid {
@@ -226,7 +226,9 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
                         bins tlast_1 = {1};
                 }
 
-                CROSS_TDATA_TKEEP       : cross cp_tdata, cp_tkeep;
+                CROSS_TDATA_TKEEP       : cross cp_tdata, cp_tkeep {
+                        ignore_bins ignore_0 = binsof(cp_tdata.mid_values) && binsof(cp_tkeep.tkeep_1);
+                }
                 CROSS_TVALID_TREADY     : cross cp_tvalid, cp_tready;
                 CROSS_TVALID_TLAST      : cross cp_tvalid, cp_tlast {
                         ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tlast.tlast_1);

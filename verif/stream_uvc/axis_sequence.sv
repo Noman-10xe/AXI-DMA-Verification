@@ -211,7 +211,7 @@ class random_axis_write extends axis_base_sequence;
   endfunction : new
 
   task body();
-    `uvm_info(get_type_name(), "Executing Random AXIS Read Sequence", UVM_HIGH)
+    `uvm_info(get_type_name(), "Executing Random AXIS Write Sequence", UVM_HIGH)
     
     item  = axis_transaction::type_id::create("item");
 
@@ -234,5 +234,193 @@ class random_axis_write extends axis_base_sequence;
   endtask : body
 
 endclass : random_axis_write
+
+
+//////////////////////////////////////////////////////////////////////
+//                  AXIS Write Coverage Sequence                    //
+//////////////////////////////////////////////////////////////////////
+
+class axis_write_cov_sequence extends axis_base_sequence;
+  `uvm_object_utils(axis_write_cov_sequence)
+
+  axis_transaction item;
+
+  function new(string name="axis_write_cov_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXIS Write Coverage Sequence", UVM_HIGH)
+    
+    item  = axis_transaction::type_id::create("item");
+
+    item.c_tkeep.constraint_mode(0);
+    item.c_tdata.constraint_mode(0);
+
+    repeat(cfg.num_trans-1)  begin
+    start_item(item);
+    if(!item.randomize() with { item.tkeep inside {'h1, 'h7, 'h3 };
+                                item.tdata inside {'h00000000, 'hFFFFFFFF, 'hCAFE, 'hBAD, 'hBABACA }; })
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+    end
+
+    item.c_tlast.constraint_mode(0);
+    start_item(item);
+    
+    if(!item.randomize() with { item.tlast == 1;} )
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+
+  endtask : body
+
+endclass : axis_write_cov_sequence
+
+
+//////////////////////////////////////////////////////////////////////
+//         AXIS Write Sequence for Stream Read's Coverage           //
+//////////////////////////////////////////////////////////////////////
+
+class axis_write_sequence extends axis_base_sequence;
+  `uvm_object_utils(axis_write_sequence)
+
+  axis_transaction item;
+
+  function new(string name="axis_write_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXIS Write Coverage Sequence", UVM_HIGH)
+    
+    item  = axis_transaction::type_id::create("item");
+
+    item.c_tdata.constraint_mode(0);
+    repeat(cfg.num_trans-1)  begin
+    start_item(item);
+    if(!item.randomize() with { item.tdata inside {'h00000000, 'hFFFFFFFF, 'hCAFE, 'hBAD, 'hBABACA }; })
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+    end
+
+    item.c_tlast.constraint_mode(0);
+    start_item(item);
+    
+    if(!item.randomize() with { item.tlast == 1;} )
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+
+  endtask : body
+
+  task post_body();
+    uvm_phase phase;
+    phase = get_starting_phase();
+ 
+    if (phase != null) begin
+      phase.drop_objection(this, get_type_name());
+      `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+      phase.phase_done.set_drain_time(this, 700ns);
+    end
+  endtask : post_body
+
+endclass : axis_write_sequence
+
+
+//////////////////////////////////////////////////////////////////////
+//         AXIS Write Sequence no. 2 for Stream Read's Coverage     //
+//////////////////////////////////////////////////////////////////////
+
+class axis_write_all_zeros_sequence extends axis_base_sequence;
+  `uvm_object_utils(axis_write_all_zeros_sequence)
+
+  axis_transaction item;
+
+  function new(string name="axis_write_all_zeros_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXIS Write Coverage Sequence", UVM_HIGH)
+    
+    item  = axis_transaction::type_id::create("item");
+
+    item.c_tdata.constraint_mode(0);
+    repeat(cfg.num_trans-1)  begin
+    start_item(item);
+    if(!item.randomize() with { item.tdata == 'h0; })
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+    end
+
+    item.c_tlast.constraint_mode(0);
+    start_item(item);
+    
+    if(!item.randomize() with { item.tlast == 1;} )
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+
+  endtask : body
+
+  task post_body();
+    uvm_phase phase;
+    phase = get_starting_phase();
+ 
+    if (phase != null) begin
+      phase.drop_objection(this, get_type_name());
+      `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+      phase.phase_done.set_drain_time(this, 700ns);
+    end
+  endtask : post_body
+
+endclass : axis_write_all_zeros_sequence
+
+
+//////////////////////////////////////////////////////////////////////
+//         AXIS Write Sequence no. 3 for Stream Read's Coverage     //
+//////////////////////////////////////////////////////////////////////
+
+class axis_write_mid_values_sequence extends axis_base_sequence;
+  `uvm_object_utils(axis_write_mid_values_sequence)
+
+  axis_transaction item;
+
+  function new(string name="axis_write_mid_values_sequence");
+    super.new(name);
+  endfunction : new
+
+  task body();
+    `uvm_info(get_type_name(), "Executing AXIS Write Coverage Sequence", UVM_HIGH)
+    
+    item  = axis_transaction::type_id::create("item");
+
+    item.c_tdata.constraint_mode(0);
+    repeat(cfg.num_trans-1)  begin
+    start_item(item);
+    if(!item.randomize() with { item.tdata == 'hb0b0; })
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+    end
+
+    item.c_tlast.constraint_mode(0);
+    start_item(item);
+    
+    if(!item.randomize() with { item.tlast == 1;} )
+    `uvm_error(get_type_name(), "Randomization failed");
+    finish_item(item);
+
+  endtask : body
+
+  task post_body();
+    uvm_phase phase;
+    phase = get_starting_phase();
+ 
+    if (phase != null) begin
+      phase.drop_objection(this, get_type_name());
+      `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+      phase.phase_done.set_drain_time(this, 700ns);
+    end
+  endtask : post_body
+
+endclass : axis_write_mid_values_sequence
 
 `endif

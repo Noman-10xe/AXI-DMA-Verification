@@ -31,7 +31,8 @@ class environment extends uvm_env;
         axi_lite_coverage       axi_lite_cov;
         axis_read_coverage      axis_read_cov;
         axis_write_coverage     axis_write_cov;
-
+        s2mm_introut_coverage   s2mm_introut_cov;
+        
         `uvm_component_utils(environment) 
         
         function new(string name = "environment", uvm_component parent);
@@ -80,9 +81,10 @@ function void environment::build_phase(uvm_phase phase);
         end
 
         if (env_cfg.has_functional_cov) begin
-                axi_lite_cov    = axi_lite_coverage::type_id::create("axi_lite_cov", this);
-                axis_read_cov   = axis_read_coverage::type_id::create("axis_read_cov", this);
-                axis_write_cov  = axis_write_coverage::type_id::create("axis_write_cov", this);
+                axi_lite_cov            = axi_lite_coverage::type_id::create("axi_lite_cov", this);
+                axis_read_cov           = axis_read_coverage::type_id::create("axis_read_cov", this);
+                axis_write_cov          = axis_write_coverage::type_id::create("axis_write_cov", this);
+                s2mm_introut_cov        = s2mm_introut_coverage::type_id::create("s2mm_introut_cov", this);
         end
 
 endfunction: build_phase
@@ -130,6 +132,9 @@ function void environment::connect_phase(uvm_phase phase);
 
                 // Axi Lite Agent
                 axi_lite_agt.monitor.ap.connect(axi_lite_cov.analysis_export);
+
+                // Axi Monitor
+                axi_mon.ap.connect(s2mm_introut_cov.analysis_export);
         end
 
 endfunction: connect_phase

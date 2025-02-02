@@ -1,7 +1,7 @@
-Running: xsim.dir/axi_dma_tb_top_behav/xsimk -simmode gui -testplusarg UVM_TESTNAME=random_tkeep_test -wdb axi_dma_tb_top_behav.wdb -simrunnum 0 -socket 44303
+Running: xsim.dir/axi_dma_tb_top_behav/xsimk -simmode gui -testplusarg UVM_TESTNAME=decode_error_test -wdb axi_dma_tb_top_behav.wdb -simrunnum 0 -socket 43143
 Design successfully loaded
-Design Loading Memory Usage: 52156 KB (Peak: 52156 KB)
+Design Loading Memory Usage: 52512 KB (Peak: 52520 KB)
 Design Loading CPU Usage: 30 ms
 Simulation completed
-Simulation Memory Usage: 154524 KB (Peak: 191424 KB)
-Simulation CPU Usage: 440 ms
+Simulation Memory Usage: 179464 KB (Peak: 191780 KB)
+Simulation CPU Usage: 670 ms

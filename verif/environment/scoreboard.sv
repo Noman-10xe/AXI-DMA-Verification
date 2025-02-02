@@ -38,7 +38,7 @@ class scoreboard extends uvm_scoreboard;
    bit [params_pkg::ADDR_WIDTH-1:0] dst_addr;
    typedef bit [params_pkg::Byte_Lanes-1:0] mem_mask_t;
    bit [7:0] written_bytes = 0;
-
+   
    // S2MM Interrupt Logic Control
    static int received_bvalid_count = 0;
    int expected_bvalid_count;
@@ -48,6 +48,7 @@ class scoreboard extends uvm_scoreboard;
    bit error_occurred;              // Track if an error occurred
    bit waiting_for_interrupt;       // Waiting for interrupt after BVALIDs complete
    bit irq_EN_snapshot;             // Snapshot of irq_EN at transfer start
+   bit [params_pkg::ADDR_WIDTH-1:0] curr_dst_addr;
    
    // Capture configuration at transfer start
    int current_data_length;
@@ -184,14 +185,14 @@ class scoreboard extends uvm_scoreboard;
     // Capture configuration at transfer start
     function void capture_config();
       current_data_length = env_cfg.DATA_LENGTH;
-      dst_addr = env_cfg.DST_ADDR;
+      curr_dst_addr = env_cfg.DST_ADDR;
       irq_EN_snapshot = env_cfg.irq_EN;
       calculate_expected_bvalids();
     endfunction
   
     // Calculate expected BVALIDs
     function void calculate_expected_bvalids();
-      int remainder = dst_addr % 'h40; // Assuming dst_addr is the start address
+      int remainder = curr_dst_addr % 'h40; // Assuming dst_addr is the start address
       int first_burst_bytes;
     
       if (current_data_length <= 64) begin

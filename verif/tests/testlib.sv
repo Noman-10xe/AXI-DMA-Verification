@@ -249,7 +249,7 @@ class raw_test extends base_test;
                 axis_read_seq           = axis_read::type_id::create("axis_read_seq", this);
                 env_cfg.SRC_ADDR        = 'h10;
                 env_cfg.DST_ADDR        = 'h10;
-                env_cfg.DATA_LENGTH     = 32;
+                env_cfg.DATA_LENGTH     = 320;
                 env_cfg.num_trans       = env_cfg.calculate_txns();
                 env_cfg.irq_EN          = 1;
         endfunction: build_phase
@@ -1065,7 +1065,7 @@ class random_tkeep_test extends base_test;
         function void build_phase(uvm_phase phase);
                 super.build_phase(phase);
                 s2mm_enable                     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
-                rand_axis_wr_seq               = random_axis_write::type_id::create("rand_axis_wr_seq", this);
+                rand_axis_wr_seq                = random_axis_write::type_id::create("rand_axis_wr_seq", this);
                 env_cfg.has_axis_read_agent     = 0;
                 env_cfg.scoreboard_read         = 0;
                 env_cfg.DATA_LENGTH             = 256;
@@ -1080,16 +1080,297 @@ class random_tkeep_test extends base_test;
                 s2mm_enable.RAL_Model = env.RAL_Model;
                 s2mm_enable.start(env.axi_lite_agt.sequencer);
                 phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
 
                 rand_axis_wr_seq.set_starting_phase(phase);
                 rand_axis_wr_seq.start(env.axis_wr_agt.sequencer);
+                
+                phase.phase_done.set_drain_time(this, 350ns);
 
-                phase.phase_done.set_drain_time(this, 300ns);
-
-                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
         endtask: run_phase
 
 endclass : random_tkeep_test
+
+
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   AXIS Write Coverage Test                                //
+// Description: The test will provide sequences to cover the remaining  //
+// set of tdata, tkeep bins for coverage.                               //
+// Dated: Jan 25, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+class axis_write_cov_test extends base_test;
+        `uvm_component_utils(axis_write_cov_test)
+        
+        s2mm_enable_sequence    s2mm_enable;
+        axis_write_cov_sequence axis_cov_seq;
+        mm2s_enable_sequence    mm2s_enable_seq;
+
+
+        function new(string name = "axis_write_cov_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                s2mm_enable                     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
+                axis_cov_seq                    = axis_write_cov_sequence::type_id::create("axis_cov_seq", this);
+                mm2s_enable_seq                 = mm2s_enable_sequence::type_id::create("mm2s_enable_seq", this);
+                env_cfg.has_axis_read_agent     = 0;
+                env_cfg.scoreboard_read         = 0;
+                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.DST_ADDR                = 'h90;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
+        endfunction: build_phase
+        
+        task run_phase(uvm_phase phase);
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                s2mm_enable.RAL_Model = env.RAL_Model;
+                s2mm_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+
+                axis_cov_seq.set_starting_phase(phase);
+                axis_cov_seq.start(env.axis_wr_agt.sequencer);
+                phase.phase_done.set_drain_time(this, 350ns);
+
+        endtask: run_phase
+
+endclass : axis_write_cov_test
+
+
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   AXIS Read Coverage Test                                 //
+// Description: The test will provide sequences to cover the remaining  //
+// set of tdata, tkeep bins for AXi-Stream Read coverage.               //
+// Dated: Jan 25, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+class axis_read_cov_test extends base_test;
+        `uvm_component_utils(axis_read_cov_test)
+        
+        s2mm_enable_sequence    s2mm_enable;
+        axis_write_sequence     axis_cov_seq;
+        mm2s_enable_sequence    mm2s_enable_seq;
+        axis_read               axis_read_seq;
+        mm2s_length_sequence    mm2s_length_seq;
+
+        function new(string name = "axis_read_cov_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                s2mm_enable                     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
+                axis_cov_seq                    = axis_write_sequence::type_id::create("axis_cov_seq", this);
+                mm2s_enable_seq                 = mm2s_enable_sequence::type_id::create("mm2s_enable_seq", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                mm2s_length_seq                 = mm2s_length_sequence::type_id::create("mm2s_length_seq", this);
+                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.DST_ADDR                = 'h90;
+                env_cfg.SRC_ADDR                = 'h90;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
+        endfunction: build_phase
+        
+        task run_phase(uvm_phase phase);
+                
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                s2mm_enable.RAL_Model = env.RAL_Model;
+                s2mm_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+
+                axis_cov_seq.set_starting_phase(phase);
+                axis_cov_seq.start(env.axis_wr_agt.sequencer);
+
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                mm2s_enable_seq.RAL_Model = env.RAL_Model;
+                mm2s_enable_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+                
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+                env_cfg.scoreboard_write = 0;
+                
+                repeat (20) begin
+                        #200ns;
+                        env_cfg.DATA_LENGTH = $urandom_range(195, 24);
+                        env.sco.src_addr    = env_cfg.SRC_ADDR;
+                        env_cfg.num_trans = env_cfg.calculate_txns();
+
+                        // Write to Length Register
+                        phase.raise_objection(this);
+                        mm2s_length_seq.RAL_Model = env.RAL_Model;
+                        mm2s_length_seq.start(env.axi_lite_agt.sequencer);
+                        phase.drop_objection(this);
+
+                        axis_read_seq.set_starting_phase(phase);
+                        axis_read_seq.start(env.axis_r_agt.sequencer);
+                end                
+
+        endtask: run_phase
+
+endclass : axis_read_cov_test
+
+
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   AXIS Read Coverage Test 2                               //
+// Description: The test will provide sequences to cover the remaining  //
+// set of tdata, tkeep bins for AXi-Stream Read coverage.               //
+// Dated: Jan 25, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+class axis_read_cov_all_zeros_test extends base_test;
+        `uvm_component_utils(axis_read_cov_all_zeros_test)
+        
+        s2mm_enable_sequence            s2mm_enable;
+        axis_write_all_zeros_sequence    axis_cov_seq;
+        mm2s_enable_sequence            mm2s_enable_seq;
+        axis_read                       axis_read_seq;
+        mm2s_length_sequence            mm2s_length_seq;
+
+        function new(string name = "axis_read_cov_all_zeros_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                s2mm_enable                     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
+                axis_cov_seq                    = axis_write_all_zeros_sequence::type_id::create("axis_cov_seq", this);
+                mm2s_enable_seq                 = mm2s_enable_sequence::type_id::create("mm2s_enable_seq", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                mm2s_length_seq                 = mm2s_length_sequence::type_id::create("mm2s_length_seq", this);
+                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.DST_ADDR                = 'h90;
+                env_cfg.SRC_ADDR                = 'h90;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
+        endfunction: build_phase
+        
+        task run_phase(uvm_phase phase);
+                
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                s2mm_enable.RAL_Model = env.RAL_Model;
+                s2mm_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+
+                axis_cov_seq.set_starting_phase(phase);
+                axis_cov_seq.start(env.axis_wr_agt.sequencer);
+
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                mm2s_enable_seq.RAL_Model = env.RAL_Model;
+                mm2s_enable_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+                
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+                env_cfg.scoreboard_write = 0;
+                
+                repeat (20) begin
+                        #200ns;
+                        env_cfg.DATA_LENGTH = $urandom_range(195, 24);
+                        env.sco.src_addr    = env_cfg.SRC_ADDR;
+                        env_cfg.num_trans = env_cfg.calculate_txns();
+
+                        // Write to Length Register
+                        phase.raise_objection(this);
+                        mm2s_length_seq.RAL_Model = env.RAL_Model;
+                        mm2s_length_seq.start(env.axi_lite_agt.sequencer);
+                        phase.drop_objection(this);
+
+                        axis_read_seq.set_starting_phase(phase);
+                        axis_read_seq.start(env.axis_r_agt.sequencer);
+                end                
+
+        endtask: run_phase
+
+endclass : axis_read_cov_all_zeros_test
+
+
+
+//////////////////////////////////////////////////////////////////////////
+// Test Name:   AXIS Read Coverage Test 3                               //
+// Description: The test will provide sequences to cover the remaining  //
+// set of tdata, tkeep bins for AXi-Stream Read coverage.               //
+// Dated: Jan 25, 2025                                                  //
+//////////////////////////////////////////////////////////////////////////
+class axis_read_cov_mid_values_test extends base_test;
+        `uvm_component_utils(axis_read_cov_mid_values_test)
+        
+        s2mm_enable_sequence            s2mm_enable;
+        axis_write_mid_values_sequence  axis_cov_seq;
+        mm2s_enable_sequence            mm2s_enable_seq;
+        axis_read                       axis_read_seq;
+        mm2s_length_sequence            mm2s_length_seq;
+
+        function new(string name = "axis_read_cov_mid_values_test", uvm_component parent);
+                super.new(name, parent);
+        endfunction : new
+
+        function void build_phase(uvm_phase phase);
+                super.build_phase(phase);
+                s2mm_enable                     = s2mm_enable_sequence::type_id::create("s2mm_enable", this);
+                axis_cov_seq                    = axis_write_mid_values_sequence::type_id::create("axis_cov_seq", this);
+                mm2s_enable_seq                 = mm2s_enable_sequence::type_id::create("mm2s_enable_seq", this);
+                axis_read_seq                   = axis_read::type_id::create("axis_read_seq", this);
+                mm2s_length_seq                 = mm2s_length_sequence::type_id::create("mm2s_length_seq", this);
+                env_cfg.DATA_LENGTH             = 256;
+                env_cfg.DST_ADDR                = 'h90;
+                env_cfg.SRC_ADDR                = 'h90;
+                env_cfg.num_trans               = env_cfg.calculate_txns();
+                env_cfg.irq_EN                  = 1;
+        endfunction: build_phase
+        
+        task run_phase(uvm_phase phase);
+                
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                s2mm_enable.RAL_Model = env.RAL_Model;
+                s2mm_enable.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+
+                axis_cov_seq.set_starting_phase(phase);
+                axis_cov_seq.start(env.axis_wr_agt.sequencer);
+
+                phase.raise_objection(this);
+                `uvm_info(get_type_name(), "Raised objection", UVM_MEDIUM)
+                mm2s_enable_seq.RAL_Model = env.RAL_Model;
+                mm2s_enable_seq.start(env.axi_lite_agt.sequencer);
+                phase.drop_objection(this);
+                `uvm_info(get_type_name(), "Dropped objection", UVM_MEDIUM)
+                
+                axis_read_seq.set_starting_phase(phase);
+                axis_read_seq.start(env.axis_r_agt.sequencer);
+                env_cfg.scoreboard_write = 0;
+                
+                repeat (20) begin
+                        #200ns;
+                        env_cfg.DATA_LENGTH = $urandom_range(195, 24);
+                        env.sco.src_addr    = env_cfg.SRC_ADDR;
+                        env_cfg.num_trans = env_cfg.calculate_txns();
+
+                        // Write to Length Register
+                        phase.raise_objection(this);
+                        mm2s_length_seq.RAL_Model = env.RAL_Model;
+                        mm2s_length_seq.start(env.axi_lite_agt.sequencer);
+                        phase.drop_objection(this);
+
+                        axis_read_seq.set_starting_phase(phase);
+                        axis_read_seq.start(env.axis_r_agt.sequencer);
+                end                
+
+        endtask: run_phase
+
+endclass : axis_read_cov_mid_values_test
+
 
 
 /////////////// Testing Purposes

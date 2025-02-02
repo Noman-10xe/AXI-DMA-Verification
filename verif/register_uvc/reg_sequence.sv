@@ -830,17 +830,26 @@ class random_rw_seq extends base_sequence;
     bit [31:0]    addr;
 
     item  = reg_transaction::type_id::create("item");
-    item.c_addr.constraint_mode(0);
+    // item.c_addr.constraint_mode(0);
     item.c_read_transaction.constraint_mode(0);
     item.c_write_transaction.constraint_mode(0);
 
-    repeat(100)  begin
+    repeat(200)  begin
       start_item(item);
         if(!item.randomize()) begin
           `uvm_error(get_type_name(), "Randomization failed");
         end
       finish_item(item);
     end
+
+    // item.c_addr.constraint_mode(1);
+    // repeat(50) begin
+    //   start_item(item);
+    //     if(!item.randomize()) begin
+    //       `uvm_error(get_type_name(), "Randomization failed");
+    //     end
+    //   finish_item(item);
+    // end
 
    endtask
 endclass : random_rw_seq
