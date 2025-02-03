@@ -110,6 +110,37 @@ interface axis_io      #(       int DATA_WIDTH = params_pkg::DATA_WIDTH
   task automatic wait_neg_clks(input int num);
       repeat (num) @(negedge axi_aclk);
   endtask
+
+  /////////////////////////////////////////////////////////////
+  //                        Assertions                       //
+  /////////////////////////////////////////////////////////////
+
+  // MM2S HANDSHAKE Property
+  property mm2s_handshake;
+    @(posedge axi_aclk) m_axis_mm2s_tvalid |-> ##[0:4] m_axis_mm2s_tready;
+    endproperty
+  
+    // MM2S Introut Check
+    property mm2s_introut_check;
+      @(posedge axi_aclk)
+      (m_axis_mm2s_tvalid && m_axis_mm2s_tready && m_axis_mm2s_tlast) |-> ##1 mm2s_introut;
+    endproperty
+  
+    // S2MM HANDSHAKE Property
+    property s2mm_handshake;
+      @(posedge axi_aclk) s_axis_s2mm_tvalid |-> ##[0:4] s_axis_s2mm_tready;
+    endproperty
+  
+    // Assert Properties
+    assert property (mm2s_handshake) else
+    `uvm_error("MM2S Handshake", "Assertion Failed");
+  
+    assert property (mm2s_introut_check)
+    else `uvm_error("mm2s_introut_check", "mm2s_introut did not assert after tlast");
+  
+    assert property (s2mm_handshake) else
+    `uvm_error("S2MM Handshake", "Assertion Failed");
+
   
 endinterface : axis_io
 

@@ -52,7 +52,7 @@ function void base_test::end_of_elaboration_phase(uvm_phase phase);
         uvm_top.print_topology();
         
         // Set Verbosity Level
-        env.set_report_verbosity_level_hier(UVM_DEBUG);
+        env.set_report_verbosity_level_hier(UVM_LOW);
 endfunction: end_of_elaboration_phase
 
 
