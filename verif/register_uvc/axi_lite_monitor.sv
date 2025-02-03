@@ -57,7 +57,7 @@ task axi_lite_monitor::collect_transactions();
 
         forever begin
                 vif.wait_clks(1);
-                // if ( (`MON.s_axi_lite_wready && `MON.s_axi_lite_wvalid) || (`MON.s_axi_lite_rvalid && `MON.s_axi_lite_rready) ) begin
+
                 item.s_axi_lite_awvalid         = `MON.s_axi_lite_awvalid;
                 item.s_axi_lite_awaddr          = `MON.s_axi_lite_awaddr;
                 item.s_axi_lite_awready         = `MON.s_axi_lite_awready;
@@ -77,8 +77,7 @@ task axi_lite_monitor::collect_transactions();
                 
                 // Print transaction
                 `uvm_info(get_type_name(), $sformatf("Transaction Collected :\n%s",item.sprint()), UVM_DEBUG)
-                ap.write(item);
-                // end                
+                ap.write(item);                
         end
 endtask: collect_transactions
 

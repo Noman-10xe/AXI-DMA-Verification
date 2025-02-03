@@ -40,9 +40,7 @@ task run_phase(uvm_phase phase);
                 req_phase();
                 seq_item_port.item_done();
 
-                // if (req.arvalid) begin
                 rsp_phase();
-                // end
         end
 endtask: run_phase
 

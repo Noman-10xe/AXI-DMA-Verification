@@ -834,22 +834,13 @@ class random_rw_seq extends base_sequence;
     item.c_read_transaction.constraint_mode(0);
     item.c_write_transaction.constraint_mode(0);
 
-    repeat(200)  begin
+    repeat(150)  begin
       start_item(item);
         if(!item.randomize()) begin
           `uvm_error(get_type_name(), "Randomization failed");
         end
       finish_item(item);
     end
-
-    // item.c_addr.constraint_mode(1);
-    // repeat(50) begin
-    //   start_item(item);
-    //     if(!item.randomize()) begin
-    //       `uvm_error(get_type_name(), "Randomization failed");
-    //     end
-    //   finish_item(item);
-    // end
 
    endtask
 endclass : random_rw_seq
