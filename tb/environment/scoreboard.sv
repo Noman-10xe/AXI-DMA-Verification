@@ -38,6 +38,8 @@ class scoreboard extends uvm_scoreboard;
    typedef bit [params_pkg::Byte_Lanes-1:0] mem_mask_t;
    bit [7:0] written_bytes = 0;
    
+   // MM2S Interrupt Logic
+   bit prev_tlast;
    // S2MM Interrupt Logic Control
    static int received_bvalid_count = 0;
    int expected_bvalid_count;
@@ -87,13 +89,25 @@ class scoreboard extends uvm_scoreboard;
    // write methods implementation
    virtual function void write_mm2s_read (axis_transaction item);
 
-      if ( item.tvalid && item.tready ) begin
-         `uvm_info(get_type_name(), $sformatf("Received AXIs Read Transaction"), UVM_HIGH);
-
-         // Add transaction to read queue
-         read_queue.push_back(item);
+      `uvm_info(get_type_name(), $sformatf("Received AXIs Read Transaction"), UVM_HIGH);
+      
+      // Enable Checker if the Interrupt was configured
+      if (env_cfg.irq_EN) begin
+         if(prev_tlast == 1) begin
+            if (item.introut != 1) begin
+               `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", item.introut, 1));
+            end
+            else begin
+               `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
+            end
+         end
       end
-   
+
+      // Add transaction to read queue
+      read_queue.push_back(item);
+
+      prev_tlast = item.tlast;
+
    endfunction : write_mm2s_read
 
    // Stream Write Transaction

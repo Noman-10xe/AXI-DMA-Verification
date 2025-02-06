@@ -75,20 +75,26 @@ task axis_read_monitor::collect_transactions();
                 `uvm_info(get_type_name(), $sformatf("Transaction Collected from AXI-Stream Read Master :\n%s",item.sprint()), UVM_HIGH)
                 
                 // Boradcast to Scoreboard
-                mm2s_read.write(item);
-
-                // Enable Checker if the Interrupt was configured
-                if (env_cfg.irq_EN) begin
-                        if(`READ_MON.m_axis_mm2s_tlast == 1) begin
+                if (`READ_MON.m_axis_mm2s_tdata && `READ_MON.m_axis_mm2s_tvalid) begin
+                        
+                        mm2s_read.write(item);
+                        
+                        // If tlast is asserted, write another packet for interrupt checker
+                        if (`READ_MON.m_axis_mm2s_tlast) begin
+                                
                                 vif.wait_clks(1);
-                                if (`READ_MON.mm2s_introut != 1) begin
-                                        `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", `READ_MON.mm2s_introut, 1));
-                                end
-                                else begin
-                                        `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
-                                end
+                
+                                item.tdata      = `READ_MON.m_axis_mm2s_tdata;
+                                item.tkeep      = `READ_MON.m_axis_mm2s_tkeep;
+                                item.tvalid     = `READ_MON.m_axis_mm2s_tvalid;
+                                item.tready     = `READ_MON.m_axis_mm2s_tready;
+                                item.tlast      = `READ_MON.m_axis_mm2s_tlast;
+                                item.introut    = `READ_MON.mm2s_introut;
+                                
+                                mm2s_read.write(item);
                         end
                 end
+               
         end
 endtask: collect_transactions
 
