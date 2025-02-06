@@ -17,6 +17,6 @@
 set -Eeuo pipefail
 # simulate design
 echo "xsim axi_dma_tb_top_behav -key {Behavioral:sim_1:Functional:axi_dma_tb_top} -tclbatch axi_dma_tb_top.tcl -view /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_tb_top_behav.wcfg -log simulate.log"
-xsim axi_dma_tb_top_behav -key {Behavioral:sim_1:Functional:axi_dma_tb_top} -tclbatch axi_dma_tb_top.tcl -view /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_tb_top_behav.wcfg -log simulate.log -testplusarg UVM_TESTNAME=$TEST_NAME
+xsim axi_dma_tb_top_behav -key {Behavioral:sim_1:Functional:axi_dma_tb_top} -tclbatch axi_dma_tb_top.tcl -view /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/axi_dma_tb_top_behav.wcfg -log simulate.log -testplusarg UVM_TESTNAME=$TEST_NAME
 
 echo "Running... $TEST_NAME"

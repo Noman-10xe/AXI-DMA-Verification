@@ -397,6 +397,7 @@ class s2mm_custom_sequence extends base_sequence;
     end
     
     RAL_Model.S2MM_DMACR.write(status, data);
+    RAL_Model.S2MM_DMACR.read(status, data);
     expected = RAL_Model.S2MM_DMACR.get_mirrored_value();
     `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
@@ -604,17 +605,19 @@ class stop_mm2s_sequence extends base_sequence;
       data = 1'b0;
       // Set bit[0] to 0 (Stop Channel)
       RAL_Model.MM2S_DMACR.write(status, data);
+      RAL_Model.S2MM_DMACR.write(status, data);
       
       // Check Value again
+      RAL_Model.S2MM_DMACR.read(status, data);
       RAL_Model.MM2S_DMACR.read(status, data);
       expected = RAL_Model.MM2S_DMACR.get_mirrored_value();
       `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMACR Mismatch:: Act = %0h, Exp = %0h", data, expected));
 
       // Check Status Register
+      RAL_Model.S2MM_DMASR.read(status, data);
       RAL_Model.MM2S_DMASR.read(status, data);
       expected = RAL_Model.MM2S_DMASR.get_mirrored_value();
       `DV_CHECK_EQ(data, expected, $sformatf("MM2S_DMASR Halted Bit Mismatch:: Act = %0h, Exp = %0h", data, expected));
-
 
    endtask
 endclass : stop_mm2s_sequence
