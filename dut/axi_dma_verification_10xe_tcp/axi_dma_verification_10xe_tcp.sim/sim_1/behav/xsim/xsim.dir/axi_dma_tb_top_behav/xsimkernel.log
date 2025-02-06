@@ -1,0 +1,7 @@
+Running: xsim.dir/axi_dma_tb_top_behav/xsimk -simmode gui -testplusarg UVM_TESTNAME=read_test -wdb axi_dma_tb_top_behav.wdb -simrunnum 0 -socket 45327
+Design successfully loaded
+Design Loading Memory Usage: 53172 KB (Peak: 53180 KB)
+Design Loading CPU Usage: 60 ms
+Simulation completed
+Simulation Memory Usage: 155668 KB (Peak: 192440 KB)
+Simulation CPU Usage: 460 ms

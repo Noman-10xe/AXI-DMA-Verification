@@ -1,0 +1,16 @@
+#
+# An unexpected error has occurred (11)
+#
+Stack:
+/home/xe-user106/vivado/Vivado/2022.1/tps/lnx64/jre11.0.11_9/lib//server/libjvm.so(+0xbefecb) [0x798e7d9efecb]
+/home/xe-user106/vivado/Vivado/2022.1/tps/lnx64/jre11.0.11_9/lib//server/libjvm.so(JVM_handle_linux_signal+0xd1) [0x798e7d9f6c81]
+/home/xe-user106/vivado/Vivado/2022.1/tps/lnx64/jre11.0.11_9/lib//server/libjvm.so(+0xbead23) [0x798e7d9ead23]
+/lib/x86_64-linux-gnu/libc.so.6(+0x45320) [0x798edbe45320]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_wavedata.so(SimBridge::FrontEndControl::buildTreeWithDynInfo2(SimBridge::IDataObj const*, std::vector<int, std::allocator<int> >&, int&) const+0x15b) [0x798e8dc24bfb]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_wavedata.so(SimBridge::FrontEndControl::buildSVDynamicTypeObjectTree(SimBridge::IDataObj const*) const+0x548) [0x798e8dc2ed58]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_wavedata.so(SimBridge::FrontEndControl::getValues(std::vector<SimBridge::IDataObj const*, std::allocator<SimBridge::IDataObj const*> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&, SimBridge::ValueFormat const&) const+0x189) [0x798e8dc29529]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_simdata.so(RSDData::RSDLiveSimulationObject::getCurrentValue[abi:cxx11](SimBridge::IDataObj const*) const+0xeb) [0x798edb16f8db]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_simdata.so(RSDData::RSDObjectProtobufBuilder::buildObjectNode(SimBridge::IDataObj const*, RSDObjectNode*) const+0xe5) [0x798edb177a95]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_simdata.so(RSDData::RSDObjectProtobufBuilder::buildLocalsProtobuf(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) const+0x392) [0x798edb1780b2]
+/home/xe-user106/vivado/Vivado/2022.1/lib/lnx64.o/librdi_simdata.so(Java_ui_views_simulator_executive_simulationi_SimulationExecutive_1getLocalsData+0x163) [0x798edb1ab3f3]
+[0x798e63e0f710]

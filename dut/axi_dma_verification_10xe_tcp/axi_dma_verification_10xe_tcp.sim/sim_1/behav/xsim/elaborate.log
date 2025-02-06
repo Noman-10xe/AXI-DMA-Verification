@@ -1,0 +1,12 @@
+Vivado Simulator v2022.1
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /home/xe-user106/vivado/Vivado/2022.1/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L lib_pkg_v1_0_2 -L fifo_generator_v13_2_7 -L lib_fifo_v1_0_16 -L lib_srl_fifo_v1_0_2 -L lib_cdc_v1_0_2 -L axi_datamover_v5_1_28 -L axi_sg_v4_1_15 -L axi_dma_v7_1_27 -L blk_mem_gen_v8_4_5 -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot axi_dma_tb_top_behav xil_defaultlib.axi_dma_tb_top xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-8967] first argument of $fatal is invalid; expected 0, 1 or 2 [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/mem_model.sv:32]
+WARNING: [VRFC 10-3597] non-void function 'get' called as a task without void casting [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/register_uvc/reg_sequence.sv:27]
+WARNING: [VRFC 10-3597] non-void function 'get' called as a task without void casting [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/stream_uvc/axis_sequence.sv:35]
+WARNING: [VRFC 10-3597] non-void function 'get' called as a task without void casting [/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/verif/mm2s_uvc/axi_sequence.sv:36]
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel

@@ -1,4 +1,0 @@
-vhdl xil_defaultlib  \
-"../../../../axi_dma_verification_10xe_tcp.gen/sources_1/ip/axi_dma_0/sim/axi_dma_0.vhd" \
-
-nosort

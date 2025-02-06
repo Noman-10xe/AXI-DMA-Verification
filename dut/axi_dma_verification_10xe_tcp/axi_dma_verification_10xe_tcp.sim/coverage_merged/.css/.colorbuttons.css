@@ -1,0 +1,94 @@
+.color1button {
+    margin: 0 auto 4px auto;
+    display: block;
+    width: 64px;
+    height: 20px;
+    background: #E0FFFF;
+    border: 1px solid #000;
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.color1button:hover{
+    background: #3BB9FF;
+}
+
+.color2button {
+    margin: 0 auto 4px auto;
+    display: block;
+    width: 40px;
+    height: 20px;
+    background: #DDDDDD;
+    border: 1px solid #000;
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.color2button:hover{
+    background: #B6B6B4;
+}
+
+
+.color3button {
+    margin: 0 auto 4px auto;
+    display: block;
+    width: 64px;
+    height: 20px;
+    background: #B3ECFF;
+    border: 1px solid #000;
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.color3button:hover{
+    background: #33CCFF;
+}
+
+
+.color4button {
+    margin: 0 auto 4px auto;
+    display: block;
+    width: 64px;
+    height: 24px;
+    background: #ffce99;
+    border: 1px solid #000;
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.color4button:hover{
+    background: #ffb566;
+}
+
+
+.color5button {
+    margin: 0 auto 4px auto;
+    display: block;
+    width: 64px;
+    height: 24px;
+    background: #ffce99;
+    border: 1px solid #000;
+    text-align: center;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.color5button:hover{
+    background: #ffb566;
+}
+
+

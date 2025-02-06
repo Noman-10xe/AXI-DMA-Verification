@@ -1,0 +1,59 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../../tb/includes" \
+"../../../../axi_dma_verification_10xe_tcp.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v" \
+
+sv xil_defaultlib  --include "../../../../../../tb/includes" \
+"../../../../../../tb/includes/mem_model_pkg.sv" \
+"../../../../../../tb/includes/includes.sv" \
+"../../../../../../tb/interfaces/axis_io.sv" \
+"../../../../../../tb/ral_model/registers/mm2s_sa.sv" \
+"../../../../../../tb/interfaces/axi_io.sv" \
+"../../../../../../tb/ral_model/registers/s2mm_length.sv" \
+"../../../../../../tb/mm2s_uvc/mm2s_driver.sv" \
+"../../../../../../tb/stream_uvc/axis_write_driver.sv" \
+"../../../../../../tb/ral_model/registers/s2mm_da.sv" \
+"../../../../../../tb/mm2s_uvc/axi_read_agent.sv" \
+"../../../../../../tb/ral_model/reg_block.sv" \
+"../../../../../../tb/register_uvc/axi_lite_agent.sv" \
+"../../../../../../tb/stream_uvc/axis_read_driver.sv" \
+"../../../../../../tb/configurations/axis_read_agent_config.sv" \
+"../../../../../../tb/register_uvc/axi_lite_monitor.sv" \
+"../../../../../../tb/stream_uvc/axis_read_monitor.sv" \
+"../../../../../../tb/stream_uvc/axis_read_agent.sv" \
+"../../../../../../tb/environment/environment.sv" \
+"../../../../../../tb/configurations/environment_config.sv" \
+"../../../../../../tb/environment/coverage_model.sv" \
+"../../../../../../tb/stream_uvc/axis_write_agent.sv" \
+"../../../../../../tb/axi_coverage_monitor/axi_monitor.sv" \
+"../../../../../../tb/register_uvc/axi_lite_driver.sv" \
+"../../../../../../tb/ral_model/registers/s2mm_da_msb.sv" \
+"../../../../../../tb/ral_model/registers/mm2s_sa_msb.sv" \
+"../../../../../../tb/ral_model/registers/mm2s_dmasr.sv" \
+"../../../../../../tb/stream_uvc/axis_write_monitor.sv" \
+"../../../../../../tb/mm2s_uvc/mm2s_monitor.sv" \
+"../../../../../../tb/ral_model/registers/s2mm_dmasr.sv" \
+"../../../../../../tb/includes/params_pkg.sv" \
+"../../../../../../tb/register_uvc/axi_lite_sequencer.sv" \
+"../../../../../../tb/includes/mem_model.sv" \
+"../../../../../../tb/test_top/testlib.sv" \
+"../../../../../../tb/ral_model/axi_lite_adapter.sv" \
+"../../../../../../tb/configurations/axis_write_agent_config.sv" \
+"../../../../../../tb/interfaces/clk_rst_io.sv" \
+"../../../../../../tb/ral_model/registers/s2mm_dmacr.sv" \
+"../../../../../../tb/ral_model/registers/mm2s_dmacr.sv" \
+"../../../../../../tb/environment/scoreboard.sv" \
+"../../../../../../tb/top/axi_dma_tb_top.sv" \
+"../../../../../../tb/interfaces/s_axi_lite_io.sv" \
+"../../../../../../tb/ral_model/registers/mm2s_length.sv" \
+"../../../../../../sim/axis_transaction.sv" \
+"../../../../../../sim/axis_sequence.sv" \
+"../../../../../../sim/reg_sequence.sv" \
+"../../../../../../sim/reg_transaction.sv" \
+"../../../../../../sim/axi_transaction.sv" \
+"../../../../../../sim/axi_sequence.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

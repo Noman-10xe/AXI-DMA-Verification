@@ -1,0 +1,33 @@
+
+ Options Set are : 
+
+   Command Line               : xcrg -dir xsim.covdb/ -report_format html
+   Input Dir                  : xsim.covdb/
+   Report Directory           : ./xcrg_report
+   Report Format              : html
+   Log File                   : xcrg.log
+
+
+                  Functional Coverage Report 
+
+  1	xsim.covdb/axi_dma_tb_top_behav/xsim.covinfo
+
+
+ Creating Output Directory            : xsim.covdb/xcrg_mdb
+
+ Saving the Coverage Info at          : xsim.covdb/xcrg_mdb/xsim.covinfo
+
+ Created Coverage Report Directory    : ./xcrg_report
+
+ XILINX VIVADO is set as              : /home/xe-user106/vivado/Vivado/2022.1
+
+ Setting the report dir name as       : ./xcrg_report
+
+ Creating dashboard.html 
+
+ Creating groups.html 
+
+ Creating grp0.html 
+
+ Creating grp1.html 
+

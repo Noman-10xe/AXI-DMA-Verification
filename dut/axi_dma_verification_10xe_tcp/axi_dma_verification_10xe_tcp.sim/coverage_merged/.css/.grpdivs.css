@@ -1,0 +1,44 @@
+
+.groupInfoSummary { 
+    overflow-x:auto;
+}
+
+.groupInstanceInfoSummary { 
+    overflow-x:auto;
+}
+
+.groupVariableSummary { 
+    overflow-x:auto;
+}
+
+
+.groupCoverPointDetails {
+    overflow-x:auto;
+}
+
+    
+.groupCoverPointDetails {  
+    overflow-x:auto;
+}
+
+.groupCrossesDetails {
+    overflow-x:auto;
+}
+
+
+.instanceInfoSummary { 
+    overflow-x:auto;
+}
+
+
+.instanceVariablesSummary { 
+    overflow-x:auto;
+}
+
+.instanceCoverPointDetails {     
+    overflow-x:auto;
+}
+
+.instanceCrossesDetails {     
+    overflow-x:auto;
+}

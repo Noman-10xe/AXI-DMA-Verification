@@ -1,0 +1,83 @@
+/* Style the header with a grey background and some padding */
+.grpheader {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 8px 8px;
+  border-style: ridge;
+  border-width: 2px 1px 1px 1px;  
+  border-radius: 3px;
+}
+
+/* Style the header links */
+.grpheader a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+.grpheader a.logo {
+  font-size: 25px;
+  font-weight: bold;
+  background-image: url(data:image/png;base64,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);
+  position: sticky; 
+  width:156px; height:22px;
+}
+
+/* Change the background color on mouse-over */
+.grpheader a:hover {
+  background-color: #C11B17;
+  color: black;
+}
+
+/* Style the active/current link*/
+.grpheader a.active {
+  background-color: #413839;
+  color: white;
+}
+
+/* Float the link section to the right */
+.grpheader-right {
+  float: right;
+}
+
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media screen and (max-width: 500px) {
+  .grpheader a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .grpheader-right {
+    float: none;
+  }
+}
+
+
+
+/* Page content */
+.content {
+  padding: 16px;
+}
+
+
+
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 60px;
+}
+

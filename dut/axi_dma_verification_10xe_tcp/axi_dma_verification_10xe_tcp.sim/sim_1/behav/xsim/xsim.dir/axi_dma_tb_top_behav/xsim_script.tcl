@@ -1,0 +1,1 @@
+xsim {axi_dma_tb_top_behav} -testplusarg UVM_TESTNAME=read_test -view {{/home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_tb_top_behav.wcfg}} -tclbatch {axi_dma_tb_top.tcl} -key {Behavioral:sim_1:Functional:axi_dma_tb_top}

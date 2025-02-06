@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:47:01 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Mon Jan 20 14:29:32 2025
+# Process ID: 15809
+# Current directory: /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.runs/axi_dma_0_synth_1
+# Command line: vivado -log axi_dma_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source axi_dma_0.tcl
+# Log file: /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.runs/axi_dma_0_synth_1/axi_dma_0.vds
+# Journal file: /home/xe-user106/10x-Engineers/SOC-DV/TCP/axi_dma_verification/rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.runs/axi_dma_0_synth_1/vivado.jou
+# Running On: noman-10x, OS: Linux, CPU Frequency: 2570.337 MHz, CPU Physical cores: 12, Host memory: 16050 MB
+#-----------------------------------------------------------
+source axi_dma_0.tcl -notrace

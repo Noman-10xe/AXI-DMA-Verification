@@ -1,8 +1,8 @@
 # Environment Variables
 TESTS   = reset_test mm2s_enable_test s2mm_enable_test read_test raw_test boundary_test data_realignment_test read_introut_test write_introut_test rs_test soft_reset_test halted_write_test idle_state_test buffer_overflow_test random_reg_test random_stream_read_test random_tkeep_test axis_write_cov_test axis_read_cov_test axis_read_cov_all_zeros_test axis_read_cov_mid_values_test slave_error_test decode_error_test
-RTL     := rtl
-TB      := verif
-SIM     := sim
+# RTL     := dut
+# TB      := verif
+# SIM     := sim
 SHELL   := /bin/bash
 TEST_NAME ?= reset_test
 export TEST_NAME
@@ -17,7 +17,7 @@ ifeq ($(TEST_NAME), decode_error_test)
 endif
 
 # Script Paths
-SCRIPT_DIR := $(shell realpath ./rtl/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.sim/sim_1/behav/xsim)
+SCRIPT_DIR := $(shell realpath ./dut/axi_dma_verification_10xe_tcp/axi_dma_verification_10xe_tcp.sim/sim_1/behav/xsim)
 
 # Output Directories
 OUT_DIR := $(shell mkdir -p ./output && realpath ./output)
