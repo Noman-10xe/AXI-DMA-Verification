@@ -27,7 +27,6 @@ class scoreboard extends uvm_scoreboard;
    axis_transaction read_queue[$];
    axis_transaction write_queue[$];
    
-   bit mm2s_prev_tlast  = 0;
    int expected_bvalids = 0;
 
    // Environment configuration Handle
@@ -94,22 +93,6 @@ class scoreboard extends uvm_scoreboard;
          // Add transaction to read queue
          read_queue.push_back(item);
       end
-      
-      // Enable Checker if the Interrupt was configured
-      if (env_cfg.irq_EN) begin
-         if (mm2s_prev_tlast) begin
-
-            if (item.introut != 1) begin
-               `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", item.introut, 1));
-            end
-            else begin
-               `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
-            end
-         end
-      end
-
-      // Update Previous Value of tlast
-      mm2s_prev_tlast = item.tlast;
    
    endfunction : write_mm2s_read
 

@@ -16,9 +16,10 @@ class axis_read_monitor extends uvm_monitor;
         
         `uvm_component_utils(axis_read_monitor);
 
-        virtual axis_io vif;
-        axis_transaction item;
-        uvm_analysis_port #(axis_transaction) mm2s_read;
+        virtual axis_io         vif;
+        axis_transaction        item;
+        uvm_analysis_port       #(axis_transaction) mm2s_read;
+        environment_config      env_cfg;
 
         //  Constructor
         function new(string name = "axis_read_monitor", uvm_component parent);
@@ -39,6 +40,10 @@ function void axis_read_monitor::build_phase(uvm_phase phase);
         mm2s_read = new("mm2s_read", this);
         if (!uvm_config_db#(virtual axis_io)::get(this, get_full_name(), "axis_intf", vif))
         `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
+
+        if (!uvm_config_db#(environment_config)::get(this, get_full_name(), "env_cfg", env_cfg))
+        `uvm_fatal("NOCONFIG",{"Environment Configurations must be set for: ",get_full_name()});
+
 endfunction: build_phase
 
 
@@ -71,8 +76,20 @@ task axis_read_monitor::collect_transactions();
                 
                 // Boradcast to Scoreboard
                 mm2s_read.write(item);
-                
-end
+
+                // Enable Checker if the Interrupt was configured
+                if (env_cfg.irq_EN) begin
+                        if(`READ_MON.m_axis_mm2s_tlast == 1) begin
+                                vif.wait_clks(1);
+                                if (`READ_MON.mm2s_introut != 1) begin
+                                        `uvm_error(`gfn, $sformatf("mm2s_introut comparison failed. Act = %0d, Exp = %0d", `READ_MON.mm2s_introut, 1));
+                                end
+                                else begin
+                                        `uvm_info(`gfn, "mm2s_introut comparison Passed.", UVM_NONE);
+                                end
+                        end
+                end
+        end
 endtask: collect_transactions
 
 `endif
