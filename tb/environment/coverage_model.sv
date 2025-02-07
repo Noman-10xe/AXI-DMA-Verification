@@ -413,8 +413,11 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
 
                 CROSS_TDATA_TKEEP       : cross cp_tdata, cp_tkeep {
                         ignore_bins ignore_0 = binsof(cp_tdata.mid_values) && binsof(cp_tkeep.tkeep_1);
+                        ignore_bins ignore_1 = binsof(cp_tdata.zero_value) && binsof(cp_tkeep);
                 }
-                CROSS_TVALID_TREADY     : cross cp_tvalid, cp_tready;
+                CROSS_TVALID_TREADY     : cross cp_tvalid, cp_tready {
+                        ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tready.tready_0);
+                }
                 CROSS_TVALID_TLAST      : cross cp_tvalid, cp_tlast {
                         ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tlast.tlast_1);
                 }
