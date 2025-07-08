@@ -34,7 +34,11 @@ function void mm2s_agent::build_phase(uvm_phase phase);
         super.build_phase(phase);
         driver		= mm2s_driver::type_id::create("driver", this);
 	monitor 	= mm2s_monitor::type_id::create("monitor", this);
-	sequencer	= uvm_sequencer::type_id::create("sequencer", this);
+        `ifndef AF_MTI
+        sequencer = uvm_sequencer#()::type_id::create("sequencer", this);
+        `else
+        sequencer = uvm_sequencer#(axi_transaction)::type_id::create("sequencer", this);
+        `endif
 endfunction: build_phase
 
 function void mm2s_agent::connect_phase(uvm_phase phase);
