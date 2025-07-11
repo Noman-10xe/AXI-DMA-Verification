@@ -19,22 +19,6 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
         
         reg_transaction tr;
 
-        //  Constructor: new
-        function new(string name = "axi_lite_coverage", uvm_component parent);
-           super.new(name, parent);
-           cg_read_channel      = new();
-           cg_write_channel     = new();
-        endfunction: new
-
-        // write methods implementation
-        virtual function void write(reg_transaction t);
-             `uvm_info(`gfn, "Recieved AXI Lite transaction in Coverage Model", UVM_NONE)
-             tr = t;
-             cg_read_channel.sample();
-             cg_write_channel.sample();
-        endfunction : write
-
-        
         // AXI LITE Read Channel Covergroup
         covergroup cg_read_channel;
                 cp_arvalid: coverpoint tr.s_axi_lite_arvalid {
@@ -131,22 +115,29 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         ignore_bins        rresp_decErr    = {2'b11};
                 }
                 
-                CROSS_ARREADY_ARVALID : cross cp_arvalid, cp_arready {           
+                CROSS_ARREADY_ARVALID : cross cp_arvalid, cp_arready {
+                        `ifndef AF_MTI           
                         ignore_bins ignore_0 = binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1);
+                        `endif
                 }
                 
                 CROSS_RREADY_RVALID : cross cp_rready, cp_rvalid;
                 
                 CROSS_ADDR_CTRL : cross cp_araddr, cp_arvalid, cp_arready {
+                        `ifndef AF_MTI
                         ignore_bins invalid     = binsof(cp_arvalid.arvalid_0) && binsof(cp_arready.arready_1);
                         ignore_bins ignore_0    = !((binsof(cp_araddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
+                        `endif
                 }
                 CROSS_RDATA_CTRL : cross cp_rvalid, cp_rready, cp_rresp, cp_rdata{
+                        `ifndef AF_MTI           
                         ignore_bins ignore_0 = binsof(cp_rvalid.rvalid_0) && (binsof(cp_rdata.mid_values) || binsof(cp_rdata.low_values));
+                        `endif
                 }
 
                 // MM2S_DMACR Register
                 cp_MM2S_DMACR_X_araddr: cross cp_DMACR_RS, cp_DMACR_Reset, cp_DMACR_IOC_IrqEN, cp_DMACR_ERR_IrqEN, cp_araddr {
+                        `ifndef AF_MTI           
                         bins MM2S_DMACR_RS_low                  = binsof(cp_araddr) && binsof(cp_DMACR_RS.zero);
                         bins MM2S_DMACR_RS_hi                   = binsof(cp_araddr) && binsof(cp_DMACR_RS.one);
                         bins MM2S_DMACR_Reset_low               = binsof(cp_araddr) && binsof(cp_DMACR_Reset.zero);
@@ -156,10 +147,12 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins MM2S_DMACR_ERR_IrqEN_low           = binsof(cp_araddr) && binsof(cp_DMACR_ERR_IrqEN.zero);
                         bins MM2S_DMACR_ERR_IrqEN_hi            = binsof(cp_araddr) && binsof(cp_DMACR_ERR_IrqEN.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_araddr.araddr_MM2S_DMACR);
+                        `endif
                 }
 
                 // MM2S_DMASR Register
                 cp_MM2S_DMASR_X_araddr: cross cp_DMASR_Idle, cp_DMASR_Halted, cp_DMASR_DMASlvErr, cp_DMASR_DMADecErr, cp_DMASR_IOC_Irq, cp_DMASR_Err_Irq, cp_araddr {
+                        `ifndef AF_MTI           
                         bins MM2S_DMASR_Halted_low              = binsof(cp_araddr) && binsof(cp_DMASR_Halted.zero);
                         bins MM2S_DMASR_Halted_hi               = binsof(cp_araddr) && binsof(cp_DMASR_Halted.one);
                         bins MM2S_DMASR_Idle_low                = binsof(cp_araddr) && binsof(cp_DMASR_Idle.zero);
@@ -173,10 +166,12 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins MM2S_DMASR_Err_Irq_low             = binsof(cp_araddr) && binsof(cp_DMASR_Err_Irq.zero);
                         bins MM2S_DMASR_Err_Irq_hi              = binsof(cp_araddr) && binsof(cp_DMASR_Err_Irq.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_araddr.araddr_MM2S_DMASR);
+                        `endif
                 }
 
                 // S2MM_DMACR Register
                 cp_S2MM_DMACR_X_araddr: cross cp_DMACR_RS, cp_DMACR_Reset, cp_DMACR_IOC_IrqEN, cp_DMACR_ERR_IrqEN, cp_araddr {
+                        `ifndef AF_MTI
                         bins S2MM_DMACR_RS_low                  = binsof(cp_araddr) && binsof(cp_DMACR_RS.zero);
                         bins S2MM_DMACR_RS_hi                   = binsof(cp_araddr) && binsof(cp_DMACR_RS.one);
                         bins S2MM_DMACR_Reset_low               = binsof(cp_araddr) && binsof(cp_DMACR_Reset.zero);
@@ -186,10 +181,12 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins S2MM_DMACR_ERR_IrqEN_low           = binsof(cp_araddr) && binsof(cp_DMACR_ERR_IrqEN.zero);
                         bins S2MM_DMACR_ERR_IrqEN_hi            = binsof(cp_araddr) && binsof(cp_DMACR_ERR_IrqEN.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_araddr.araddr_S2MM_DMACR);
+                        `endif
                 }
 
                 // S2MM_DMASR Register
                 cp_S2MM_DMASR_X_araddr: cross cp_DMASR_Idle, cp_DMASR_Halted, cp_DMASR_DMASlvErr, cp_DMASR_DMADecErr, cp_DMASR_IOC_Irq, cp_DMASR_Err_Irq, cp_araddr {
+                        `ifndef AF_MTI
                         bins S2MM_DMASR_Halted_low              = binsof(cp_araddr) && binsof(cp_DMASR_Halted.zero);
                         bins S2MM_DMASR_Halted_hi               = binsof(cp_araddr) && binsof(cp_DMASR_Halted.one);
                         bins S2MM_DMASR_Idle_low                = binsof(cp_araddr) && binsof(cp_DMASR_Idle.zero);
@@ -200,6 +197,7 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins S2MM_DMASR_IOC_Irq_hi              = binsof(cp_araddr) && binsof(cp_DMASR_IOC_Irq.one);
                         bins S2MM_DMASR_Err_Irq_low             = binsof(cp_araddr) && binsof(cp_DMASR_Err_Irq.zero);
                         ignore_bins ignore_other_addresses      = !binsof(cp_araddr.araddr_S2MM_DMASR);
+                        `endif
                 }
 
         endgroup : cg_read_channel
@@ -293,25 +291,34 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                 }
                 
                 CROSS_AWREADY_AWVALID : cross cp_awvalid, cp_awready {
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
+                        `endif
                 }
                 
                 CROSS_WREADY_WVALID : cross cp_wready, cp_wvalid {
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_wvalid.wvalid_0) && binsof(cp_wready.wready_1);
+                        `endif
                 }
                 
                 CROSS_ADDR_CTRL: cross cp_awaddr, cp_awvalid, cp_awready {
+                        `ifndef AF_MTI
                         bins valid_awaddr               = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_1) && binsof(cp_awready.awready_1);
                         ignore_bins invalid_awaddr      = binsof(cp_awaddr) && binsof(cp_awvalid.awvalid_0) && binsof(cp_awready.awready_1);
                         ignore_bins ignore_0            = !((binsof(cp_awaddr) intersect { 'h00, 'h04, 'h18, 'h28, 'h30, 'h34, 'h48, 'h58 }));
+                        `endif
                 }
 
                 CROSS_BRESP_CTRL: cross cp_bvalid, cp_bready, cp_bresp, cp_wdata{
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_bvalid.bvalid_0) && binsof(cp_bready.bready_1);
+                        `endif
                 }
 
                 // MM2S_DMACR Register
                 cp_MM2S_DMACR_X_awaddr: cross cp_DMACR_RS, cp_DMACR_Reset, cp_DMACR_IOC_IrqEN, cp_DMACR_ERR_IrqEN, cp_awaddr {
+                        `ifndef AF_MTI
                         bins MM2S_DMACR_RS_low                  = binsof(cp_awaddr) && binsof(cp_DMACR_RS.zero);
                         bins MM2S_DMACR_RS_hi                   = binsof(cp_awaddr) && binsof(cp_DMACR_RS.one);
                         bins MM2S_DMACR_Reset_low               = binsof(cp_awaddr) && binsof(cp_DMACR_Reset.zero);
@@ -321,20 +328,24 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins MM2S_DMACR_ERR_IrqEN_low           = binsof(cp_awaddr) && binsof(cp_DMACR_ERR_IrqEN.zero);
                         bins MM2S_DMACR_ERR_IrqEN_hi            = binsof(cp_awaddr) && binsof(cp_DMACR_ERR_IrqEN.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_awaddr.awaddr_MM2S_DMACR);
+                        `endif
                 }
 
                 // MM2S_DMASR Register
                 cp_MM2S_DMASR_X_awaddr: cross cp_DMASR_IOC_Irq, cp_DMASR_Err_Irq, cp_awaddr {
+                        `ifndef AF_MTI
                         bins MM2S_DMASR_IOC_Irq_low             = binsof(cp_awaddr) && binsof(cp_DMASR_IOC_Irq.zero);
                         bins MM2S_DMASR_IOC_Irq_hi              = binsof(cp_awaddr) && binsof(cp_DMASR_IOC_Irq.one);
                         bins MM2S_DMASR_Err_Irq_low             = binsof(cp_awaddr) && binsof(cp_DMASR_Err_Irq.zero);
                         bins MM2S_DMASR_Err_Irq_hi              = binsof(cp_awaddr) && binsof(cp_DMASR_Err_Irq.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_awaddr.awaddr_MM2S_DMASR);
+                        `endif
                 }
 
 
                 // S2MM_DMACR Register
                 cp_S2MM_DMACR_X_awaddr: cross cp_DMACR_RS, cp_DMACR_Reset, cp_DMACR_IOC_IrqEN, cp_DMACR_ERR_IrqEN, cp_awaddr {
+                        `ifndef AF_MTI
                         bins S2MM_DMACR_RS_low                  = binsof(cp_awaddr) && binsof(cp_DMACR_RS.zero);
                         bins S2MM_DMACR_RS_hi                   = binsof(cp_awaddr) && binsof(cp_DMACR_RS.one);
                         bins S2MM_DMACR_Reset_low               = binsof(cp_awaddr) && binsof(cp_DMACR_Reset.zero);
@@ -344,18 +355,36 @@ class axi_lite_coverage extends uvm_subscriber #(reg_transaction);
                         bins S2MM_DMACR_ERR_IrqEN_low           = binsof(cp_awaddr) && binsof(cp_DMACR_ERR_IrqEN.zero);
                         bins S2MM_DMACR_ERR_IrqEN_hi            = binsof(cp_awaddr) && binsof(cp_DMACR_ERR_IrqEN.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_awaddr.awaddr_S2MM_DMACR);
+                        `endif
                 }
 
                 // S2MM_DMASR Register
                 cp_S2MM_DMASR_X_awaddr: cross cp_DMASR_IOC_Irq, cp_DMASR_Err_Irq, cp_awaddr {
+                        `ifndef AF_MTI
                         bins S2MM_DMASR_IOC_Irq_low             = binsof(cp_awaddr) && binsof(cp_DMASR_IOC_Irq.zero);
                         bins S2MM_DMASR_IOC_Irq_hi              = binsof(cp_awaddr) && binsof(cp_DMASR_IOC_Irq.one);
                         bins S2MM_DMASR_Err_Irq_low             = binsof(cp_awaddr) && binsof(cp_DMASR_Err_Irq.zero);
                         bins S2MM_DMASR_Err_Irq_hi              = binsof(cp_awaddr) && binsof(cp_DMASR_Err_Irq.one);
                         ignore_bins ignore_other_addresses      = !binsof(cp_awaddr.awaddr_S2MM_DMASR);
+                        `endif
                 }
 
         endgroup : cg_write_channel
+
+        //  Constructor: new
+        function new(string name = "axi_lite_coverage", uvm_component parent);
+           super.new(name, parent);
+           cg_read_channel      = new();
+           cg_write_channel     = new();
+        endfunction: new
+
+        // write methods implementation
+        virtual function void write(reg_transaction t);
+             `uvm_info(`gfn, "Recieved AXI Lite transaction in Coverage Model", UVM_NONE)
+             tr = t;
+             cg_read_channel.sample();
+             cg_write_channel.sample();
+        endfunction : write
 
 endclass: axi_lite_coverage
 
@@ -368,21 +397,6 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
 
              axis_transaction tr;
      
-             //  Constructor: new
-             function new(string name = "axis_read_coverage", uvm_component parent);
-                super.new(name, parent);
-                cg_axis_read    = new();
-                cg_mm2s_introut = new();
-             endfunction: new
-     
-             // write methods implementation
-             virtual function void write(axis_transaction t);
-                  `uvm_info(`gfn, "Recieved AXIS READ transaction in Coverage Model", UVM_HIGH)
-                  tr = t;
-                  cg_axis_read.sample();
-                  cg_mm2s_introut.sample();
-             endfunction : write
-             
              // AXI-Stream Read Covergroup
              covergroup cg_axis_read;
                 cp_tdata        : coverpoint tr.tdata  {
@@ -412,14 +426,20 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
                 }
 
                 CROSS_TDATA_TKEEP       : cross cp_tdata, cp_tkeep {
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_tdata.mid_values) && binsof(cp_tkeep.tkeep_1);
                         ignore_bins ignore_1 = binsof(cp_tdata.zero_value) && binsof(cp_tkeep);
+                        `endif
                 }
                 CROSS_TVALID_TREADY     : cross cp_tvalid, cp_tready {
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tready.tready_0);
+                        `endif
                 }
                 CROSS_TVALID_TLAST      : cross cp_tvalid, cp_tlast {
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tlast.tlast_1);
+                        `endif
                 }
 
              endgroup : cg_axis_read
@@ -433,6 +453,20 @@ class axis_read_coverage extends uvm_subscriber #(axis_transaction);
              endgroup : cg_mm2s_introut
 
 
+             //  Constructor: new
+             function new(string name = "axis_read_coverage", uvm_component parent);
+                super.new(name, parent);
+                cg_axis_read    = new();
+                cg_mm2s_introut = new();
+             endfunction: new
+     
+             // write methods implementation
+             virtual function void write(axis_transaction t);
+                  `uvm_info(`gfn, "Recieved AXIS READ transaction in Coverage Model", UVM_HIGH)
+                  tr = t;
+                  cg_axis_read.sample();
+                  cg_mm2s_introut.sample();
+             endfunction : write
      
 endclass: axis_read_coverage
 
@@ -444,20 +478,7 @@ class axis_write_coverage extends uvm_subscriber #(axis_transaction);
         `uvm_component_utils(axis_write_coverage);
 
              axis_transaction tr;
-     
-             //  Constructor: new
-             function new(string name = "axis_write_coverage", uvm_component parent);
-                super.new(name, parent);
-                cg_axis_write = new();
-             endfunction: new
-     
-             // write methods implementation
-             virtual function void write(axis_transaction t);
-                  `uvm_info(`gfn, "Recieved AXIS READ transaction in Coverage Model", UVM_HIGH)
-                  tr = t;
-                  cg_axis_write.sample();
-             endfunction : write
-             
+                  
              // AXI-Stream Read Covergroup
              covergroup cg_axis_write;
                 cp_tdata        : coverpoint tr.tdata  {
@@ -487,11 +508,27 @@ class axis_write_coverage extends uvm_subscriber #(axis_transaction);
                 CROSS_TDATA_TKEEP       : cross cp_tdata, cp_tkeep;
                 CROSS_TVALID_TREADY     : cross cp_tvalid, cp_tready;
                 CROSS_TVALID_TLAST      : cross cp_tvalid, cp_tlast {
+                        `ifndef AF_MTI
                         ignore_bins ignore_0 = binsof(cp_tvalid.tvalid_0) && binsof(cp_tlast.tlast_1);
+                        `endif
                 }
+
 
              endgroup : cg_axis_write
      
+             //  Constructor: new
+             function new(string name = "axis_write_coverage", uvm_component parent);
+                super.new(name, parent);
+                cg_axis_write = new();
+             endfunction: new
+     
+             // write methods implementation
+             virtual function void write(axis_transaction t);
+                  `uvm_info(`gfn, "Recieved AXIS READ transaction in Coverage Model", UVM_HIGH)
+                  tr = t;
+                  cg_axis_write.sample();
+             endfunction : write
+             
 endclass: axis_write_coverage
 
 
@@ -502,6 +539,14 @@ class s2mm_introut_coverage extends uvm_subscriber #(axi_transaction);
         `uvm_component_utils(s2mm_introut_coverage);
 
              axi_transaction tr;
+             
+             // S2MM Interrupt Coverage
+             covergroup cg_s2mm_introut;
+                cp_s2mm_introut :       coverpoint tr.s2mm_introut {
+                        bins s2mm_introut_0 = {0};
+                        bins s2mm_introut_1 = {1};
+                }
+             endgroup : cg_s2mm_introut
      
              //  Constructor: new
              function new(string name = "s2mm_introut_coverage", uvm_component parent);
@@ -515,15 +560,7 @@ class s2mm_introut_coverage extends uvm_subscriber #(axi_transaction);
                   tr = t;
                   cg_s2mm_introut.sample();
              endfunction : write
-             
-             // S2MM Interrupt Coverage
-             covergroup cg_s2mm_introut;
-                cp_s2mm_introut :       coverpoint tr.s2mm_introut {
-                        bins s2mm_introut_0 = {0};
-                        bins s2mm_introut_1 = {1};
-                }
-             endgroup : cg_s2mm_introut
-     
+
 endclass: s2mm_introut_coverage
 
 `endif
